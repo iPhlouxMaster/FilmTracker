@@ -10,18 +10,34 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
+    let search = Search()
+    
+    struct TableViewCellIdentifiers {
+        static let searchResultCell = "SearchResultCell"
+        static let nothingFoundCell = "NoResultCell"
+        static let loadingCell = "LoadingCell"
+    }
+    
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
-    let search = Search()
-    var dictionary: NSDictionary?
-    var movies = [Movie]()
+    @IBAction func segmentValueChanged(sender: AnyObject) {
+        performSearch()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         tableView.contentInset = UIEdgeInsetsMake(108, 0, 0, 0)
+        tableView.rowHeight = 140
         searchBar.becomeFirstResponder()
+        
+        var cellNib = UINib(nibName: TableViewCellIdentifiers.searchResultCell, bundle: nil)
+        tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.searchResultCell)
+        cellNib = UINib(nibName: TableViewCellIdentifiers.nothingFoundCell, bundle: nil)
+        tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.nothingFoundCell)
+        cellNib = UINib(nibName: TableViewCellIdentifiers.loadingCell, bundle: nil)
+        tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.loadingCell)
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,26 +51,30 @@ extension SearchViewController: UITableViewDataSource {
         switch search.state {
         case .Results(let results):
             return results.count
+        case .NotSearchedYet:
+            return 0
         default:
             return 1
         }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
-        
-        if cell == nil {
-            cell = UITableViewCell(style: .Value1, reuseIdentifier: "Cell")
-        }
-        
         switch search.state {
         case .Results(let results):
-            cell!.textLabel!.text = results[indexPath.row].title
-        default:
-            cell!.textLabel!.text = "Test"
+            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
+            cell.configureForSearchResult(results[indexPath.row])
+            return cell
+        case .Loading:
+            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.loadingCell, forIndexPath: indexPath) as! UITableViewCell
+            let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
+            spinner.startAnimating()
+            return cell
+        case .NoResults:
+            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.nothingFoundCell, forIndexPath: indexPath) as! UITableViewCell
+            return cell
+        case .NotSearchedYet:
+            fatalError("*** You're not supposed to be here.")
         }
-        
-        return cell!
     }
 }
 
@@ -64,17 +84,20 @@ extension SearchViewController: UITableViewDelegate {
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        search.performSearchForText(searchBar.text, type: 0, completion: { success in
-            
+        performSearch()
+    }
+    
+    func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
+        return .TopAttached
+    }
+    
+    func performSearch() {
+        search.performSearchForText(searchBar.text, type: segmentedControl.selectedSegmentIndex, completion: { success in
             if !success {
-                
             }
-            
             self.tableView.reloadData()
         })
         tableView.reloadData()
         searchBar.resignFirstResponder()
-        
     }
-
 }

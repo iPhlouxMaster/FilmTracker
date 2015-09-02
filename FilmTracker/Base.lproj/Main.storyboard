@@ -33,12 +33,16 @@
                                     <navigationItem id="6kU-tb-wLv">
                                         <nil key="title"/>
                                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="t86-nW-DEd">
-                                            <rect key="frame" x="180" y="7.5" width="240" height="29"/>
+                                            <rect key="frame" x="180" y="7" width="240" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <segments>
-                                                <segment title="First"/>
-                                                <segment title="Second"/>
+                                                <segment title="Movie"/>
+                                                <segment title="TV"/>
+                                                <segment title="People"/>
                                             </segments>
+                                            <connections>
+                                                <action selector="segmentValueChanged:" destination="JKc-lz-mDC" eventType="valueChanged" id="lMg-Ek-xAz"/>
+                                            </connections>
                                         </segmentedControl>
                                     </navigationItem>
                                 </items>
@@ -68,8 +72,10 @@
                             <constraint firstItem="ByG-pF-Spa" firstAttribute="top" secondItem="Ws6-CC-WWu" secondAttribute="bottom" id="unp-Os-jvY"/>
                         </constraints>
                     </view>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="searchBar" destination="Ws6-CC-WWu" id="HNx-ee-nFg"/>
+                        <outlet property="segmentedControl" destination="t86-nW-DEd" id="wdA-94-GuC"/>
                         <outlet property="tableView" destination="y80-Nb-wBq" id="Bmq-o9-0oY"/>
                     </connections>
                 </viewController>

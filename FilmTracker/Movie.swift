@@ -26,4 +26,23 @@ class Movie {
         return dateFormatter.dateFromString(dateString)!
     }
     
+    func posterURLW92() -> NSURL {
+        let url = String(format: "http://image.tmdb.org/t/p/w92/%@&api_key=%@", posterAddress, Constants.kFTAPIKey)
+        return NSURL(string: url)!
+    }
+    
+    func movieType() -> String {
+        let movieType: String
+        
+        switch type {
+        case 0:
+            movieType = "Movie"
+        case 1:
+            movieType = "TV"
+        default:
+            movieType = ""
+        }
+        return movieType
+    }
+
 }
