@@ -10,22 +10,21 @@ import UIKit
 
 class SearchResultCell: UITableViewCell {
 
-    var downloadTask: NSURLSessionDownloadTask?
+    var imageDownloadTask: NSURLSessionDownloadTask?
+    var directorDownloadTask: NSURLSessionDownloadTask?
     
     @IBOutlet weak var movieTitleLabel: UILabel!
     @IBOutlet weak var releaseDateLabel: UILabel!
-    @IBOutlet weak var typeLabel: UILabel!
+    @IBOutlet weak var directorLabel: UILabel!
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var floatRatingView: FloatRatingView!
 
-    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         
         floatRatingView.emptyImage = UIImage(named: "StarEmpty")
         floatRatingView.fullImage = UIImage(named: "StarFull")
-        // Optional params
+
         floatRatingView.delegate = self
         floatRatingView.contentMode = UIViewContentMode.ScaleAspectFit
         floatRatingView.maxRating = 10
@@ -34,9 +33,9 @@ class SearchResultCell: UITableViewCell {
         floatRatingView.halfRatings = true
         floatRatingView.floatRatings = true
         
-        let selectedView = UIView(frame: CGRect.zeroRect)
-        selectedView.backgroundColor = UIColor(red: 20 / 255, green: 160 / 255, blue: 160 / 255, alpha: 0.5)
-        selectedBackgroundView = selectedView
+//        let selectedView = UIView(frame: CGRect.zeroRect)
+//        selectedView.backgroundColor = UIColor(red: 20 / 255, green: 160 / 255, blue: 160 / 255, alpha: 0.5)
+//        selectedBackgroundView = selectedView
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -47,23 +46,33 @@ class SearchResultCell: UITableViewCell {
     
     func configureForSearchResult(movie: Movie) {
         movieTitleLabel.text = movie.title
-        typeLabel.text = movie.movieType()
         floatRatingView.rating = Float(movie.tmdbRating)
+        
+        if !movie.directors.isEmpty {
+            directorLabel.text = ", ".join(movie.directors)
+        } else {
+            directorDownloadTask = directorLabel.loadCastsWithMovieObject(movie)
+        }
+        
         if !movie.releaseDate.isEmpty {
             releaseDateLabel.text = movie.releaseDate
         } else {
             releaseDateLabel.text = "Not Available"
         }
         
-        if !movie.posterAddress.isEmpty {
-            downloadTask = posterImageView.loadImageWithURL(movie.posterURLW92())
+        if let image = movie.w92Poster {
+            posterImageView.image = image
+        } else {
+            if !movie.posterAddress.isEmpty {
+                imageDownloadTask = posterImageView.loadImageWithMovieObject(movie, imageSize: 0)
+            }
         }
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        
-        downloadTask?.cancel()
+        imageDownloadTask?.cancel()
+        directorDownloadTask?.cancel()
         movieTitleLabel.text = nil
         releaseDateLabel.text = nil
         posterImageView.image = nil
@@ -71,6 +80,8 @@ class SearchResultCell: UITableViewCell {
     }
     
 }
+
+// MARK: - FloatRatingViewDelegate
 
 extension SearchResultCell: FloatRatingViewDelegate {
     func floatRatingView(ratingView: FloatRatingView, isUpdating rating:Float) {

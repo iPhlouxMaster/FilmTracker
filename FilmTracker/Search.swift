@@ -65,25 +65,33 @@ class Search {
         }
     }
     
+    func parseJSON(data: NSData) ->[String: AnyObject]? {
+        var error: NSError?
+        if let json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: &error) as? [String: AnyObject] {
+            return json
+        } else if let error = error {
+            println("*** Parsing JSON Error \(error)")
+        } else {
+            println("*** Unknown Parsing JSON Error")
+        }
+        return nil
+    }
+    
     private func parseDictionary(dictionary: [String: AnyObject], type: Int) -> [Movie] {
         var movies = [Movie]()
         
-        if type == 0 || type == 1 {
+        if type == 0 {
             if let array: AnyObject = dictionary["results"] {
                 for resultDict in array as! [AnyObject] {
                     var movie: Movie?
-                    if type == 0 {
-                        movie = parseMovie(resultDict as! [String: AnyObject])
-                    } else if type == 1 {
-                        movie = parseTV(resultDict as! [String: AnyObject])
-                    }
+                    movie = parseMovie(resultDict as! [String: AnyObject])
                     
                     if let searchedMovie = movie {
                         movies.append(searchedMovie)
                     }
                 }
             }
-        } else if type == 2 {
+        } else if type == 1 {
             if let searchResult: AnyObject = dictionary["results"] {
                 for results in searchResult as! [AnyObject] {
                     if let array: AnyObject = results["known_for"] {
@@ -92,10 +100,9 @@ class Search {
                             if let movieType = resultDict["media_type"] as? String {
                                 if movieType == "movie" {
                                     movie = parseMovie(resultDict as! [String: AnyObject])
-                                } else if movieType == "tv" {
-                                    movie = parseTV(resultDict as! [String: AnyObject])
                                 }
                             }
+                            
                             if let searchedMovie = movie {
                                 movies.append(searchedMovie)
                             }
@@ -127,27 +134,6 @@ class Search {
         
         return movie
     }
-    
-    private func parseTV(dictionary: [String : AnyObject]) -> Movie {
-        var tv = Movie()
-        tv.title = dictionary["name"] as! String
-        tv.id = dictionary["id"] as! Int
-        tv.type = 1
-        tv.tmdbRating = dictionary["vote_average"] as! Double
-        if let releaseDate = dictionary["first_air_date"] as? String {
-            tv.releaseDate = releaseDate
-        }
-        
-        if let overview = dictionary["overview"] as? String {
-            tv.overview = overview
-        }
-        
-        if let posterAddress = dictionary["poster_path"] as? String {
-            tv.posterAddress = posterAddress
-        }
-        
-        return tv
-    }
 
     private func urlWithSearchText(searchText: String, type: Int) -> NSURL {
         var movieType: String
@@ -156,28 +142,14 @@ class Search {
         case 0:
             movieType = "movie"
         case 1:
-            movieType = "tv"
-        case 2:
             movieType = "person"
         default:
             fatalError("*** A bug here!")
         }
         
         let escapedSearchText = searchText.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-        let urlString = String(format: "https://api.themoviedb.org/3/search/%@?api_key=%@&query=%@", movieType, Constants.kFTAPIKey , escapedSearchText)
+        let urlString = String(format: "https://api.themoviedb.org/3/search/%@?api_key=%@&search_type=ngram&query=%@", movieType, Constants.kFTAPIKey , escapedSearchText)
         let url = NSURL(string: urlString)
         return url!
-    }
-    
-    private func parseJSON(data: NSData) ->[String: AnyObject]? {
-        var error: NSError?
-        if let json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: &error) as? [String: AnyObject] {
-            return json
-        } else if let error = error {
-            println("*** Parsing JSON Error \(error)")
-        } else {
-            println("*** Unknown Parsing JSON Error")
-        }
-        return nil
     }
 }

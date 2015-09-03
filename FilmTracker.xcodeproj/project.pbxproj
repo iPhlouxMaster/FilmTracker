@@ -14,7 +14,6 @@
 		37BABF4C1B92C11D00E6E6EE /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BABF4B1B92C11D00E6E6EE /* SearchViewController.swift */; };
 		37BABF4F1B92C11D00E6E6EE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37BABF4D1B92C11D00E6E6EE /* Main.storyboard */; };
 		37BABF511B92C11D00E6E6EE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37BABF501B92C11D00E6E6EE /* Images.xcassets */; };
-		37BABF541B92C11D00E6E6EE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BABF521B92C11D00E6E6EE /* LaunchScreen.xib */; };
 		37BABF601B92C11E00E6E6EE /* FilmTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BABF5F1B92C11E00E6E6EE /* FilmTrackerTests.swift */; };
 		37BE2A5B1B96701900BA6C2B /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE2A5A1B96701900BA6C2B /* MovieListViewController.swift */; };
 		37BE2A5E1B96775400BA6C2B /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BE2A5D1B96775400BA6C2B /* SearchResultCell.xib */; };
@@ -23,6 +22,8 @@
 		37BE2A641B96794200BA6C2B /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE2A631B96794200BA6C2B /* FloatRatingView.swift */; };
 		37BE2A661B967AE300BA6C2B /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BE2A651B967AE300BA6C2B /* SearchResultCell.swift */; };
 		37CFC0AF1B965092000FC228 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CFC0AE1B965092000FC228 /* Constants.swift */; };
+		37D277EB1B979C700023ADEF /* UILabel+DownloadDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D277EA1B979C700023ADEF /* UILabel+DownloadDetails.swift */; };
+		37D277ED1B97B05D0023ADEF /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D277EC1B97B05D0023ADEF /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,8 +45,7 @@
 		37BABF491B92C11D00E6E6EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37BABF4B1B92C11D00E6E6EE /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		37BABF4E1B92C11D00E6E6EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		37BABF501B92C11D00E6E6EE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		37BABF531B92C11D00E6E6EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		37BABF501B92C11D00E6E6EE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = FilmTracker/Images.xcassets; sourceTree = "<group>"; };
 		37BABF591B92C11E00E6E6EE /* FilmTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FilmTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		37BABF5E1B92C11E00E6E6EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37BABF5F1B92C11E00E6E6EE /* FilmTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmTrackerTests.swift; sourceTree = "<group>"; };
@@ -56,6 +56,8 @@
 		37BE2A631B96794200BA6C2B /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
 		37BE2A651B967AE300BA6C2B /* SearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		37CFC0AE1B965092000FC228 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		37D277EA1B979C700023ADEF /* UILabel+DownloadDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+DownloadDetails.swift"; sourceTree = "<group>"; };
+		37D277EC1B97B05D0023ADEF /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		370CED191B96FBB200D44FD4 /* Extension Methods */ = {
+			isa = PBXGroup;
+			children = (
+				3750EC761B96B5EF00CACE69 /* UIImageView+DownloadImage.swift */,
+				37D277EA1B979C700023ADEF /* UILabel+DownloadDetails.swift */,
+			);
+			name = "Extension Methods";
+			sourceTree = "<group>";
+		};
 		3750EC781B96D32800CACE69 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -88,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				37BABF461B92C11D00E6E6EE /* FilmTracker */,
+				37BABF501B92C11D00E6E6EE /* Images.xcassets */,
 				37BABF5C1B92C11E00E6E6EE /* FilmTrackerTests */,
 				37BABF451B92C11D00E6E6EE /* Products */,
 			);
@@ -105,16 +117,14 @@
 		37BABF461B92C11D00E6E6EE /* FilmTracker */ = {
 			isa = PBXGroup;
 			children = (
-				37BE2A5C1B96772600BA6C2B /* XIBs */,
 				37BABF491B92C11D00E6E6EE /* AppDelegate.swift */,
 				37BE2A5A1B96701900BA6C2B /* MovieListViewController.swift */,
 				37BABF4B1B92C11D00E6E6EE /* SearchViewController.swift */,
+				37D277EC1B97B05D0023ADEF /* DetailViewController.swift */,
 				37BE2A651B967AE300BA6C2B /* SearchResultCell.swift */,
 				3716AB941B9427AD000F6D60 /* Search.swift */,
-				3750EC761B96B5EF00CACE69 /* UIImageView+DownloadImage.swift */,
-				37BABF4D1B92C11D00E6E6EE /* Main.storyboard */,
-				37BABF501B92C11D00E6E6EE /* Images.xcassets */,
-				37BABF521B92C11D00E6E6EE /* LaunchScreen.xib */,
+				370CED191B96FBB200D44FD4 /* Extension Methods */,
+				37BE2A5C1B96772600BA6C2B /* View */,
 				3750EC781B96D32800CACE69 /* Model */,
 				37BABF471B92C11D00E6E6EE /* Supporting Files */,
 			);
@@ -148,14 +158,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		37BE2A5C1B96772600BA6C2B /* XIBs */ = {
+		37BE2A5C1B96772600BA6C2B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				37BABF4D1B92C11D00E6E6EE /* Main.storyboard */,
 				37BE2A5D1B96775400BA6C2B /* SearchResultCell.xib */,
 				37BE2A5F1B9677AD00BA6C2B /* NoResultCell.xib */,
 				37BE2A611B9677B600BA6C2B /* LoadingCell.xib */,
 			);
-			name = XIBs;
+			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -239,7 +250,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				37BABF4F1B92C11D00E6E6EE /* Main.storyboard in Resources */,
-				37BABF541B92C11D00E6E6EE /* LaunchScreen.xib in Resources */,
 				37BE2A621B9677B600BA6C2B /* LoadingCell.xib in Resources */,
 				37BE2A5E1B96775400BA6C2B /* SearchResultCell.xib in Resources */,
 				37BE2A601B9677AD00BA6C2B /* NoResultCell.xib in Resources */,
@@ -261,8 +271,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37D277ED1B97B05D0023ADEF /* DetailViewController.swift in Sources */,
 				37CFC0AF1B965092000FC228 /* Constants.swift in Sources */,
 				3716AB951B9427AD000F6D60 /* Search.swift in Sources */,
+				37D277EB1B979C700023ADEF /* UILabel+DownloadDetails.swift in Sources */,
 				37BE2A641B96794200BA6C2B /* FloatRatingView.swift in Sources */,
 				37BABF4C1B92C11D00E6E6EE /* SearchViewController.swift in Sources */,
 				37BE2A5B1B96701900BA6C2B /* MovieListViewController.swift in Sources */,
@@ -298,14 +310,6 @@
 				37BABF4E1B92C11D00E6E6EE /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		37BABF521B92C11D00E6E6EE /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				37BABF531B92C11D00E6E6EE /* Base */,
-			);
-			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

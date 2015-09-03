@@ -12,5 +12,3 @@ class Constants {
     
     static let kFTAPIKey = "Your API Key"
 }
-
-

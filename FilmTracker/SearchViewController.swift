@@ -44,7 +44,22 @@ class SearchViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowDetails" {
+            switch search.state {
+            case .Results(let results):
+                let controller = segue.destinationViewController as! DetailViewController
+                let indexPath = sender as! NSIndexPath
+                controller.movie = results[indexPath.row]
+            default:
+                return
+            }
+        }
+    }
 }
+
+// MARK: - UITableViewDataSource
 
 extension SearchViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -78,9 +93,25 @@ extension SearchViewController: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension SearchViewController: UITableViewDelegate {
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        switch search.state {
+        case .NotSearchedYet, .Loading, .NoResults:
+            return nil
+        case .Results:
+            return indexPath
+        }
+    }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        performSegueWithIdentifier("ShowDetails", sender: indexPath)
+    }
 }
+
+// MARK: - UISearchBarDelegate
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {

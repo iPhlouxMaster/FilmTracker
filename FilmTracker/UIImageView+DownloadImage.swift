@@ -10,9 +10,15 @@ import UIKit
 
 extension UIImageView {
     
-    func loadImageWithURL(url: NSURL) -> NSURLSessionDownloadTask {
-        let session = NSURLSession.sharedSession()
+    func loadImageWithMovieObject(movie: Movie, imageSize: Int) -> NSURLSessionDownloadTask {
+        var url = NSURL()
+        if imageSize == 0 {
+            url = movie.getURLWithType(0)
+        } else if imageSize == 1 {
+            url = movie.getURLWithType(1)
+        }
         
+        let session = NSURLSession.sharedSession()
         let downloadTask = session.downloadTaskWithURL( url, completionHandler: { [weak self] url, response, error in
             if error == nil && url != nil {
                 if let data = NSData(contentsOfURL: url) {
@@ -21,6 +27,11 @@ extension UIImageView {
                             // check whether the UIImageView is still existing
                             if let strongSelf = self {
                                 strongSelf.image = image
+                                if imageSize == 0 {
+                                    movie.w92Poster = image
+                                } else if imageSize == 1 {
+                                    movie.w300Poster = image
+                                }
                             }
                         })
                     }

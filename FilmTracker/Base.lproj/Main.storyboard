@@ -37,7 +37,6 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <segments>
                                                 <segment title="Movie"/>
-                                                <segment title="TV"/>
                                                 <segment title="People"/>
                                             </segments>
                                             <connections>
@@ -77,11 +76,66 @@
                         <outlet property="searchBar" destination="Ws6-CC-WWu" id="HNx-ee-nFg"/>
                         <outlet property="segmentedControl" destination="t86-nW-DEd" id="wdA-94-GuC"/>
                         <outlet property="tableView" destination="y80-Nb-wBq" id="Bmq-o9-0oY"/>
+                        <segue destination="Mcs-ej-HET" kind="presentation" identifier="ShowDetails" id="1ZN-C7-Qvk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sgN-X4-tMz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="471" y="251"/>
+        </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="VbL-Sz-dwb">
+            <objects>
+                <viewController id="Mcs-ej-HET" customClass="DetailViewController" customModule="FilmTracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fsb-JQ-tD6"/>
+                        <viewControllerLayoutGuide type="bottom" id="Cyb-MD-z9r"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="AX3-S2-XNL">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aaR-yH-QME">
+                                <rect key="frame" x="16" y="20" width="568" height="560"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jAl-wW-UD2">
+                                        <rect key="frame" x="184" y="26" width="200" height="300"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="300" id="fQt-Gn-LES"/>
+                                            <constraint firstAttribute="width" constant="200" id="rSC-N9-df2"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="imdbID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GJS-Y6-1S1">
+                                        <rect key="frame" x="256" y="394" width="56" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="jAl-wW-UD2" secondAttribute="centerX" id="Fwc-bz-5Id"/>
+                                    <constraint firstAttribute="centerX" secondItem="GJS-Y6-1S1" secondAttribute="centerX" id="eWW-Ur-abG"/>
+                                    <constraint firstItem="jAl-wW-UD2" firstAttribute="top" secondItem="aaR-yH-QME" secondAttribute="top" constant="26" id="efH-MP-2D0"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="aaR-yH-QME" secondAttribute="trailing" constant="16" id="EHQ-ou-tYT"/>
+                            <constraint firstItem="aaR-yH-QME" firstAttribute="leading" secondItem="AX3-S2-XNL" secondAttribute="leading" constant="16" id="Otz-cN-szH"/>
+                            <constraint firstItem="Cyb-MD-z9r" firstAttribute="top" secondItem="aaR-yH-QME" secondAttribute="bottom" constant="20" id="Pnk-LY-knI"/>
+                            <constraint firstItem="aaR-yH-QME" firstAttribute="top" secondItem="fsb-JQ-tD6" secondAttribute="bottom" id="X4i-h4-MBc"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imdbIDLabel" destination="GJS-Y6-1S1" id="jhZ-2m-xOh"/>
+                        <outlet property="posterImageView" destination="jAl-wW-UD2" id="a7i-6B-AT9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Wd-59-iI0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1157" y="251"/>
         </scene>
     </scenes>
 </document>
