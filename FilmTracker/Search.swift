@@ -118,7 +118,7 @@ class Search {
         var movie = Movie()
         movie.title = dictionary["title"] as! String
         movie.id = dictionary["id"] as! Int
-        movie.type = 0
+//        movie.type = 0
         movie.tmdbRating = dictionary["vote_average"] as! Double
         if let releaseDate = dictionary["release_date"] as? String {
             movie.releaseDate = releaseDate
@@ -152,4 +152,5 @@ class Search {
         let url = NSURL(string: urlString)
         return url!
     }
+    
 }

@@ -12,7 +12,7 @@ class Movie {
     
     var title = ""
     var id = -1
-    var type = -1
+    // var type = -1
     var releaseDate = ""
     var posterAddress = ""
     var directors = [String]()

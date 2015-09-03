@@ -17,6 +17,10 @@ extension UILabel {
                 if let data = NSData(contentsOfURL: url) {
                     let search = Search()
                     if let dictionary = search.parseJSON(data) {
+                        if let imdb_id = dictionary["imdb_id"] as? String {
+                            movie.imdbID = imdb_id
+                        }
+                        
                         if let genres = dictionary["genres"] as? [AnyObject] {
                             var genresArray = [String]()
                             for genre in genres {
@@ -25,7 +29,6 @@ extension UILabel {
                                 }
                             }
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                // check whether the UIImageView is still existing
                                 if let strongSelf = self {
                                     if genresArray.isEmpty {
                                         strongSelf.text = "Not Available"
@@ -63,7 +66,6 @@ extension UILabel {
                                 }
                             }
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                // check whether the UIImageView is still existing
                                 if let strongSelf = self {
                                     if directors.isEmpty {
                                         strongSelf.text = "Not Available"
