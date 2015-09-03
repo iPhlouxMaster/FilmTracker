@@ -10,5 +10,5 @@ import Foundation
 
 class Constants {
     
-    static let kFTAPIKey = "***REMOVED***"
+    static let kFTAPIKey = "Your API Key"
 }
