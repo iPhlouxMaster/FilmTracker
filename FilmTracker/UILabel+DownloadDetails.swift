@@ -10,7 +10,7 @@ import UIKit
 
 extension UILabel {
     func loadDetailsWithMovieObject(movie: Movie) -> NSURLSessionDownloadTask {
-        let url = movie.getURLWithType(2)
+        let url = movie.getURLWithType(Movie.URLType.movieDetails)
         let session = NSURLSession.sharedSession()
         let downloadTask = session.downloadTaskWithURL( url, completionHandler: { [weak self] url, response, error in
             if error == nil && url != nil {
@@ -62,8 +62,8 @@ extension UILabel {
         return downloadTask
     }
     
-    func loadCastsWithMovieObject(movie: Movie) -> NSURLSessionDownloadTask {
-        let url = movie.getURLWithType(3)
+    func loadCreditsWithMovieObject(movie: Movie) -> NSURLSessionDownloadTask {
+        let url = movie.getURLWithType(Movie.URLType.movieCredits)
         let session = NSURLSession.sharedSession()
         let downloadTask = session.downloadTaskWithURL( url, completionHandler: { [weak self] url, response, error in
             if error == nil && url != nil {

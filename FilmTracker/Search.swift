@@ -118,7 +118,7 @@ class Search {
         movie.title = dictionary["title"] as! String
         movie.id = dictionary["id"] as! Int
 //        movie.type = 0
-        movie.tmdbRating = dictionary["vote_average"] as! Double
+        movie.tmdbRating = dictionary["vote_average"] as! Float
         if let releaseDate = dictionary["release_date"] as? String {
             movie.releaseDate = releaseDate
         }

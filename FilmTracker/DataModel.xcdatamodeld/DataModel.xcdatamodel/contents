@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Entity" syncable="YES">
+        <attribute name="comments" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="directors" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="genres" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="id" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="imdbID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastUpdateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="overview" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="posterAddress" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="productionCountries" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="releaseDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="title" attributeType="String" syncable="YES"/>
+        <attribute name="tmdbRating" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="watchedDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="watchStatus" attributeType="Transformable" syncable="YES"/>
+        <attribute name="yourRating" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Entity" positionX="-63" positionY="-18" width="128" height="270"/>
+    </elements>
+</model>

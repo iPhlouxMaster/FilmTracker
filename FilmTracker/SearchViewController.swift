@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import CoreData
 
 class SearchViewController: UIViewController {
     
+    var managedObjectContext: NSManagedObjectContext!
     let search = Search()
     
     struct TableViewCellIdentifiers {
@@ -52,6 +54,7 @@ class SearchViewController: UIViewController {
                 let controller = segue.destinationViewController as! DetailViewController
                 let indexPath = sender as! NSIndexPath
                 controller.movie = results[indexPath.row]
+                controller.managedObjectContext = managedObjectContext
             default:
                 return
             }

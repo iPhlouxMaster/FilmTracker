@@ -7,11 +7,15 @@
 //
 
 import UIKit
+import CoreData
 
 class DetailViewController: UIViewController {
     
-    var movie: Movie?
+    var managedObjectContext: NSManagedObjectContext!
+    var movie: Movie!
     var imageDownloadTask: NSURLSessionDownloadTask?
+    
+    //MARK: - IBOutlets
     
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -30,6 +34,8 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var showIMDBPageButton: UIButton!
     @IBOutlet weak var editTitleButton: UIButton!
     
+    //MARK: - IBActions
+    
     @IBAction func showIMDBButtonPressed(sender: UIButton) {
         if !movie!.imdbID.isEmpty {
             let url = NSURL(string: String(format: "http://www.imdb.com/title/%@", movie!.imdbID))
@@ -37,17 +43,19 @@ class DetailViewController: UIViewController {
         }
     }
     
-    @IBAction func editTitleButtonPressed(sender: UIButton) {
-        
-    }
-
     @IBAction func saveTitleButtonPressed(sender: UIButton) {
-        
+        showWatchStatusMenu()
+    }
+    
+    @IBAction func editTitleButtonPressed(sender: UIButton) {
+        performSegueWithIdentifier("EditTitle", sender: nil)
     }
     
     @IBAction func closeButtonPressed(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    // MARK: - Funcs
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -71,7 +79,7 @@ class DetailViewController: UIViewController {
         if let image = movie!.w300Poster {
             posterImageView.image = image
         } else {
-            imageDownloadTask = posterImageView.loadImageWithMovieObject(movie!, imageSize: 1)
+            imageDownloadTask = posterImageView.loadImageWithMovieObject(movie!, imageSize: Movie.ImageSize.w300)
         }
         
         titleLabel.text = movie!.title
@@ -117,29 +125,69 @@ class DetailViewController: UIViewController {
     func configureButtons() {
         closeButton.backgroundColor = UIColor.clearColor()
         closeButton.layer.borderColor = UIColor.whiteColor().CGColor
-        closeButton.layer.borderWidth = 1
+        closeButton.layer.borderWidth = 0.7
         closeButton.layer.cornerRadius = 5
         
         saveTitleButton.backgroundColor = UIColor.clearColor()
         saveTitleButton.layer.borderColor = UIColor.whiteColor().CGColor
-        saveTitleButton.layer.borderWidth = 1
+        saveTitleButton.layer.borderWidth = 0.7
         saveTitleButton.layer.cornerRadius = 5
         
         editTitleButton.backgroundColor = UIColor.clearColor()
         editTitleButton.layer.borderColor = UIColor.whiteColor().CGColor
-        editTitleButton.layer.borderWidth = 1
+        editTitleButton.layer.borderWidth = 0.7
         editTitleButton.layer.cornerRadius = 5
         
         showIMDBPageButton.backgroundColor = UIColor.clearColor()
         showIMDBPageButton.layer.borderColor = UIColor.whiteColor().CGColor
-        showIMDBPageButton.layer.borderWidth = 1
+        showIMDBPageButton.layer.borderWidth = 0.7
         showIMDBPageButton.layer.cornerRadius = 5
         
         if movie!.imdbID.isEmpty {
             showIMDBPageButton.hidden = true
         }
     }
+    
+    func showWatchStatusMenu() {
+        let alertController = UIAlertController(title: "Please Select Your Watch Status:", message: nil, preferredStyle: .ActionSheet)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        let selectWantToWatchAction = UIAlertAction(title: "I wanna watch", style: .Default, handler: {
+            _ in
+            self.movie!.watchStatus = .wantToWatch
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
+        alertController.addAction(selectWantToWatchAction)
+        
+        let selectWatchingAction = UIAlertAction(title: "I'm watching", style: .Default, handler: {
+            _ in
+            self.movie!.watchStatus = .watching
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
+        alertController.addAction(selectWatchingAction)
+        
+        let selectWatchedAction = UIAlertAction(title: "I've watched", style: .Default, handler: {
+            _ in
+            self.movie!.watchStatus = .watched
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
+        alertController.addAction(selectWatchedAction)
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "EditTitle" {
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let controller = navigationController.viewControllers[0] as! EditTitleViewController
+            controller.movie = movie
+        }
+    }
 }
+
+//MARK: - FloatRatingViewDelegate
 
 extension DetailViewController: FloatRatingViewDelegate {
     func floatRatingView(ratingView: FloatRatingView, isUpdating rating:Float) {
@@ -148,9 +196,11 @@ extension DetailViewController: FloatRatingViewDelegate {
     
     func floatRatingView(ratingView: FloatRatingView, didUpdate rating: Float) {
         yourRatingLabel.text = String(format: "%.1f/10.0", rating)
-        movie!.yourRating = Double(rating)
+        movie!.yourRating = rating
     }
 }
+
+// MARK: - UIViewControllerTransitioningDelegate
 
 extension DetailViewController: UIViewControllerTransitioningDelegate {
     func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController!, sourceViewController source: UIViewController) -> UIPresentationController? {
