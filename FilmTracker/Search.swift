@@ -85,7 +85,6 @@ class Search {
                 for resultDict in array as! [AnyObject] {
                     var movie: Movie?
                     movie = parseMovie(resultDict as! [String: AnyObject])
-                    
                     if let searchedMovie = movie {
                         movies.append(searchedMovie)
                     }

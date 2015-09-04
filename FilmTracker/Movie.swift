@@ -17,7 +17,9 @@ class Movie {
     var posterAddress = ""
     var directors = [String]()
     var genres = [String]()
+    var productionCountries = [String]()
     var tmdbRating = -0.0
+    var yourRating = 5.0
     var overview = ""
     var w92Poster: UIImage?
     var w300Poster: UIImage?

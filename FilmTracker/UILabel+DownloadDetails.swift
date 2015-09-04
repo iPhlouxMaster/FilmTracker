@@ -9,7 +9,7 @@
 import UIKit
 
 extension UILabel {
-    func loadGenresWithMovieObject(movie: Movie) -> NSURLSessionDownloadTask {
+    func loadDetailsWithMovieObject(movie: Movie) -> NSURLSessionDownloadTask {
         let url = movie.getURLWithType(2)
         let session = NSURLSession.sharedSession()
         let downloadTask = session.downloadTaskWithURL( url, completionHandler: { [weak self] url, response, error in
@@ -21,6 +21,25 @@ extension UILabel {
                             movie.imdbID = imdb_id
                         }
                         
+                        if let productionCountries = dictionary["production_countries"] as? [AnyObject] {
+                            var countries = [String]()
+                            for country in productionCountries {
+                                if let countryName = country["iso_3166_1"] as? String {
+                                    countries.append(countryName)
+                                }
+                            }
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                if let strongSelf = self {
+                                    if countries.isEmpty {
+                                        strongSelf.text = "Not Available"
+                                    } else {
+                                        strongSelf.text = ", ".join(countries)
+                                        movie.productionCountries = countries
+                                    }
+                                }
+                            })
+                        }
+                        
                         if let genres = dictionary["genres"] as? [AnyObject] {
                             var genresArray = [String]()
                             for genre in genres {
@@ -28,17 +47,7 @@ extension UILabel {
                                     genresArray.append(genreName)
                                 }
                             }
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                if let strongSelf = self {
-                                    if genresArray.isEmpty {
-                                        strongSelf.text = "Not Available"
-                                    } else {
-                                        strongSelf.text = ", ".join(genresArray)
-                                        movie.genres = genresArray
-                                    }
-                                }
-                            })
-                            
+                            movie.genres = genresArray
                         }
                     }
                 }

@@ -12,16 +12,18 @@ class DetailViewController: UIViewController {
     
     var movie: Movie?
     var imageDownloadTask: NSURLSessionDownloadTask?
-    var genresDownloadTask: NSURLSessionDownloadTask?
     
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var directorLabel: UILabel!
+    @IBOutlet weak var productionCountriesLabel: UILabel!
     @IBOutlet weak var releaseDateLabel: UILabel!
     @IBOutlet weak var genresLabel: UILabel!
-    @IBOutlet weak var floatRatingView: FloatRatingView!
+    @IBOutlet weak var yourRatingLabel: UILabel!
+    @IBOutlet weak var tmdbRatingLabel: UILabel!
     @IBOutlet weak var overViewTextView: UITextView!
-    
+    @IBOutlet weak var tmdbRatingView: FloatRatingView!
+    @IBOutlet weak var yourRatingView: FloatRatingView!
     @IBAction func saveToListButtonPressed(sender: UIButton) {
         
     }
@@ -30,25 +32,33 @@ class DetailViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        floatRatingView.delegate = self
+        tmdbRatingView.delegate = self
         
-        floatRatingView.emptyImage = UIImage(named: "StarEmpty")
-        floatRatingView.fullImage = UIImage(named: "StarFull")
+        tmdbRatingView.emptyImage = UIImage(named: "StarEmpty")
+        tmdbRatingView.fullImage = UIImage(named: "StarFull")
+        tmdbRatingView.contentMode = UIViewContentMode.ScaleAspectFit
+        tmdbRatingView.maxRating = 10
+        tmdbRatingView.minRating = 1
+        tmdbRatingView.editable = false
+        tmdbRatingView.floatRatings = true
+        tmdbRatingLabel.text = String(format: "%.1f/10.0", movie!.tmdbRating)
         
-        floatRatingView.delegate = self
-        floatRatingView.contentMode = UIViewContentMode.ScaleAspectFit
-        floatRatingView.maxRating = 10
-        floatRatingView.minRating = 1
-        floatRatingView.editable = false
-        floatRatingView.halfRatings = true
-        floatRatingView.floatRatings = true
+        yourRatingView.delegate = self
+        
+        yourRatingView.emptyImage = UIImage(named: "StarEmpty")
+        yourRatingView.fullImage = UIImage(named: "StarFull")
+        yourRatingView.contentMode = UIViewContentMode.ScaleAspectFit
+        yourRatingView.maxRating = 10
+        yourRatingView.minRating = 1
+        yourRatingView.editable = true
+        yourRatingView.floatRatings = true
+        yourRatingLabel.text = String(format: "%.1f/10.0", movie!.yourRating)
         
         configureView()
     }
     
     deinit {
         imageDownloadTask?.cancel()
-        genresDownloadTask?.cancel()
     }
     
     func configureView() {
@@ -59,14 +69,17 @@ class DetailViewController: UIViewController {
         }
         
         titleLabel.text = movie!.title
+        
         directorLabel.text = ", ".join(movie!.directors)
+        productionCountriesLabel.text = ", ".join(movie!.productionCountries)
         releaseDateLabel.text = movie!.releaseDate
-        floatRatingView.rating = Float(movie!.tmdbRating)
+        tmdbRatingView.rating = Float(movie!.tmdbRating)
+        yourRatingView.rating = Float(movie!.yourRating)
         
         if !movie!.genres.isEmpty {
             genresLabel.text = ", ".join(movie!.genres)
         } else {
-            genresDownloadTask = genresLabel.loadGenresWithMovieObject(movie!)
+            genresLabel.text = "Not Available"
         }
         
         overViewTextView.text = movie!.overview
@@ -76,10 +89,11 @@ class DetailViewController: UIViewController {
 
 extension DetailViewController: FloatRatingViewDelegate {
     func floatRatingView(ratingView: FloatRatingView, isUpdating rating:Float) {
-        
+        yourRatingLabel.text = String(format: "%.1f/10.0", rating)
     }
     
     func floatRatingView(ratingView: FloatRatingView, didUpdate rating: Float) {
-        
+        yourRatingLabel.text = String(format: "%.1f/10.0", rating)
+        movie!.yourRating = Double(rating)
     }
 }

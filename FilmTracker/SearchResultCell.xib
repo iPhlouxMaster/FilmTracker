@@ -26,21 +26,27 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2000-12-25" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VUP-LW-fEM">
-                        <rect key="frame" x="171" y="89" width="60" height="14"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GB, US" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VUP-LW-fEM">
+                        <rect key="frame" x="171" y="89" width="39" height="13.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Release:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAW-hY-rvp">
-                        <rect key="frame" x="104" y="89" width="45" height="14"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Countries:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAW-hY-rvp">
+                        <rect key="frame" x="104" y="89" width="53" height="14"/>
                         <constraints>
+                            <constraint firstAttribute="width" constant="53" id="3fE-rJ-gmV"/>
                             <constraint firstAttribute="width" constant="44.5" id="FGb-TV-C2x"/>
                             <constraint firstAttribute="height" constant="13.5" id="KoM-NC-GmJ"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="FGb-TV-C2x"/>
+                            </mask>
+                        </variation>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TMDB:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FG0-CW-kKQ">
                         <rect key="frame" x="104" y="111" width="36" height="14"/>
@@ -52,7 +58,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7q6-eH-JWd">
-                        <rect key="frame" x="171" y="67" width="5" height="14"/>
+                        <rect key="frame" x="171" y="67" width="5" height="13.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -79,61 +85,31 @@
                 <constraints>
                     <constraint firstItem="GV3-AM-GaY" firstAttribute="top" secondItem="udj-ki-dpU" secondAttribute="topMargin" constant="4" id="0kc-9s-2dX"/>
                     <constraint firstItem="GV3-AM-GaY" firstAttribute="leading" secondItem="rwL-5p-pjh" secondAttribute="trailing" constant="12" id="0rg-1M-2ee"/>
-                    <constraint firstItem="7q6-eH-JWd" firstAttribute="baseline" secondItem="Wjs-tp-zwK" secondAttribute="baseline" id="1oe-42-yhK"/>
-                    <constraint firstItem="VUP-LW-fEM" firstAttribute="leading" secondItem="dAW-hY-rvp" secondAttribute="trailing" constant="22" id="3uE-ts-F5Y"/>
                     <constraint firstItem="Wjs-tp-zwK" firstAttribute="leading" secondItem="rwL-5p-pjh" secondAttribute="trailing" constant="12" id="49d-pi-2hG"/>
                     <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="VUP-LW-fEM" secondAttribute="trailing" constant="8" id="4YT-dn-Mim"/>
                     <constraint firstItem="7q6-eH-JWd" firstAttribute="leading" secondItem="Wjs-tp-zwK" secondAttribute="trailing" constant="22" id="5xP-W5-vtF"/>
-                    <constraint firstItem="mFS-8S-OPg" firstAttribute="leading" secondItem="FG0-CW-kKQ" secondAttribute="trailing" constant="30" id="7J3-we-2Os"/>
                     <constraint firstItem="VUP-LW-fEM" firstAttribute="baseline" secondItem="dAW-hY-rvp" secondAttribute="baseline" id="925-Q8-5nK"/>
                     <constraint firstItem="dAW-hY-rvp" firstAttribute="top" secondItem="Wjs-tp-zwK" secondAttribute="bottom" constant="8.5" id="9Mf-Wc-LpY"/>
-                    <constraint firstItem="VUP-LW-fEM" firstAttribute="baseline" secondItem="dAW-hY-rvp" secondAttribute="baseline" id="Ccc-HQ-8VQ"/>
-                    <constraint firstItem="7q6-eH-JWd" firstAttribute="leading" secondItem="Wjs-tp-zwK" secondAttribute="trailing" constant="22" id="DCQ-jt-P7G"/>
                     <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="GV3-AM-GaY" secondAttribute="trailing" constant="8" id="DDg-DJ-mUc"/>
                     <constraint firstItem="FG0-CW-kKQ" firstAttribute="top" secondItem="dAW-hY-rvp" secondAttribute="bottom" constant="8.5" id="HLB-VC-WKA"/>
-                    <constraint firstItem="FG0-CW-kKQ" firstAttribute="top" secondItem="dAW-hY-rvp" secondAttribute="bottom" constant="8.5" id="NjP-iY-js2"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="FG0-CW-kKQ" secondAttribute="bottom" constant="6.5" id="OHq-0k-MOk"/>
                     <constraint firstItem="rwL-5p-pjh" firstAttribute="leading" secondItem="udj-ki-dpU" secondAttribute="leadingMargin" constant="4" id="Orl-2x-TYf"/>
                     <constraint firstItem="rwL-5p-pjh" firstAttribute="top" secondItem="udj-ki-dpU" secondAttribute="topMargin" constant="2" id="Rm3-E7-Rlw"/>
-                    <constraint firstItem="dAW-hY-rvp" firstAttribute="top" secondItem="Wjs-tp-zwK" secondAttribute="bottom" constant="8" id="RwZ-bU-Kor"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="mFS-8S-OPg" secondAttribute="bottom" constant="1.5" id="UuM-L5-h4S"/>
-                    <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="mFS-8S-OPg" secondAttribute="trailing" constant="8" id="VS3-AF-ZPi"/>
+                    <constraint firstItem="VUP-LW-fEM" firstAttribute="leading" secondItem="dAW-hY-rvp" secondAttribute="trailing" constant="14" id="Unu-f6-4qM"/>
                     <constraint firstItem="FG0-CW-kKQ" firstAttribute="leading" secondItem="rwL-5p-pjh" secondAttribute="trailing" constant="12" id="Xax-Em-RgZ"/>
                     <constraint firstItem="7q6-eH-JWd" firstAttribute="baseline" secondItem="Wjs-tp-zwK" secondAttribute="baseline" id="ZQe-EE-UGk"/>
                     <constraint firstAttribute="bottomMargin" secondItem="FG0-CW-kKQ" secondAttribute="bottom" constant="6.5" id="ax5-Ja-xZJ"/>
-                    <constraint firstItem="VUP-LW-fEM" firstAttribute="leading" secondItem="dAW-hY-rvp" secondAttribute="trailing" constant="22" id="cUs-rp-Vgy"/>
-                    <constraint firstItem="Wjs-tp-zwK" firstAttribute="leading" secondItem="rwL-5p-pjh" secondAttribute="trailing" constant="12" id="jJI-vR-e9O"/>
                     <constraint firstAttribute="bottomMargin" secondItem="mFS-8S-OPg" secondAttribute="bottom" constant="1.5" id="kZD-lC-hKw"/>
                     <constraint firstItem="mFS-8S-OPg" firstAttribute="leading" secondItem="FG0-CW-kKQ" secondAttribute="trailing" constant="30" id="m2d-lf-cY1"/>
                     <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="7q6-eH-JWd" secondAttribute="trailing" constant="8" id="mct-ci-Unm"/>
-                    <constraint firstItem="FG0-CW-kKQ" firstAttribute="leading" secondItem="rwL-5p-pjh" secondAttribute="trailing" constant="12" id="nKS-6j-cC6"/>
-                    <constraint firstItem="dAW-hY-rvp" firstAttribute="leading" secondItem="rwL-5p-pjh" secondAttribute="trailing" constant="12" id="sfH-ES-Kuh"/>
                     <constraint firstItem="dAW-hY-rvp" firstAttribute="leading" secondItem="rwL-5p-pjh" secondAttribute="trailing" constant="12" id="v6B-YB-pzc"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="jJI-vR-e9O"/>
-                        <exclude reference="RwZ-bU-Kor"/>
-                        <exclude reference="sfH-ES-Kuh"/>
-                        <exclude reference="NjP-iY-js2"/>
-                        <exclude reference="OHq-0k-MOk"/>
-                        <exclude reference="nKS-6j-cC6"/>
-                        <exclude reference="1oe-42-yhK"/>
-                        <exclude reference="DCQ-jt-P7G"/>
-                        <exclude reference="3uE-ts-F5Y"/>
-                        <exclude reference="Ccc-HQ-8VQ"/>
-                        <exclude reference="7J3-we-2Os"/>
-                        <exclude reference="UuM-L5-h4S"/>
-                        <exclude reference="VS3-AF-ZPi"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="directorLabel" destination="7q6-eH-JWd" id="Sbl-6O-Avz"/>
                 <outlet property="floatRatingView" destination="mFS-8S-OPg" id="Sdg-kh-aqY"/>
                 <outlet property="movieTitleLabel" destination="GV3-AM-GaY" id="Lhk-bb-di1"/>
                 <outlet property="posterImageView" destination="rwL-5p-pjh" id="SuT-Hu-k6p"/>
-                <outlet property="releaseDateLabel" destination="VUP-LW-fEM" id="Dzb-1K-Wer"/>
+                <outlet property="productionCountriesLabel" destination="VUP-LW-fEM" id="kWQ-XJ-udx"/>
             </connections>
             <point key="canvasLocation" x="256" y="341"/>
         </tableViewCell>

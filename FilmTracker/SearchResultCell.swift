@@ -12,9 +12,10 @@ class SearchResultCell: UITableViewCell {
 
     var imageDownloadTask: NSURLSessionDownloadTask?
     var directorDownloadTask: NSURLSessionDownloadTask?
+    var productionCountriesDownloadTask: NSURLSessionDownloadTask?
     
     @IBOutlet weak var movieTitleLabel: UILabel!
-    @IBOutlet weak var releaseDateLabel: UILabel!
+    @IBOutlet weak var productionCountriesLabel: UILabel!
     @IBOutlet weak var directorLabel: UILabel!
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var floatRatingView: FloatRatingView!
@@ -54,10 +55,10 @@ class SearchResultCell: UITableViewCell {
             directorDownloadTask = directorLabel.loadCastsWithMovieObject(movie)
         }
         
-        if !movie.releaseDate.isEmpty {
-            releaseDateLabel.text = movie.releaseDate
+        if !movie.productionCountries.isEmpty {
+            productionCountriesLabel.text = ", ".join(movie.productionCountries)
         } else {
-            releaseDateLabel.text = "Not Available"
+            productionCountriesDownloadTask = productionCountriesLabel.loadDetailsWithMovieObject(movie)
         }
         
         if let image = movie.w92Poster {
@@ -73,8 +74,9 @@ class SearchResultCell: UITableViewCell {
         super.prepareForReuse()
         imageDownloadTask?.cancel()
         directorDownloadTask?.cancel()
+        productionCountriesDownloadTask?.cancel()
         movieTitleLabel.text = nil
-        releaseDateLabel.text = nil
+        productionCountriesLabel.text = nil
         posterImageView.image = nil
         floatRatingView.delegate = nil
     }
