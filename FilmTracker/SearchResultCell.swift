@@ -66,6 +66,10 @@ class SearchResultCell: UITableViewCell {
         } else {
             if !movie.posterAddress.isEmpty {
                 imageDownloadTask = posterImageView.loadImageWithMovieObject(movie, imageSize: 0)
+            } else {
+                posterImageView.image = UIImage(named: "no-poster.jpeg")
+                movie.w300Poster = UIImage(named: "no-poster.jpeg")
+                movie.w92Poster = UIImage(named: "no-poster.jpeg")
             }
         }
     }

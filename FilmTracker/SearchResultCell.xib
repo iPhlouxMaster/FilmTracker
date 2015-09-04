@@ -26,8 +26,8 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GB, US" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VUP-LW-fEM">
-                        <rect key="frame" x="171" y="89" width="39" height="13.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VUP-LW-fEM">
+                        <rect key="frame" x="172" y="89" width="5" height="13.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -58,13 +58,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7q6-eH-JWd">
-                        <rect key="frame" x="171" y="67" width="5" height="13.5"/>
+                        <rect key="frame" x="172" y="67" width="5" height="13.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Director:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wjs-tp-zwK">
-                        <rect key="frame" x="104" y="67" width="45" height="14"/>
+                        <rect key="frame" x="105" y="67" width="45" height="14"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="13.5" id="2h7-Ug-Hwk"/>
                             <constraint firstAttribute="width" constant="44.5" id="EkX-jY-p6J"/>
@@ -73,7 +73,7 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mFS-8S-OPg" customClass="FloatRatingView" customModule="FilmTracker" customModuleProvider="target">
+                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mFS-8S-OPg" customClass="FloatRatingView" customModule="FilmTracker" customModuleProvider="target">
                         <rect key="frame" x="170" y="110" width="133" height="20"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -85,7 +85,7 @@
                 <constraints>
                     <constraint firstItem="GV3-AM-GaY" firstAttribute="top" secondItem="udj-ki-dpU" secondAttribute="topMargin" constant="4" id="0kc-9s-2dX"/>
                     <constraint firstItem="GV3-AM-GaY" firstAttribute="leading" secondItem="rwL-5p-pjh" secondAttribute="trailing" constant="12" id="0rg-1M-2ee"/>
-                    <constraint firstItem="Wjs-tp-zwK" firstAttribute="leading" secondItem="rwL-5p-pjh" secondAttribute="trailing" constant="12" id="49d-pi-2hG"/>
+                    <constraint firstItem="Wjs-tp-zwK" firstAttribute="leading" secondItem="rwL-5p-pjh" secondAttribute="trailing" constant="13" id="49d-pi-2hG"/>
                     <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="VUP-LW-fEM" secondAttribute="trailing" constant="8" id="4YT-dn-Mim"/>
                     <constraint firstItem="7q6-eH-JWd" firstAttribute="leading" secondItem="Wjs-tp-zwK" secondAttribute="trailing" constant="22" id="5xP-W5-vtF"/>
                     <constraint firstItem="VUP-LW-fEM" firstAttribute="baseline" secondItem="dAW-hY-rvp" secondAttribute="baseline" id="925-Q8-5nK"/>
@@ -94,7 +94,7 @@
                     <constraint firstItem="FG0-CW-kKQ" firstAttribute="top" secondItem="dAW-hY-rvp" secondAttribute="bottom" constant="8.5" id="HLB-VC-WKA"/>
                     <constraint firstItem="rwL-5p-pjh" firstAttribute="leading" secondItem="udj-ki-dpU" secondAttribute="leadingMargin" constant="4" id="Orl-2x-TYf"/>
                     <constraint firstItem="rwL-5p-pjh" firstAttribute="top" secondItem="udj-ki-dpU" secondAttribute="topMargin" constant="2" id="Rm3-E7-Rlw"/>
-                    <constraint firstItem="VUP-LW-fEM" firstAttribute="leading" secondItem="dAW-hY-rvp" secondAttribute="trailing" constant="14" id="Unu-f6-4qM"/>
+                    <constraint firstItem="VUP-LW-fEM" firstAttribute="leading" secondItem="dAW-hY-rvp" secondAttribute="trailing" constant="15" id="Unu-f6-4qM"/>
                     <constraint firstItem="FG0-CW-kKQ" firstAttribute="leading" secondItem="rwL-5p-pjh" secondAttribute="trailing" constant="12" id="Xax-Em-RgZ"/>
                     <constraint firstItem="7q6-eH-JWd" firstAttribute="baseline" secondItem="Wjs-tp-zwK" secondAttribute="baseline" id="ZQe-EE-UGk"/>
                     <constraint firstAttribute="bottomMargin" secondItem="FG0-CW-kKQ" secondAttribute="bottom" constant="6.5" id="ax5-Ja-xZJ"/>
