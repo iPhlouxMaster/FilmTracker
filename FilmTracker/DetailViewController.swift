@@ -195,7 +195,7 @@ class DetailViewController: UIViewController {
         if segue.identifier == "EditTitle" {
             let navigationController = segue.destinationViewController as! UINavigationController
             let controller = navigationController.viewControllers[0] as! EditTitleViewController
-            controller.movieToBeEdit = movie
+            controller.movieToEdit = movie
             controller.delegate = self
         }
     }
