@@ -31,14 +31,20 @@ class DetailViewController: UIViewController {
     
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var saveTitleButton: UIButton!
+    @IBOutlet weak var showTMDBPageButton: UIButton!
     @IBOutlet weak var showIMDBPageButton: UIButton!
     @IBOutlet weak var editTitleButton: UIButton!
     
     //MARK: - IBActions
     
+    @IBAction func showTMDBButtonPressed(sender: UIButton) {
+        let url = NSURL(string: String(format: "https://www.themoviedb.org/movie/%d", movie.id))
+        UIApplication.sharedApplication().openURL(url!)
+    }
+    
     @IBAction func showIMDBButtonPressed(sender: UIButton) {
-        if !movie!.imdbID.isEmpty {
-            let url = NSURL(string: String(format: "http://www.imdb.com/title/%@", movie!.imdbID))
+        if !movie.imdbID.isEmpty {
+            let url = NSURL(string: String(format: "http://www.imdb.com/title/%@", movie.imdbID))
             UIApplication.sharedApplication().openURL(url!)
         }
     }
@@ -76,27 +82,27 @@ class DetailViewController: UIViewController {
     }
     
     func configureView() {
-        if let image = movie!.w300Poster {
+        if let image = movie.w300Poster {
             posterImageView.image = image
         } else {
-            imageDownloadTask = posterImageView.loadImageWithMovieObject(movie!, imageSize: Movie.ImageSize.w300)
+            imageDownloadTask = posterImageView.loadImageWithMovieObject(movie, imageSize: Movie.ImageSize.w300)
         }
         
-        titleLabel.text = movie!.title
-        directorLabel.text = ", ".join(movie!.directors)
-        productionCountriesLabel.text = ", ".join(movie!.productionCountries)
-        releaseDateLabel.text = movie!.releaseDate
-        tmdbRatingView.rating = Float(movie!.tmdbRating)
-        yourRatingView.rating = Float(movie!.yourRating)
+        titleLabel.text = movie.title
+        directorLabel.text = ", ".join(movie.directors)
+        productionCountriesLabel.text = ", ".join(movie.productionCountries)
+        releaseDateLabel.text = movie.releaseDate
+        tmdbRatingView.rating = Float(movie.tmdbRating)
+        yourRatingView.rating = Float(movie.yourRating)
         
-        if !movie!.genres.isEmpty {
-            genresLabel.text = ", ".join(movie!.genres)
+        if !movie.genres.isEmpty {
+            genresLabel.text = ", ".join(movie.genres)
         } else {
             genresLabel.text = "Not Available"
         }
         
         overviewTextView.scrollRangeToVisible(NSMakeRange(0, 1))
-        overviewTextView.text = movie!.overview
+        overviewTextView.text = movie.overview
         
     }
     
@@ -109,7 +115,7 @@ class DetailViewController: UIViewController {
         tmdbRatingView.minRating = 1
         tmdbRatingView.editable = false
         tmdbRatingView.floatRatings = true
-        tmdbRatingLabel.text = String(format: "%.1f/10.0", movie!.tmdbRating)
+        tmdbRatingLabel.text = String(format: "%.1f/10.0", movie.tmdbRating)
         
         yourRatingView.delegate = self
         yourRatingView.emptyImage = UIImage(named: "StarEmpty")
@@ -119,7 +125,7 @@ class DetailViewController: UIViewController {
         yourRatingView.minRating = 1
         yourRatingView.editable = true
         yourRatingView.floatRatings = true
-        yourRatingLabel.text = String(format: "%.1f/10.0", movie!.yourRating)
+        yourRatingLabel.text = String(format: "%.1f/10.0", movie.yourRating)
     }
     
     func configureButtons() {
@@ -138,14 +144,21 @@ class DetailViewController: UIViewController {
         editTitleButton.layer.borderWidth = 0.7
         editTitleButton.layer.cornerRadius = 5
         
-        showIMDBPageButton.backgroundColor = UIColor.clearColor()
-        showIMDBPageButton.layer.borderColor = UIColor.whiteColor().CGColor
-        showIMDBPageButton.layer.borderWidth = 0.7
-        showIMDBPageButton.layer.cornerRadius = 5
+        /*
+        showTMDBPageButton.backgroundColor = UIColor.clearColor()
+        showTMDBPageButton.layer.borderColor = UIColor.whiteColor().CGColor
+        showTMDBPageButton.layer.borderWidth = 0.7
+        showTMDBPageButton.layer.cornerRadius = 5
         
-        if movie!.imdbID.isEmpty {
+        if movie.imdbID.isEmpty {
             showIMDBPageButton.hidden = true
+        } else {
+            showIMDBPageButton.backgroundColor = UIColor.clearColor()
+            showIMDBPageButton.layer.borderColor = UIColor.whiteColor().CGColor
+            showIMDBPageButton.layer.borderWidth = 0.7
+            showIMDBPageButton.layer.cornerRadius = 5
         }
+        */
     }
     
     func showWatchStatusMenu() {
@@ -156,21 +169,21 @@ class DetailViewController: UIViewController {
         
         let selectWantToWatchAction = UIAlertAction(title: "I wanna watch", style: .Default, handler: {
             _ in
-            self.movie!.watchStatus = .wantToWatch
+            self.movie.watchStatus = .wantToWatch
             self.dismissViewControllerAnimated(true, completion: nil)
         })
         alertController.addAction(selectWantToWatchAction)
         
         let selectWatchingAction = UIAlertAction(title: "I'm watching", style: .Default, handler: {
             _ in
-            self.movie!.watchStatus = .watching
+            self.movie.watchStatus = .watching
             self.dismissViewControllerAnimated(true, completion: nil)
         })
         alertController.addAction(selectWatchingAction)
         
         let selectWatchedAction = UIAlertAction(title: "I've watched", style: .Default, handler: {
             _ in
-            self.movie!.watchStatus = .watched
+            self.movie.watchStatus = .watched
             self.dismissViewControllerAnimated(true, completion: nil)
         })
         alertController.addAction(selectWatchedAction)
@@ -182,7 +195,8 @@ class DetailViewController: UIViewController {
         if segue.identifier == "EditTitle" {
             let navigationController = segue.destinationViewController as! UINavigationController
             let controller = navigationController.viewControllers[0] as! EditTitleViewController
-            controller.movie = movie
+            controller.movieToBeEdit = movie
+            controller.delegate = self
         }
     }
 }
@@ -196,7 +210,7 @@ extension DetailViewController: FloatRatingViewDelegate {
     
     func floatRatingView(ratingView: FloatRatingView, didUpdate rating: Float) {
         yourRatingLabel.text = String(format: "%.1f/10.0", rating)
-        movie!.yourRating = rating
+        movie.yourRating = rating
     }
 }
 
@@ -205,5 +219,19 @@ extension DetailViewController: FloatRatingViewDelegate {
 extension DetailViewController: UIViewControllerTransitioningDelegate {
     func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController!, sourceViewController source: UIViewController) -> UIPresentationController? {
         return DimmingPresentationController(presentedViewController: presented, presentingViewController: presenting)
+    }
+}
+
+// MARK: - EditTitleViewControllerDelegate
+
+extension DetailViewController: EditTitleViewControllerDelegate {
+    func editTitleViewControllerDidCancel(controller: EditTitleViewController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func editTitleViewControllerDidFinishEditingMovieTitle(controller: EditTitleViewController, movieTitle: Movie) {
+        dismissViewControllerAnimated(true, completion: {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
     }
 }

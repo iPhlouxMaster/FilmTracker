@@ -14,6 +14,7 @@ class Movie {
         case watched
         case watching
         case wantToWatch
+        case other
     }
     
     enum URLType {
@@ -30,7 +31,6 @@ class Movie {
     
     var title = ""
     var id = 0
-    // var type = -1
     var releaseDate = ""
     var posterAddress = ""
     var directors = [String]()
@@ -43,7 +43,7 @@ class Movie {
     var w300Poster: UIImage?
     var imdbID = ""
     var lastUpdateDate: NSDate?
-    var watchStatus: Status?
+    var watchStatus = Status.other
     var watchedDate: NSDate?
     var comments: String?
     
