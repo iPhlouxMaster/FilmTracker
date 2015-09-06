@@ -79,6 +79,7 @@ class DetailViewController: UIViewController {
     
     deinit {
         imageDownloadTask?.cancel()
+        println("*** DetailViewController deinited")
     }
     
     func configureView() {

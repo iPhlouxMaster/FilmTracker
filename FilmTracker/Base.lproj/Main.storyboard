@@ -573,8 +573,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                        <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <sections>
-                            <tableViewSection headerTitle="Poster" id="AAJ-qg-tf2">
+                            <tableViewSection id="AAJ-qg-tf2">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="320" id="Arv-0z-HEd">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -584,15 +585,15 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qi7-Z5-haS">
                                                     <rect key="frame" x="200" y="10" width="200" height="300"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="200" id="69t-ey-krs"/>
-                                                        <constraint firstAttribute="height" constant="300" id="XI3-Du-nrO"/>
+                                                        <constraint firstAttribute="height" constant="300" id="0xb-2m-HKi"/>
+                                                        <constraint firstAttribute="width" constant="200" id="l98-li-e9v"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Available" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gqD-5b-6vV">
                                                     <rect key="frame" x="15" y="150" width="101" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="s96-XO-3uj"/>
-                                                        <constraint firstAttribute="width" constant="101" id="z8S-V2-lUK"/>
+                                                        <constraint firstAttribute="width" constant="101" id="AC1-7D-fNO"/>
+                                                        <constraint firstAttribute="height" constant="21" id="SD6-0i-c9d"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -600,10 +601,10 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="centerY" secondItem="qi7-Z5-haS" secondAttribute="centerY" id="09o-89-C8x"/>
-                                                <constraint firstItem="gqD-5b-6vV" firstAttribute="leading" secondItem="DmO-7l-cvd" secondAttribute="leading" constant="15" id="Wam-rr-fvr"/>
-                                                <constraint firstAttribute="centerY" secondItem="gqD-5b-6vV" secondAttribute="centerY" id="gDX-X7-Bgy"/>
-                                                <constraint firstAttribute="centerX" secondItem="qi7-Z5-haS" secondAttribute="centerX" id="tD4-fJ-BWW"/>
+                                                <constraint firstAttribute="centerX" secondItem="qi7-Z5-haS" secondAttribute="centerX" id="D7x-hN-Gz4"/>
+                                                <constraint firstAttribute="centerY" secondItem="qi7-Z5-haS" secondAttribute="centerY" id="GQX-vS-Gxc"/>
+                                                <constraint firstItem="gqD-5b-6vV" firstAttribute="leading" secondItem="DmO-7l-cvd" secondAttribute="leading" constant="15" id="jEM-fP-Dcg"/>
+                                                <constraint firstAttribute="centerY" secondItem="gqD-5b-6vV" secondAttribute="centerY" id="uGY-le-r18"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -800,7 +801,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10.0/10.0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kXy-R1-8pT">
-                                                    <rect key="frame" x="534" y="14" width="50" height="14"/>
+                                                    <rect key="frame" x="534" y="15" width="50" height="14"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="14" id="Mh3-fZ-1kG"/>
                                                         <constraint firstAttribute="width" constant="50" id="ThH-7C-S7a"/>
@@ -844,7 +845,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10.0/10.0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZN3-kj-eVJ">
-                                                    <rect key="frame" x="534" y="14" width="50" height="14"/>
+                                                    <rect key="frame" x="534" y="15" width="50" height="14"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="783-Wy-fqq"/>
                                                         <constraint firstAttribute="height" constant="14" id="Jbg-2n-6Ig"/>

@@ -22,6 +22,7 @@ class EditTitleViewController: UITableViewController {
     var isEditingWatchedDate = false
     let pickerData = ["Want to watch", "Watching", "Watched", "None"]
     var isEditingRow = false
+    var observer: AnyObject!
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var imageLabel: UILabel!
@@ -50,9 +51,21 @@ class EditTitleViewController: UITableViewController {
         }
     }
     
+    func listenForBackgroundNotification() {
+        observer = NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidEnterBackgroundNotification, object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: {
+            [weak self] _ in
+            if let strongSelf = self {
+                if strongSelf.presentedViewController != nil {
+                    strongSelf.dismissViewControllerAnimated(false, completion: nil)
+                }
+            }
+        })
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        tableView.separatorStyle = .None
+        listenForBackgroundNotification()
         if let movie = movieToEdit {
             configureCellsContent(movie)
         }
@@ -61,6 +74,11 @@ class EditTitleViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(observer)
+        println("*** EditTitleViewController deinited")
     }
 
     // MARK: - Table view data source / delegate
@@ -95,6 +113,8 @@ class EditTitleViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch (indexPath.section, indexPath.row) {
+        case (0, 0):
+            showPhotoMenu()
         case (1, 3):
             isEditingReleaseDate = !isEditingReleaseDate
             tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 4, inSection: 1)], withRowAnimation: .Fade)
@@ -126,6 +146,7 @@ class EditTitleViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
         if indexPath.section == 1 && indexPath.row == 4 && isEditingReleaseDate {
             var cell: UITableViewCell! = tableView.dequeueReusableCellWithIdentifier("ReleaseDatePickerCell") as? UITableViewCell
             if cell == nil {
@@ -253,7 +274,7 @@ class EditTitleViewController: UITableViewController {
                 }
             }
             
-            
+            clearReleaseDateAction.backgroundColor = UIColor.grayColor()
             return [clearReleaseDateAction]
         }
         return nil
@@ -370,6 +391,8 @@ extension EditTitleViewController: FloatRatingViewDelegate {
     }
 }
 
+// MARK: - UIPickerViewDelegate / Data Source
+
 extension EditTitleViewController: UIPickerViewDelegate {
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
         return pickerData[row]
@@ -403,5 +426,86 @@ extension EditTitleViewController: UIPickerViewDataSource {
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
+    }
+}
+
+//MARK: - UIImagePickerControllerDelegate
+
+extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func showPhotoMenu() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        var alertActionTitle = ""
+        
+        if imageView.hidden {
+            alertActionTitle = "Add from library"
+        } else {
+            alertActionTitle = "Replace from library"
+        }
+        
+        let takePhotoAction = UIAlertAction(title: "Take Photo", style: .Default, handler: {
+            _ in
+            self.takePhotoWithCamera()
+        })
+        alertController.addAction(takePhotoAction)
+        
+        let pickFromLibraryAction = UIAlertAction(title: alertActionTitle, style: .Default, handler: {
+            _ in self.choosePhotoFromLibrary()
+        })
+        alertController.addAction(pickFromLibraryAction)
+        
+        if !imageView.hidden {
+            let deletePosterAction = UIAlertAction(title: "Delete Poster", style: .Default, handler: {
+                _ in
+                self.tableView.beginUpdates()
+                self.imageView.hidden = true
+                self.imageView.image = nil
+                if let movie = self.movieToEdit {
+                    movie.w300Poster = nil
+                    movie.w92Poster = nil
+                }
+                self.tableView.reloadData()
+                self.tableView.endUpdates()
+            })
+            alertController.addAction(deletePosterAction)
+        }
+            
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func takePhotoWithCamera() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.showsCameraControls = true
+        imagePicker.sourceType = .Camera
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        presentViewController(imagePicker, animated: true, completion: nil)
+    }
+    
+    func choosePhotoFromLibrary() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .PhotoLibrary
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        presentViewController(imagePicker, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+        // optional because the key may not exist
+        imageView.image = info[UIImagePickerControllerEditedImage] as? UIImage
+        if let movie = movieToEdit {
+            movie.w300Poster = info[UIImagePickerControllerEditedImage] as? UIImage
+            movie.w92Poster = movie.w92Poster?.resizedImageWithBounds(CGSize(width: 92, height: 138))
+        }
+        
+        dismissViewControllerAnimated(true, completion: nil)
+        tableView.reloadData()
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }
