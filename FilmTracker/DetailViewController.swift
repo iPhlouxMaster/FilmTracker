@@ -14,6 +14,7 @@ class DetailViewController: UIViewController {
     var managedObjectContext: NSManagedObjectContext!
     var movie: Movie!
     var imageDownloadTask: NSURLSessionDownloadTask?
+    var observer: AnyObject!
     
     //MARK: - IBOutlets
     
@@ -61,6 +62,19 @@ class DetailViewController: UIViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
+    // MARK: - KVO
+    
+    func listenForBackgroundNotification() {
+        observer = NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidEnterBackgroundNotification, object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: {
+            [weak self] _ in
+            if let strongSelf = self {
+                if strongSelf.presentedViewController != nil && !strongSelf.presentedViewController!.isMemberOfClass(UINavigationController) {
+                    strongSelf.dismissViewControllerAnimated(false, completion: nil)
+                }
+            }
+        })
+    }
+    
     // MARK: - Funcs
     
     required init(coder aDecoder: NSCoder) {
@@ -72,13 +86,21 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        listenForBackgroundNotification()
+        
+        let swipeDownGestureRecognizer = UISwipeGestureRecognizer(target: self, action: Selector("closeButtonPressed:"))
+        swipeDownGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Down
+        view.addGestureRecognizer(swipeDownGestureRecognizer)
+        
         configureFloatRatingView()
         configureButtons()
         configureView()
+        handleCountrieAndGenreList()
     }
     
     deinit {
         imageDownloadTask?.cancel()
+        NSNotificationCenter.defaultCenter().removeObserver(observer)
         println("*** DetailViewController deinited")
     }
     
@@ -94,8 +116,21 @@ class DetailViewController: UIViewController {
         }
         
         titleLabel.text = movie.title
-        directorLabel.text = ", ".join(movie.directors)
-        productionCountriesLabel.text = ", ".join(movie.productionCountries)
+        
+        if movie.directors.isEmpty {
+            directorLabel.text = "Not Available"
+        } else {
+            directorLabel.text = ", ".join(movie.directors)
+        }
+        
+        if movie.productionCountries.isEmpty {
+            productionCountriesLabel.text = "Not Available"
+        } else {
+            productionCountriesLabel.text = ", ".join(movie.productionCountries)
+            // println(movie.productionCountries)
+        }
+        
+        
         releaseDateLabel.text = movie.releaseDate
         tmdbRatingView.rating = Float(movie.tmdbRating)
         yourRatingView.rating = Float(movie.yourRating)
@@ -194,6 +229,39 @@ class DetailViewController: UIViewController {
         alertController.addAction(selectWatchedAction)
         
         self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func handleCountrieAndGenreList() {
+        
+        if movie.id > 0 {
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            
+            var genreList = userDefaults.valueForKey("GenreList") as! [String]
+            let formerGenresCounter = genreList.count
+            for genre in movie.genres {
+                if !contains(genreList, genre) {
+                    genreList.append(genre)
+                }
+            }
+            let newGenresCounter = genreList.count
+            if newGenresCounter > formerGenresCounter {
+                userDefaults.setObject(genreList, forKey: "GenreList")
+            }
+            
+            var countryList = userDefaults.valueForKey("CountryList") as! [String]
+            let formerCountriesCounter = countryList.count
+            for country in movie.productionCountries {
+                if !contains(countryList, country) {
+                    countryList.append(country)
+                }
+            }
+            let newCountriesCounter = genreList.count
+            if newCountriesCounter > formerCountriesCounter {
+                userDefaults.setObject(countryList, forKey: "CountryList")
+            }
+            userDefaults.synchronize()
+            
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

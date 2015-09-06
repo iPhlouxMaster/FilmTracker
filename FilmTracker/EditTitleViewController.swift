@@ -23,6 +23,7 @@ class EditTitleViewController: UITableViewController {
     let pickerData = ["Want to watch", "Watching", "Watched", "None"]
     var isEditingRow = false
     var observer: AnyObject!
+    var posterDownloadTask: NSURLSessionDownloadTask?
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var imageLabel: UILabel!
@@ -38,7 +39,7 @@ class EditTitleViewController: UITableViewController {
     @IBOutlet weak var watchStatusLabel: UILabel!
     @IBOutlet weak var watchDateLabel: UILabel!
     @IBOutlet weak var watchedDateTitleLabel: UILabel!
-    @IBOutlet weak var commentsTextField: UITextField!
+    @IBOutlet weak var commentsTextView: UITextView!
 
     @IBAction func cancelButtonPressed(sender: UIBarButtonItem) {
         delegate?.editTitleViewControllerDidCancel(self)
@@ -51,24 +52,38 @@ class EditTitleViewController: UITableViewController {
         }
     }
     
+    // MARK: - KVO
+    
     func listenForBackgroundNotification() {
         observer = NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidEnterBackgroundNotification, object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: {
             [weak self] _ in
             if let strongSelf = self {
-                if strongSelf.presentedViewController != nil {
+                if strongSelf.presentedViewController != nil && !strongSelf.presentedViewController!.isMemberOfClass(UINavigationController) {
                     strongSelf.dismissViewControllerAnimated(false, completion: nil)
                 }
+                strongSelf.movieTitleTextField.resignFirstResponder()
+                strongSelf.directorsTextField.resignFirstResponder()
+                strongSelf.commentsTextView.resignFirstResponder()
             }
         })
     }
     
+    // MARK: - Funcs
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.separatorStyle = .None
         listenForBackgroundNotification()
+        
+        commentsTextView.delegate = self
+        
+        
         if let movie = movieToEdit {
             configureCellsContent(movie)
         }
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("hideKeyboard:"))
+        gestureRecognizer.cancelsTouchesInView = false
+        tableView.addGestureRecognizer(gestureRecognizer)
     }
 
     override func didReceiveMemoryWarning() {
@@ -78,6 +93,7 @@ class EditTitleViewController: UITableViewController {
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(observer)
+        posterDownloadTask?.cancel()
         println("*** EditTitleViewController deinited")
     }
 
@@ -113,6 +129,12 @@ class EditTitleViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch (indexPath.section, indexPath.row) {
+        case (1, 0):
+            movieTitleTextField.becomeFirstResponder()
+        case (1, 1):
+            directorsTextField.becomeFirstResponder()
+        case (2, 0):
+            commentsTextView.becomeFirstResponder()
         case (0, 0):
             showPhotoMenu()
         case (1, 3):
@@ -340,6 +362,8 @@ class EditTitleViewController: UITableViewController {
             watchDateLabel.hidden = true
         }
         
+        commentsTextView.text = movie.comments
+        
     }
     
     func configureWatchStatusLabel(status: Movie.Status) -> String {
@@ -373,6 +397,31 @@ class EditTitleViewController: UITableViewController {
         let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter.stringFromDate(date)
+    }
+    
+    func hideKeyboard(gestureRecognizer: UIGestureRecognizer) {
+        let point = gestureRecognizer.locationInView(tableView)
+        let indexPath = tableView.indexPathForRowAtPoint(point)
+        
+        if (indexPath != nil && ((indexPath!.section == 0 && indexPath!.row == 1) || (indexPath!.section == 0 && indexPath!.row == 2) || (indexPath!.section == 2 && indexPath!.row == 0))) {
+            return
+        }
+        movieTitleTextField.resignFirstResponder()
+        directorsTextField.resignFirstResponder()
+        commentsTextView.resignFirstResponder()
+    }
+    
+    // MARK: - Segue
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let movie = movieToEdit {
+            if segue.identifier == "PickGenre" {
+                let controller = segue.destinationViewController as! PickerViewController
+                controller.genresArray = movie.genres
+            } else if segue.identifier == "PickCountry" {
+                let controller = segue.destinationViewController as! PickerViewController
+                controller.countriesArray = movie.productionCountries
+            }
+        }
     }
 }
 
@@ -437,6 +486,16 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
         
         var alertActionTitle = ""
         
+        if let movie = movieToEdit {
+            if movie.id > 0 && !movie.posterAddress.isEmpty {
+                let onlineRequest = UIAlertAction(title: "Request from TMDB", style: .Default, handler: {
+                    _ in
+                    self.requestPosterFromTMDB(self.imageView, movie: movie)
+                })
+                alertController.addAction(onlineRequest)
+            }
+        }
+        
         if imageView.hidden {
             alertActionTitle = "Add from library"
         } else {
@@ -450,7 +509,8 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
         alertController.addAction(takePhotoAction)
         
         let pickFromLibraryAction = UIAlertAction(title: alertActionTitle, style: .Default, handler: {
-            _ in self.choosePhotoFromLibrary()
+            _ in
+            self.choosePhotoFromLibrary()
         })
         alertController.addAction(pickFromLibraryAction)
         
@@ -474,6 +534,14 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
         alertController.addAction(cancelAction)
         
         presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func requestPosterFromTMDB(imageView: UIImageView, movie: Movie) {
+        posterDownloadTask = imageView.loadImageWithMovieObject(movie, imageSize: Movie.ImageSize.w300)
+        if imageView.hidden {
+            imageView.hidden = false
+            tableView.reloadData()
+        }
     }
     
     func takePhotoWithCamera() {
@@ -501,11 +569,34 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
             movie.w92Poster = movie.w92Poster?.resizedImageWithBounds(CGSize(width: 92, height: 138))
         }
         
+        if imageView.hidden == true {
+            imageView.hidden = false
+        }
+        
         dismissViewControllerAnimated(true, completion: nil)
         tableView.reloadData()
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+// MARK: - UITextViewDelegate
+
+extension EditTitleViewController: UITextViewDelegate {
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if let movie = movieToEdit {
+            movie.comments = (textView.text as NSString).stringByReplacingCharactersInRange(range, withString: text)
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        if let movie = movieToEdit {
+            movie.comments = commentsTextView.text
+        }
     }
 }

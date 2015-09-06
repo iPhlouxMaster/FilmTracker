@@ -32,7 +32,7 @@ extension UILabel {
                                 if let strongSelf = self {
                                     if countries.isEmpty {
                                         strongSelf.text = "Not Available"
-                                        movie.productionCountries.append("Not Available")
+                                        // movie.productionCountries.append("Not Available")
                                     } else {
                                         strongSelf.text = ", ".join(countries)
                                         movie.productionCountries = countries
@@ -49,7 +49,7 @@ extension UILabel {
                                 }
                             }
                             if genresArray.isEmpty {
-                                movie.genres.append("Not Available")
+                                // movie.genres.append("Not Available")
                             } else {
                                 movie.genres = genresArray
                             }
@@ -83,7 +83,7 @@ extension UILabel {
                                 if let strongSelf = self {
                                     if directors.isEmpty {
                                         strongSelf.text = "Not Available"
-                                        movie.directors.append("Not Available")
+                                        // movie.directors.append("Not Available")
                                     } else {
                                         strongSelf.text = ", ".join(directors)
                                         movie.directors = directors

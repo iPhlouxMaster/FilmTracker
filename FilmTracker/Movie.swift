@@ -71,5 +71,4 @@ class Movie {
         }
         return NSURL(string: url)!
     }
-
 }

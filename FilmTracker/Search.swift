@@ -17,6 +17,8 @@ class Search {
         case Results([Movie])
     }
     
+    var genres = Set<String>()
+    
     private(set) var state: State = .NotSearchedYet
     typealias SearchComplete = (Bool) -> Void
     private var dataTask: NSURLSessionDataTask?
@@ -117,7 +119,6 @@ class Search {
         var movie = Movie()
         movie.title = dictionary["title"] as! String
         movie.id = dictionary["id"] as! Int
-//        movie.type = 0
         movie.tmdbRating = dictionary["vote_average"] as! Float
         if let releaseDate = dictionary["release_date"] as? String {
             movie.releaseDate = releaseDate
