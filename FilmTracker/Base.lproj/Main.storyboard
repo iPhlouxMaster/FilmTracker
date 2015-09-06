@@ -576,20 +576,20 @@
                         <sections>
                             <tableViewSection headerTitle="Poster" id="AAJ-qg-tf2">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="200" id="Arv-0z-HEd">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="320" id="Arv-0z-HEd">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Arv-0z-HEd" id="DmO-7l-cvd">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qi7-Z5-haS">
-                                                    <rect key="frame" x="223.5" y="10" width="120" height="180"/>
+                                                    <rect key="frame" x="200" y="10" width="200" height="300"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="120" id="69t-ey-krs"/>
-                                                        <constraint firstAttribute="height" constant="180" id="XI3-Du-nrO"/>
+                                                        <constraint firstAttribute="width" constant="200" id="69t-ey-krs"/>
+                                                        <constraint firstAttribute="height" constant="300" id="XI3-Du-nrO"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Available" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gqD-5b-6vV">
-                                                    <rect key="frame" x="15" y="89" width="101" height="21"/>
+                                                    <rect key="frame" x="15" y="150" width="101" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="s96-XO-3uj"/>
                                                         <constraint firstAttribute="width" constant="101" id="z8S-V2-lUK"/>
@@ -962,16 +962,16 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" placeholder="Your comments..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WSb-jR-zRJ">
-                                                    <rect key="frame" x="8" y="8" width="584" height="115.5"/>
+                                                    <rect key="frame" x="15" y="8" width="570" height="115.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="WSb-jR-zRJ" firstAttribute="leading" secondItem="Grw-6v-eeP" secondAttribute="leading" constant="8" id="27m-TI-iRf"/>
+                                                <constraint firstItem="WSb-jR-zRJ" firstAttribute="leading" secondItem="Grw-6v-eeP" secondAttribute="leading" constant="15" id="27m-TI-iRf"/>
                                                 <constraint firstItem="WSb-jR-zRJ" firstAttribute="top" secondItem="Grw-6v-eeP" secondAttribute="top" constant="8" id="SkV-7S-DLB"/>
                                                 <constraint firstAttribute="bottom" secondItem="WSb-jR-zRJ" secondAttribute="bottom" constant="8" id="lGm-wu-k1l"/>
-                                                <constraint firstAttribute="trailing" secondItem="WSb-jR-zRJ" secondAttribute="trailing" constant="8" id="uBv-60-bZq"/>
+                                                <constraint firstAttribute="trailing" secondItem="WSb-jR-zRJ" secondAttribute="trailing" constant="15" id="uBv-60-bZq"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>

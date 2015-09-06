@@ -20,7 +20,8 @@ class EditTitleViewController: UITableViewController {
     var isEditingReleaseDate = false
     var isEditingWatchStatus = false
     var isEditingWatchedDate = false
-    let pickerData = ["I wanna watch", "I'm watching", "I've watched", "Other"]
+    let pickerData = ["Want to watch", "Watching", "Watched", "None"]
+    var isEditingRow = false
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var imageLabel: UILabel!
@@ -65,7 +66,19 @@ class EditTitleViewController: UITableViewController {
     // MARK: - Table view data source / delegate
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return super.tableView(tableView, numberOfRowsInSection: section)
+        if section == 3 {
+            if let movie = movieToEdit {
+                if movie.id > 0 {
+                    return 2
+                } else {
+                    return 0
+                }
+            } else {
+                return 0
+            }
+        } else {
+            return super.tableView(tableView, numberOfRowsInSection: section)
+        }
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -76,20 +89,37 @@ class EditTitleViewController: UITableViewController {
                 return 3
             }
         } else {
-            return super.numberOfSectionsInTableView(tableView)
+            return 3
         }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 1 && indexPath.row == 3 {
+        switch (indexPath.section, indexPath.row) {
+        case (1, 3):
             isEditingReleaseDate = !isEditingReleaseDate
             tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 4, inSection: 1)], withRowAnimation: .Fade)
-        } else if indexPath.section == 1 && indexPath.row == 8 {
+        case (1, 8):
             isEditingWatchStatus = !isEditingWatchStatus
             tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 9, inSection: 1)], withRowAnimation: .Fade)
-        } else if indexPath.section == 1 && indexPath.row == 10 {
+        case (1, 10):
             isEditingWatchedDate = !isEditingWatchedDate
             tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 11, inSection: 1)], withRowAnimation: .Fade)
+        case (3, 0):
+            if let movie = movieToEdit {
+                if movie.id > 0 {
+                    let url = NSURL(string: String(format: "https://www.themoviedb.org/movie/%d", movie.id))
+                    UIApplication.sharedApplication().openURL(url!)
+                }
+            }
+        case (3, 1):
+            if let movie = movieToEdit {
+                if !movie.imdbID.isEmpty {
+                    let url = NSURL(string: String(format: "http://www.imdb.com/title/%@", movie.imdbID))
+                    UIApplication.sharedApplication().openURL(url!)
+                }
+            }
+        default:
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -104,7 +134,11 @@ class EditTitleViewController: UITableViewController {
                 let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 216))
                 datePicker.datePickerMode = .Date
                 if let movie = movieToEdit {
-                    datePicker.date = movie.convertStringToDate(movie.releaseDate)
+                    if !movie.releaseDate.isEmpty {
+                        datePicker.date = movie.convertStringToDate(movie.releaseDate)!
+                    } else {
+                        datePicker.date = NSDate()
+                    }
                 }
                 cell.contentView.addSubview(datePicker)
                 datePicker.addTarget(self, action: Selector("releaseDateChanged:"), forControlEvents: .ValueChanged)
@@ -141,7 +175,6 @@ class EditTitleViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
         switch (indexPath.section, indexPath.row) {
         case (0, 0):
             if imageView.hidden {
@@ -149,7 +182,7 @@ class EditTitleViewController: UITableViewController {
                 return 44
             } else {
                 imageLabel.hidden = true
-                return 200
+                return 320
             }
             
         case (1, 4):
@@ -165,7 +198,7 @@ class EditTitleViewController: UITableViewController {
                 return 0
             }
         case (1, 10):
-            if watchStatusLabel.text == "I've watched" {
+            if watchStatusLabel.text == "Watched" {
                 watchedDateTitleLabel.hidden = false
                 watchDateLabel.hidden = false
                 let date = NSDate()
@@ -191,6 +224,39 @@ class EditTitleViewController: UITableViewController {
         default:
             return 44
         }
+    }
+    
+    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        if indexPath.section == 1 && indexPath.row == 3 {
+            return .Delete
+        } else {
+            return .None
+        }
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+        if indexPath.section == 1 && indexPath.row == 3 {
+            var clearReleaseDateAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Clear") { _ in
+                self.editing = false
+                self.releaseDateLabel.text = "Tap to add"
+                if let movie = self.movieToEdit {
+                    movie.releaseDate = ""
+                }
+                
+                if self.isEditingReleaseDate {
+                    self.isEditingReleaseDate = false
+                    self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 4, inSection: 1)], withRowAnimation: .Fade)
+                }
+            }
+            
+            
+            return [clearReleaseDateAction]
+        }
+        return nil
     }
     
     // MARK: - Helper methods
@@ -240,6 +306,7 @@ class EditTitleViewController: UITableViewController {
         yourRatingFloatRatingView.minRating = 1
         yourRatingFloatRatingView.editable = true
         yourRatingFloatRatingView.floatRatings = true
+        yourRatingFloatRatingView.rating = movie.yourRating
         yourRatingLabel.text = String(format: "%.1f/10.0", movie.yourRating)
         
         watchStatusLabel.text = configureWatchStatusLabel(movie.watchStatus)
@@ -257,13 +324,13 @@ class EditTitleViewController: UITableViewController {
     func configureWatchStatusLabel(status: Movie.Status) -> String {
         switch status {
         case .wantToWatch:
-            return "I wanna watch"
+            return pickerData[0]
         case .watching:
-            return "I'm watching"
+            return pickerData[1]
         case .watched:
-            return "I've watched"
+            return pickerData[2]
         case .other:
-            return "Other"
+            return pickerData[3]
         }
     }
     

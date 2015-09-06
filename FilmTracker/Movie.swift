@@ -47,10 +47,14 @@ class Movie {
     var watchedDate: NSDate?
     var comments: String?
     
-    func convertStringToDate(dateString: String) -> NSDate {
+    func convertStringToDate(dateString: String) -> NSDate? {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        return dateFormatter.dateFromString(dateString)!
+        if !dateString.isEmpty {
+            return dateFormatter.dateFromString(dateString)
+        } else {
+            return nil
+        }
     }
     
     func getURLWithType(type: URLType) -> NSURL {

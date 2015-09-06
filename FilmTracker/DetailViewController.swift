@@ -82,10 +82,14 @@ class DetailViewController: UIViewController {
     }
     
     func configureView() {
-        if let image = movie.w300Poster {
-            posterImageView.image = image
+        if !movie.posterAddress.isEmpty {
+            if let image = movie.w300Poster {
+                posterImageView.image = image
+            } else {
+                imageDownloadTask = posterImageView.loadImageWithMovieObject(movie, imageSize: Movie.ImageSize.w300)
+            }
         } else {
-            imageDownloadTask = posterImageView.loadImageWithMovieObject(movie, imageSize: Movie.ImageSize.w300)
+            posterImageView.image = UIImage(named: "no-poster.jpeg")
         }
         
         titleLabel.text = movie.title
