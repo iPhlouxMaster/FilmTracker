@@ -16,7 +16,7 @@ protocol EditTitleViewControllerDelegate: class {
 class EditTitleViewController: UITableViewController {
     
     var movieToEdit: Movie?
-    var delegate: EditTitleViewControllerDelegate?
+    weak var delegate: EditTitleViewControllerDelegate?
     var isEditingReleaseDate = false
     var isEditingWatchStatus = false
     var isEditingWatchedDate = false
@@ -75,7 +75,6 @@ class EditTitleViewController: UITableViewController {
         listenForBackgroundNotification()
         
         commentsTextView.delegate = self
-        
         
         if let movie = movieToEdit {
             configureCellsContent(movie)
@@ -417,9 +416,11 @@ class EditTitleViewController: UITableViewController {
             if segue.identifier == "PickGenre" {
                 let controller = segue.destinationViewController as! PickerViewController
                 controller.genresArray = movie.genres
+                controller.delegate = self
             } else if segue.identifier == "PickCountry" {
                 let controller = segue.destinationViewController as! PickerViewController
                 controller.countriesArray = movie.productionCountries
+                controller.delegate = self
             }
         }
     }
@@ -598,5 +599,24 @@ extension EditTitleViewController: UITextViewDelegate {
         if let movie = movieToEdit {
             movie.comments = commentsTextView.text
         }
+    }
+}
+
+extension EditTitleViewController: PickerViewControllerDelegate {
+    func pickerViewControllerDidPickItems(controller: PickerViewController, items: [String], isPickingCountries: Bool) {
+        if isPickingCountries {
+            if let movie = movieToEdit {
+                movie.productionCountries = items
+                countriesLabel.text = ", ".join(movie.productionCountries)
+                tableView.reloadData()
+            }
+        } else {
+            if let movie = movieToEdit {
+                movie.genres = items
+                genreLabel.text = ", ".join(movie.genres)
+                tableView.reloadData()
+            }
+        }
+        navigationController!.popViewControllerAnimated(true)
     }
 }

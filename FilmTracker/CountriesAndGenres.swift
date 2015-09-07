@@ -10,6 +10,8 @@ import Foundation
 
 class CountriesAndGenres {
     
+    // The class is for the genreList and countryList in PickerViewController, the content will update automatically.
+    
     let genres = ["Adventure", "Foreign", "Romance", "Documentary", "Comedy", "Horror", "Action", "TV Movie", "Science Fiction", "Animation", "Thriller", "Fantasy", "Drama", "Family"]
     let countries = ["US", "GB", "NZ"]
     
@@ -30,7 +32,7 @@ class CountriesAndGenres {
             userDefaults.setObject(genres, forKey: "GenreList")
             userDefaults.setObject(countries, forKey: "CountryList")
             userDefaults.synchronize()
-            userDefaults.setBool(true, forKey: "FirstRunning")
+            userDefaults.setBool(false, forKey: "FirstRunning")
         }
     }
     
