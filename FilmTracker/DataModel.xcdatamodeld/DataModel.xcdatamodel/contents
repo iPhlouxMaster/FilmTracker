@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Entity" syncable="YES">
+    <entity name="Film" representedClassName="FilmTracker.Film" syncable="YES">
         <attribute name="comments" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="directors" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="genres" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -13,11 +13,13 @@
         <attribute name="releaseDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
         <attribute name="tmdbRating" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="w92Poster" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="w300Poster" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="watchedDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="watchStatus" attributeType="Transformable" syncable="YES"/>
+        <attribute name="watchStatus" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="yourRating" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Entity" positionX="-63" positionY="-18" width="128" height="270"/>
+        <element name="Film" positionX="-63" positionY="-18" width="128" height="300"/>
     </elements>
 </model>

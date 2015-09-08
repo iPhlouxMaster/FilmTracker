@@ -47,16 +47,19 @@ class SearchResultCell: UITableViewCell {
     
     func configureForSearchResult(movie: Movie) {
         movieTitleLabel.text = movie.title
-        floatRatingView.rating = movie.tmdbRating
         
-        if !movie.directors.isEmpty {
-            directorLabel.text = ", ".join(movie.directors)
+        if let tmdbRating = movie.tmdbRating {
+            floatRatingView.rating = tmdbRating
+        }
+        
+        if let directors = movie.directors {
+            directorLabel.text = ", ".join(directors)
         } else {
             directorDownloadTask = directorLabel.loadCreditsWithMovieObject(movie)
         }
         
-        if !movie.productionCountries.isEmpty {
-            productionCountriesLabel.text = ", ".join(movie.productionCountries)
+        if let countries = movie.productionCountries {
+            productionCountriesLabel.text = ", ".join(countries)
         } else {
             productionCountriesDownloadTask = productionCountriesLabel.loadDetailsWithMovieObject(movie)
         }
@@ -64,7 +67,7 @@ class SearchResultCell: UITableViewCell {
         if let image = movie.w92Poster {
             posterImageView.image = image
         } else {
-            if !movie.posterAddress.isEmpty {
+            if let posterAddress = movie.posterAddress  {
                 imageDownloadTask = posterImageView.loadImageWithMovieObject(movie, imageSize: Movie.ImageSize.w92)
             } else {
                 posterImageView.image = UIImage(named: "no-poster.jpeg")

@@ -44,8 +44,8 @@ class DetailViewController: UIViewController {
     }
     
     @IBAction func showIMDBButtonPressed(sender: UIButton) {
-        if !movie.imdbID.isEmpty {
-            let url = NSURL(string: String(format: "http://www.imdb.com/title/%@", movie.imdbID))
+        if let imdbID = movie.imdbID {
+            let url = NSURL(string: String(format: "http://www.imdb.com/title/%@", imdbID))
             UIApplication.sharedApplication().openURL(url!)
         }
     }
@@ -105,7 +105,7 @@ class DetailViewController: UIViewController {
     }
     
     func configureView() {
-        if !movie.posterAddress.isEmpty {
+        if let posterAddress = movie.posterAddress {
             if let image = movie.w300Poster {
                 posterImageView.image = image
             } else {
@@ -117,26 +117,38 @@ class DetailViewController: UIViewController {
         
         titleLabel.text = movie.title
         
-        if movie.directors.isEmpty {
+        if let directors = movie.directors {
+            directorLabel.text = ", ".join(directors)
+        } else {
             directorLabel.text = "Not Available"
-        } else {
-            directorLabel.text = ", ".join(movie.directors)
         }
         
-        if movie.productionCountries.isEmpty {
+        if let countries = movie.productionCountries {
+            productionCountriesLabel.text = ", ".join(countries)
+        } else {
             productionCountriesLabel.text = "Not Available"
-        } else {
-            productionCountriesLabel.text = ", ".join(movie.productionCountries)
-            // println(movie.productionCountries)
         }
         
+        if let releaseDate = movie.releaseDate {
+            releaseDateLabel.text = movie.convertDateToString(releaseDate)
+        } else {
+            releaseDateLabel.text = "Not Available"
+        }
         
-        releaseDateLabel.text = movie.releaseDate
-        tmdbRatingView.rating = Float(movie.tmdbRating)
-        yourRatingView.rating = Float(movie.yourRating)
+        if let tmdbRating = movie.tmdbRating {
+            tmdbRatingView.rating = tmdbRating
+        } else {
+            tmdbRatingView.rating = 0.0
+        }
         
-        if !movie.genres.isEmpty {
-            genresLabel.text = ", ".join(movie.genres)
+        if let yourRating = movie.yourRating {
+            yourRatingView.rating = yourRating
+        } else {
+            yourRatingView.rating = 0.0
+        }
+        
+        if let genres = movie.genres {
+            genresLabel.text = ", ".join(genres)
         } else {
             genresLabel.text = "Not Available"
         }
@@ -155,7 +167,12 @@ class DetailViewController: UIViewController {
         tmdbRatingView.minRating = 1
         tmdbRatingView.editable = false
         tmdbRatingView.floatRatings = true
-        tmdbRatingLabel.text = String(format: "%.1f/10.0", movie.tmdbRating)
+        if let tmdbRating = movie.tmdbRating {
+            tmdbRatingLabel.text = String(format: "%.1f/10.0", tmdbRating)
+        } else {
+            tmdbRatingLabel.text = "0.0/10.0"
+        }
+        
         
         yourRatingView.delegate = self
         yourRatingView.emptyImage = UIImage(named: "StarEmpty")
@@ -165,7 +182,12 @@ class DetailViewController: UIViewController {
         yourRatingView.minRating = 1
         yourRatingView.editable = true
         yourRatingView.floatRatings = true
-        yourRatingLabel.text = String(format: "%.1f/10.0", movie.yourRating)
+        if let yourRating = movie.yourRating {
+            yourRatingLabel.text = String(format: "%.1f/10.0", yourRating)
+        } else {
+            yourRatingLabel.text = "0.0/10.0"
+        }
+        
     }
     
     func configureButtons() {
@@ -236,31 +258,35 @@ class DetailViewController: UIViewController {
         if movie.id > 0 {
             let userDefaults = NSUserDefaults.standardUserDefaults()
             
-            var genreList = userDefaults.valueForKey("GenreList") as! [String]
-            let formerGenresCounter = genreList.count
-            for genre in movie.genres {
-                if !contains(genreList, genre) {
-                    genreList.append(genre)
+            if let genres = movie.genres {
+                var genreList = userDefaults.valueForKey("GenreList") as! [String]
+                let formerGenresCounter = genreList.count
+                for genre in genres {
+                    if !contains(genreList, genre) {
+                        genreList.append(genre)
+                    }
                 }
-            }
-            let newGenresCounter = genreList.count
-            if newGenresCounter > formerGenresCounter {
-                userDefaults.setObject(genreList, forKey: "GenreList")
+                let newGenresCounter = genreList.count
+                if newGenresCounter > formerGenresCounter {
+                    userDefaults.setObject(genreList, forKey: "GenreList")
+                }
+                userDefaults.synchronize()
             }
             
-            var countryList = userDefaults.valueForKey("CountryList") as! [String]
-            let formerCountriesCounter = countryList.count
-            for country in movie.productionCountries {
-                if !contains(countryList, country) {
-                    countryList.append(country)
+            if let countries = movie.productionCountries {
+                var countryList = userDefaults.valueForKey("CountryList") as! [String]
+                let formerCountriesCounter = countryList.count
+                for country in countries {
+                    if !contains(countryList, country) {
+                        countryList.append(country)
+                    }
                 }
+                let newCountriesCounter = countryList.count
+                if newCountriesCounter > formerCountriesCounter {
+                    userDefaults.setObject(countryList, forKey: "CountryList")
+                }
+                userDefaults.synchronize()
             }
-            let newCountriesCounter = genreList.count
-            if newCountriesCounter > formerCountriesCounter {
-                userDefaults.setObject(countryList, forKey: "CountryList")
-            }
-            userDefaults.synchronize()
-            
         }
     }
     

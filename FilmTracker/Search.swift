@@ -117,11 +117,16 @@ class Search {
     
     private func parseMovie(dictionary: [String : AnyObject]) -> Movie {
         var movie = Movie()
+        
         movie.title = dictionary["title"] as! String
         movie.id = dictionary["id"] as! Int
-        movie.tmdbRating = dictionary["vote_average"] as! Float
+        
+        if let tmdbRating = dictionary["vote_average"] as? Float {
+            movie.tmdbRating = tmdbRating
+        }
+        
         if let releaseDate = dictionary["release_date"] as? String {
-            movie.releaseDate = releaseDate
+            movie.releaseDate = movie.convertStringToDate(releaseDate)
         }
         
         if let overview = dictionary["overview"] as? String {

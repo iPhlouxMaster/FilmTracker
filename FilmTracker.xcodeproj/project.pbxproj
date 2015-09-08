@@ -31,6 +31,7 @@
 		37CFC0AF1B965092000FC228 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CFC0AE1B965092000FC228 /* Constants.swift */; };
 		37D277EB1B979C700023ADEF /* UILabel+DownloadDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D277EA1B979C700023ADEF /* UILabel+DownloadDetails.swift */; };
 		37D277ED1B97B05D0023ADEF /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D277EC1B97B05D0023ADEF /* DetailViewController.swift */; };
+		37EB4BB21B9E9181002B565D /* Film.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB4BB11B9E9181002B565D /* Film.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,7 @@
 		37CFC0AE1B965092000FC228 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		37D277EA1B979C700023ADEF /* UILabel+DownloadDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+DownloadDetails.swift"; sourceTree = "<group>"; };
 		37D277EC1B97B05D0023ADEF /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		37EB4BB11B9E9181002B565D /* Film.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 		3750EC781B96D32800CACE69 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				37EB4BB11B9E9181002B565D /* Film.swift */,
 				3716AB961B9435D7000F6D60 /* Movie.swift */,
 				37CC47DE1B9C2E7800262292 /* CountriesAndGenres.swift */,
 				371F5C761B994FC1009153AC /* DataModel.xcdatamodeld */,
@@ -300,6 +303,7 @@
 				37CC47DF1B9C2E7800262292 /* CountriesAndGenres.swift in Sources */,
 				37BE2A641B96794200BA6C2B /* FloatRatingView.swift in Sources */,
 				37BABF4C1B92C11D00E6E6EE /* SearchViewController.swift in Sources */,
+				37EB4BB21B9E9181002B565D /* Film.swift in Sources */,
 				37BE2A5B1B96701900BA6C2B /* MovieListViewController.swift in Sources */,
 				3750EC771B96B5EF00CACE69 /* UIImageView+DownloadImage.swift in Sources */,
 				37CC47D51B9BC9D900262292 /* UIImage+Resize.swift in Sources */,

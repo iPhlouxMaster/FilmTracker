@@ -10,7 +10,7 @@ import UIKit
 
 class Movie {
     
-    enum Status {
+    enum Status: Int {
         case watched
         case watching
         case wantToWatch
@@ -31,19 +31,20 @@ class Movie {
     
     var title = ""
     var id = 0
-    var releaseDate = ""
-    var posterAddress = ""
-    var directors = [String]()
-    var genres = [String]()
-    var productionCountries = [String]()
-    var tmdbRating = 0.0 as Float
-    var yourRating = 0.0 as Float
-    var overview = ""
+    var watchStatus = Status.other
+    
+    var releaseDate: NSDate?
+    var posterAddress: String?
+    var directors: [String]?
+    var genres: [String]?
+    var productionCountries: [String]?
+    var tmdbRating: Float?
+    var yourRating: Float?
+    var overview: String?
     var w92Poster: UIImage?
     var w300Poster: UIImage?
-    var imdbID = ""
+    var imdbID: String?
     var lastUpdateDate: NSDate?
-    var watchStatus = Status.other
     var watchedDate: NSDate?
     var comments: String?
     
@@ -57,18 +58,86 @@ class Movie {
         }
     }
     
+    func convertDateToString(date: NSDate) -> String {
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+        return formatter.stringFromDate(date)
+    }
+    
     func getURLWithType(type: URLType) -> NSURL {
         var url = ""
         switch type {
         case .posterW92:
-            url = String(format: "http://image.tmdb.org/t/p/w92%@&api_key=%@", posterAddress, Constants.kFTAPIKey)
+            url = String(format: "http://image.tmdb.org/t/p/w92%@&api_key=%@", posterAddress!, Constants.kFTAPIKey)
         case .posterW300:
-            url = String(format: "http://image.tmdb.org/t/p/w300%@&api_key=%@", posterAddress, Constants.kFTAPIKey)
+            url = String(format: "http://image.tmdb.org/t/p/w300%@&api_key=%@", posterAddress!, Constants.kFTAPIKey)
         case .movieDetails:
             url = String(format: "https://api.themoviedb.org/3/movie/%d?api_key=%@", id, Constants.kFTAPIKey)
         case .movieCredits:
             url = String(format: "https://api.themoviedb.org/3/movie/%d/credits?api_key=%@", id, Constants.kFTAPIKey)
         }
         return NSURL(string: url)!
+    }
+    
+    func convertToFilmObject(film: Film) {
+        film.title = title
+        film.id = id
+        film.watchStatus = watchStatus.rawValue
+        
+        if let releaseDate = releaseDate {
+            film.releaseDate = releaseDate
+        }
+        
+        if let posterAddress = posterAddress {
+            film.posterAddress = posterAddress
+        }
+        
+        if let directors = directors {
+            film.directors = directors
+        }
+        
+        if let genres = genres {
+            film.genres = genres
+        }
+        
+        if let countries = productionCountries {
+            film.productionCountries = countries
+        }
+        
+        if let tmdbRating = tmdbRating {
+            film.tmdbRating = tmdbRating
+        }
+        
+        if let yourRating = yourRating {
+            film.yourRating = yourRating
+        }
+        
+        if let overview = overview {
+            film.overview = overview
+        }
+        
+        if let w92Poster = w92Poster {
+            film.w92Poster = UIImageJPEGRepresentation(w92Poster, 1.0)
+        }
+        
+        if let w300Poster = w300Poster {
+            film.w300Poster = UIImageJPEGRepresentation(w300Poster, 1.0)
+        }
+        
+        if let imdbID = imdbID {
+            film.imdbID = imdbID
+        }
+        
+        if let lastUpdateDate = lastUpdateDate {
+            film.lastUpdateDate = lastUpdateDate
+        }
+        
+        if let watchedDate = watchedDate {
+            film.watchedDate = watchedDate
+        }
+        
+        if let comments = comments {
+            film.comments = comments
+        }
     }
 }

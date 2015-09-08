@@ -154,8 +154,8 @@ class EditTitleViewController: UITableViewController {
             }
         case (3, 1):
             if let movie = movieToEdit {
-                if !movie.imdbID.isEmpty {
-                    let url = NSURL(string: String(format: "http://www.imdb.com/title/%@", movie.imdbID))
+                if let imdbID = movie.imdbID {
+                    let url = NSURL(string: String(format: "http://www.imdb.com/title/%@", imdbID))
                     UIApplication.sharedApplication().openURL(url!)
                 }
             }
@@ -176,8 +176,8 @@ class EditTitleViewController: UITableViewController {
                 let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 216))
                 datePicker.datePickerMode = .Date
                 if let movie = movieToEdit {
-                    if !movie.releaseDate.isEmpty {
-                        datePicker.date = movie.convertStringToDate(movie.releaseDate)!
+                    if let releaseDate = movie.releaseDate {
+                        datePicker.date = releaseDate
                     } else {
                         datePicker.date = NSDate()
                     }
@@ -244,7 +244,8 @@ class EditTitleViewController: UITableViewController {
                 watchedDateTitleLabel.hidden = false
                 watchDateLabel.hidden = false
                 let date = NSDate()
-                watchDateLabel.text = convertDateToString(date)
+                let movie = Movie()
+                watchDateLabel.text = movie.convertDateToString(date)
                 return 44
             } else {
                 watchedDateTitleLabel.hidden = true
@@ -286,7 +287,7 @@ class EditTitleViewController: UITableViewController {
                 self.editing = false
                 self.releaseDateLabel.text = "Tap to add"
                 if let movie = self.movieToEdit {
-                    movie.releaseDate = ""
+                    movie.releaseDate = nil
                 }
                 
                 if self.isEditingReleaseDate {
@@ -313,20 +314,20 @@ class EditTitleViewController: UITableViewController {
         
         movieTitleTextField.text = movie.title
         
-        if !movie.directors.isEmpty {
-            directorsTextField.text = ", ".join(movie.directors)
+        if let directors = movie.directors {
+            directorsTextField.text = ", ".join(directors)
         }
         
-        if !movie.productionCountries.isEmpty {
-            countriesLabel.text = ", ".join(movie.productionCountries)
+        if let countries = movie.productionCountries {
+            countriesLabel.text = ", ".join(countries)
         }
         
-        if !movie.releaseDate.isEmpty {
-            releaseDateLabel.text = movie.releaseDate
+        if let genres = movie.genres {
+            genreLabel.text = ", ".join(genres)
         }
         
-        if !movie.genres.isEmpty {
-            genreLabel.text = ", ".join(movie.genres)
+        if let releaseDate = movie.releaseDate {
+            releaseDateLabel.text = movie.convertDateToString(releaseDate)
         }
         
         tmdbFloatRatingView.delegate = self
@@ -337,8 +338,13 @@ class EditTitleViewController: UITableViewController {
         tmdbFloatRatingView.minRating = 1
         tmdbFloatRatingView.editable = false
         tmdbFloatRatingView.floatRatings = true
-        tmdbFloatRatingView.rating = movie.tmdbRating
-        tmdbRatingLabel.text = String(format: "%.1f/10.0", movie.tmdbRating)
+        if let tmdbRating = movie.tmdbRating {
+            tmdbFloatRatingView.rating = tmdbRating
+            tmdbRatingLabel.text = String(format: "%.1f/10.0", tmdbRating)
+        } else {
+            tmdbFloatRatingView.rating = 0.0
+            tmdbRatingLabel.text = "0.0/10.0"
+        }
         
         yourRatingFloatRatingView.delegate = self
         yourRatingFloatRatingView.emptyImage = UIImage(named: "StarEmpty")
@@ -348,8 +354,14 @@ class EditTitleViewController: UITableViewController {
         yourRatingFloatRatingView.minRating = 1
         yourRatingFloatRatingView.editable = true
         yourRatingFloatRatingView.floatRatings = true
-        yourRatingFloatRatingView.rating = movie.yourRating
-        yourRatingLabel.text = String(format: "%.1f/10.0", movie.yourRating)
+        
+        if let yourRating = movie.yourRating {
+            yourRatingFloatRatingView.rating = yourRating
+            yourRatingLabel.text = String(format: "%.1f/10.0", yourRating)
+        } else {
+            yourRatingFloatRatingView.rating = 0.0
+            yourRatingLabel.text = "0.0/10.0"
+        }
         
         watchStatusLabel.text = configureWatchStatusLabel(movie.watchStatus)
         
@@ -380,22 +392,16 @@ class EditTitleViewController: UITableViewController {
     
     func releaseDateChanged(datePicker: UIDatePicker) {
         if let movie = movieToEdit {
-            movie.releaseDate = convertDateToString(datePicker.date)
-            releaseDateLabel.text = movie.releaseDate
+            movie.releaseDate = datePicker.date
+            releaseDateLabel.text = movie.convertDateToString(movie.releaseDate!)
         }
     }
     
     func watchedDateChanged(datePicker: UIDatePicker) {
         if let movie = movieToEdit {
             movie.watchedDate = datePicker.date
-            watchDateLabel.text = convertDateToString(movie.watchedDate!)
+            watchDateLabel.text = movie.convertDateToString(movie.watchedDate!)
         }
-    }
-    
-    func convertDateToString(date: NSDate) -> String {
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.stringFromDate(date)
     }
     
     func hideKeyboard(gestureRecognizer: UIGestureRecognizer) {
@@ -488,7 +494,7 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
         var alertActionTitle = ""
         
         if let movie = movieToEdit {
-            if movie.id > 0 && !movie.posterAddress.isEmpty {
+            if movie.id > 0 && movie.posterAddress != nil {
                 let onlineRequest = UIAlertAction(title: "Request from TMDB", style: .Default, handler: {
                     _ in
                     self.requestPosterFromTMDB(self.imageView, movie: movie)
@@ -606,15 +612,17 @@ extension EditTitleViewController: PickerViewControllerDelegate {
     func pickerViewControllerDidPickItems(controller: PickerViewController, items: [String], isPickingCountries: Bool) {
         if isPickingCountries {
             if let movie = movieToEdit {
-                movie.productionCountries = items
-                countriesLabel.text = ", ".join(movie.productionCountries)
-                tableView.reloadData()
+                if let countries = movie.genres {
+                    countriesLabel.text = ", ".join(countries)
+                    tableView.reloadData()
+                }
             }
         } else {
             if let movie = movieToEdit {
-                movie.genres = items
-                genreLabel.text = ", ".join(movie.genres)
-                tableView.reloadData()
+                if let genres = movie.genres {
+                    genreLabel.text = ", ".join(genres)
+                    tableView.reloadData()
+                }
             }
         }
         navigationController!.popViewControllerAnimated(true)
