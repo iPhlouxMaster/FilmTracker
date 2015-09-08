@@ -38,6 +38,7 @@ class Film: NSManagedObject {
         movie.title = title
         movie.id = id as Int
         movie.watchStatus = Movie.Status(rawValue: Int(watchStatus))!
+        movie.film = self
 
         if let posterAddress = posterAddress {
             movie.posterAddress = posterAddress

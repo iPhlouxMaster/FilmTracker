@@ -17,8 +17,6 @@ class Search {
         case Results([Movie])
     }
     
-    var genres = Set<String>()
-    
     private(set) var state: State = .NotSearchedYet
     typealias SearchComplete = (Bool) -> Void
     private var dataTask: NSURLSessionDataTask?

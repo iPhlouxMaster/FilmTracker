@@ -40,6 +40,7 @@ class EditTitleViewController: UITableViewController {
     @IBOutlet weak var watchDateLabel: UILabel!
     @IBOutlet weak var watchedDateTitleLabel: UILabel!
     @IBOutlet weak var commentsTextView: UITextView!
+    @IBOutlet weak var doneBarButton: UIBarButtonItem!
 
     @IBAction func cancelButtonPressed(sender: UIBarButtonItem) {
         delegate?.editTitleViewControllerDidCancel(self)
@@ -608,6 +609,8 @@ extension EditTitleViewController: UITextViewDelegate {
     }
 }
 
+// MARK: - PickerViewControllerDelegate
+
 extension EditTitleViewController: PickerViewControllerDelegate {
     func pickerViewControllerDidPickItems(controller: PickerViewController, items: [String], isPickingCountries: Bool) {
         if isPickingCountries {
@@ -626,5 +629,17 @@ extension EditTitleViewController: PickerViewControllerDelegate {
             }
         }
         navigationController!.popViewControllerAnimated(true)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension EditTitleViewController: UITextFieldDelegate {
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let oldText: NSString = textField.text
+        let newText: NSString = oldText.stringByReplacingCharactersInRange(range, withString: string)
+        
+        doneBarButton.enabled = (newText.length > 0)
+        return true
     }
 }

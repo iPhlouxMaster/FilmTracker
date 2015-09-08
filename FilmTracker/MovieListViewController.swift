@@ -39,7 +39,6 @@ class MovieListViewController: UIViewController {
         tableView.registerNib(cellNib, forCellReuseIdentifier: "SearchResultCell")
         tableView.rowHeight = 140
     }
-    
 }
 
 extension MovieListViewController: UITableViewDelegate {

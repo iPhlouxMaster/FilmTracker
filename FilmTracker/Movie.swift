@@ -48,6 +48,8 @@ class Movie {
     var watchedDate: NSDate?
     var comments: String?
     
+    var film: Film?
+    
     func convertStringToDate(dateString: String) -> NSDate? {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"

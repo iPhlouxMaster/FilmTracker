@@ -651,6 +651,9 @@
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="bK2-DV-m53" id="iN3-q4-h4q"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1072,6 +1075,7 @@
                         <outlet property="commentsTextView" destination="6JF-Gw-2oU" id="Mg2-Mc-dOr"/>
                         <outlet property="countriesLabel" destination="Jjv-HS-5bL" id="rrr-Fj-ZUE"/>
                         <outlet property="directorsTextField" destination="OWa-xX-Iu5" id="Ggj-9J-JTh"/>
+                        <outlet property="doneBarButton" destination="N0K-ba-OU6" id="34A-oa-3xs"/>
                         <outlet property="genreLabel" destination="UUV-Ll-OlE" id="RCV-QZ-lif"/>
                         <outlet property="imageLabel" destination="gqD-5b-6vV" id="AuG-NO-LAs"/>
                         <outlet property="imageView" destination="qi7-Z5-haS" id="EO6-g0-P59"/>
