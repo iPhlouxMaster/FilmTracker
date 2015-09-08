@@ -173,7 +173,6 @@ class DetailViewController: UIViewController {
             tmdbRatingLabel.text = "0.0/10.0"
         }
         
-        
         yourRatingView.delegate = self
         yourRatingView.emptyImage = UIImage(named: "StarEmpty")
         yourRatingView.fullImage = UIImage(named: "StarFull")
@@ -232,6 +231,7 @@ class DetailViewController: UIViewController {
         let selectWantToWatchAction = UIAlertAction(title: "I wanna watch", style: .Default, handler: {
             _ in
             self.movie.watchStatus = .wantToWatch
+            self.saveMovieObject(self.movie)
             self.dismissViewControllerAnimated(true, completion: nil)
         })
         alertController.addAction(selectWantToWatchAction)
@@ -239,6 +239,7 @@ class DetailViewController: UIViewController {
         let selectWatchingAction = UIAlertAction(title: "I'm watching", style: .Default, handler: {
             _ in
             self.movie.watchStatus = .watching
+            self.saveMovieObject(self.movie)
             self.dismissViewControllerAnimated(true, completion: nil)
         })
         alertController.addAction(selectWatchingAction)
@@ -246,6 +247,7 @@ class DetailViewController: UIViewController {
         let selectWatchedAction = UIAlertAction(title: "I've watched", style: .Default, handler: {
             _ in
             self.movie.watchStatus = .watched
+            self.saveMovieObject(self.movie)
             self.dismissViewControllerAnimated(true, completion: nil)
         })
         alertController.addAction(selectWatchedAction)
@@ -290,6 +292,18 @@ class DetailViewController: UIViewController {
         }
     }
     
+    func saveMovieObject(movieToSave: Movie) {
+        var film = NSEntityDescription.insertNewObjectForEntityForName("Film", inManagedObjectContext: managedObjectContext) as! Film
+        movieToSave.convertToFilmObject(film)
+        
+        var error: NSError?
+        if !managedObjectContext.save(&error) {
+            fatalCoreDataError(error)
+            return
+        }
+        
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "EditTitle" {
             let navigationController = segue.destinationViewController as! UINavigationController
@@ -329,6 +343,7 @@ extension DetailViewController: EditTitleViewControllerDelegate {
     }
     
     func editTitleViewControllerDidFinishEditingMovieTitle(controller: EditTitleViewController, movieTitle: Movie) {
+        saveMovieObject(movieTitle)
         dismissViewControllerAnimated(true, completion: {
             self.dismissViewControllerAnimated(true, completion: nil)
         })

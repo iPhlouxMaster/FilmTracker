@@ -31,6 +31,8 @@ class Film: NSManagedObject {
     @NSManaged var watchedDate: NSDate?
     @NSManaged var comments: String?
     
+    // Search Results are Movie objects, it's necessary to convert the Movie object to Film object for storing in Core Data
+    
     func convertToMovieObject(movie: Movie) {
         
         movie.title = title
