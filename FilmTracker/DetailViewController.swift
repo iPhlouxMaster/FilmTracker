@@ -293,8 +293,16 @@ class DetailViewController: UIViewController {
     }
     
     func saveMovieObject(movieToSave: Movie) {
-        var film = NSEntityDescription.insertNewObjectForEntityForName("Film", inManagedObjectContext: managedObjectContext) as! Film
+        var film: Film
+        
+        if let filmToSave = movieToSave.film {
+            film = filmToSave
+        } else {
+            film = NSEntityDescription.insertNewObjectForEntityForName("Film", inManagedObjectContext: managedObjectContext) as! Film
+        }
+        
         movieToSave.convertToFilmObject(film)
+        movieToSave.film = film
         
         var error: NSError?
         if !managedObjectContext.save(&error) {

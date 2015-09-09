@@ -11,8 +11,20 @@ import CoreData
 
 class SearchViewController: UIViewController {
     
-    var managedObjectContext: NSManagedObjectContext!
+    // Set KVO to monitor if any managedObject changed, fetch the objects for the performSearch() and reload data.
+    
+    var managedObjectContext: NSManagedObjectContext! {
+        didSet {
+            NSNotificationCenter.defaultCenter().addObserverForName(NSManagedObjectContextObjectsDidChangeNotification, object: nil, queue: NSOperationQueue.mainQueue()) { notification in
+                if self.isViewLoaded() {
+                    self.performFetch()
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
     let search = Search()
+    var films = [Film]()
     
     struct TableViewCellIdentifiers {
         static let searchResultCell = "SearchResultCell"
@@ -40,11 +52,29 @@ class SearchViewController: UIViewController {
         tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.nothingFoundCell)
         cellNib = UINib(nibName: TableViewCellIdentifiers.loadingCell, bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.loadingCell)
+  
+        performFetch()
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func performFetch() {
+        let fetchRequest = NSFetchRequest()
+        let entity = NSEntityDescription.entityForName("Film", inManagedObjectContext: managedObjectContext)
+        fetchRequest.entity = entity
+        
+        var error: NSError?
+        let foundObjects = managedObjectContext.executeFetchRequest(fetchRequest, error: &error)
+        if foundObjects == nil {
+            fatalCoreDataError(error)
+            return
+        }
+        
+        films = foundObjects as! [Film]
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -79,8 +109,9 @@ extension SearchViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch search.state {
         case .Results(let results):
-            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
+            var cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
             cell.configureForSearchResult(results[indexPath.row])
+            
             return cell
         case .Loading:
             let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.loadingCell, forIndexPath: indexPath) as! UITableViewCell
@@ -127,7 +158,10 @@ extension SearchViewController: UISearchBarDelegate {
     }
     
     func performSearch() {
-        search.performSearchForText(searchBar.text, type: segmentedControl.selectedSegmentIndex, completion: { success in
+        
+        // If the film exists, read the film object instead of the movie while they have the save id.
+        
+        search.performSearchForText(searchBar.text, type: segmentedControl.selectedSegmentIndex, films: films, completion: { success in
             if !success {
                 println("*** performSearchForText error")
             }

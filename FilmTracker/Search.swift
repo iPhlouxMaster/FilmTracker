@@ -10,6 +10,8 @@ import UIKit
 
 class Search {
     
+    var films: [Film]?
+    
     enum State {
         case NotSearchedYet
         case Loading
@@ -21,9 +23,13 @@ class Search {
     typealias SearchComplete = (Bool) -> Void
     private var dataTask: NSURLSessionDataTask?
     
-    func performSearchForText(text: String, type: Int, completion: SearchComplete) {
+    func performSearchForText(text: String, type: Int, films: [Film]?, completion: SearchComplete) {
         if !text.isEmpty {
             dataTask?.cancel()
+            
+            if let films = films {
+                self.films = films
+            }
             
             state = .Loading
             
@@ -41,8 +47,8 @@ class Search {
                 self.state = .Loading
                 
                 if let error = error {
-                    println("Failure! \(error)")
-                    if error.code == -999 { return }
+                    println("*** Failure! \(error)")
+                    // if error.code == -999 { return }
                 } else if let httpResponse = response as? NSHTTPURLResponse {
                     if httpResponse.statusCode == 200 {
                         if let dictionary = self.parseJSON(data) {
@@ -116,25 +122,52 @@ class Search {
     private func parseMovie(dictionary: [String : AnyObject]) -> Movie {
         var movie = Movie()
         
-        movie.title = dictionary["title"] as! String
         movie.id = dictionary["id"] as! Int
         
-        if let tmdbRating = dictionary["vote_average"] as? Float {
-            movie.tmdbRating = tmdbRating
+        if films != nil && films!.count > 0 {
+            for film in films! {
+                if film.id == movie.id {
+                    film.convertToMovieObject(movie)
+                } else {
+                    movie.title = dictionary["title"] as! String
+                    
+                    if let tmdbRating = dictionary["vote_average"] as? Float {
+                        movie.tmdbRating = tmdbRating
+                    }
+                    
+                    if let releaseDate = dictionary["release_date"] as? String {
+                        movie.releaseDate = movie.convertStringToDate(releaseDate)
+                    }
+                    
+                    if let overview = dictionary["overview"] as? String {
+                        movie.overview = overview
+                    }
+                    
+                    if let posterAddress = dictionary["poster_path"] as? String {
+                        movie.posterAddress = posterAddress
+                    }
+                }
+            }
+        } else {
+            movie.title = dictionary["title"] as! String
+            
+            if let tmdbRating = dictionary["vote_average"] as? Float {
+                movie.tmdbRating = tmdbRating
+            }
+            
+            if let releaseDate = dictionary["release_date"] as? String {
+                movie.releaseDate = movie.convertStringToDate(releaseDate)
+            }
+            
+            if let overview = dictionary["overview"] as? String {
+                movie.overview = overview
+            }
+            
+            if let posterAddress = dictionary["poster_path"] as? String {
+                movie.posterAddress = posterAddress
+            }
         }
-        
-        if let releaseDate = dictionary["release_date"] as? String {
-            movie.releaseDate = movie.convertStringToDate(releaseDate)
-        }
-        
-        if let overview = dictionary["overview"] as? String {
-            movie.overview = overview
-        }
-        
-        if let posterAddress = dictionary["poster_path"] as? String {
-            movie.posterAddress = posterAddress
-        }
-        
+    
         return movie
     }
 

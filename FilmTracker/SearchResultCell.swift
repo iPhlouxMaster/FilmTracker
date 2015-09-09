@@ -73,6 +73,12 @@ class SearchResultCell: UITableViewCell {
                 posterImageView.image = UIImage(named: "no-poster.jpeg")
             }
         }
+        
+        if let film = movie.film {
+            contentView.backgroundColor = UIColor.lightGrayColor()
+        } else {
+            contentView.backgroundColor = UIColor.clearColor()
+        }
     }
 
     override func prepareForReuse() {
