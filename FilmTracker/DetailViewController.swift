@@ -26,16 +26,18 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var genresLabel: UILabel!
     @IBOutlet weak var yourRatingLabel: UILabel!
     @IBOutlet weak var tmdbRatingLabel: UILabel!
+    @IBOutlet weak var tmdbRatingTitleLabel: UILabel!
     @IBOutlet weak var overviewTextView: UITextView!
+    @IBOutlet weak var overviewTitleLabel: UILabel!
     @IBOutlet weak var tmdbRatingView: FloatRatingView!
     @IBOutlet weak var yourRatingView: FloatRatingView!
-    
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var saveTitleButton: UIButton!
     @IBOutlet weak var showTMDBPageButton: UIButton!
     @IBOutlet weak var showIMDBPageButton: UIButton!
     @IBOutlet weak var editTitleButton: UIButton!
     @IBOutlet weak var watchStatusLabel: UILabel!
+    
     
     //MARK: - IBActions
     
@@ -170,23 +172,35 @@ class DetailViewController: UIViewController {
         }
         
         overviewTextView.scrollRangeToVisible(NSMakeRange(0, 1))
-        overviewTextView.text = movie.overview
+        
+        if movie.id > 0 {
+            overviewTextView.text = movie.overview
+        } else {
+            overviewTitleLabel.text = "Comments:"
+            overviewTextView.text = movie.comments
+        }
         
     }
     
     func configureFloatRatingView() {
-        tmdbRatingView.delegate = self
-        tmdbRatingView.emptyImage = UIImage(named: "StarEmpty")
-        tmdbRatingView.fullImage = UIImage(named: "StarFull")
-        tmdbRatingView.contentMode = UIViewContentMode.ScaleAspectFit
-        tmdbRatingView.maxRating = 10
-        tmdbRatingView.minRating = 1
-        tmdbRatingView.editable = false
-        tmdbRatingView.floatRatings = true
-        if let tmdbRating = movie.tmdbRating {
-            tmdbRatingLabel.text = String(format: "%.1f/10.0", tmdbRating)
+        if movie.id > 0 {
+            tmdbRatingView.delegate = self
+            tmdbRatingView.emptyImage = UIImage(named: "StarEmpty")
+            tmdbRatingView.fullImage = UIImage(named: "StarFull")
+            tmdbRatingView.contentMode = UIViewContentMode.ScaleAspectFit
+            tmdbRatingView.maxRating = 10
+            tmdbRatingView.minRating = 1
+            tmdbRatingView.editable = false
+            tmdbRatingView.floatRatings = true
+            if let tmdbRating = movie.tmdbRating {
+                tmdbRatingLabel.text = String(format: "%.1f/10.0", tmdbRating)
+            } else {
+                tmdbRatingLabel.text = "0.0/10.0"
+            }
         } else {
-            tmdbRatingLabel.text = "0.0/10.0"
+            tmdbRatingLabel.hidden = true
+            tmdbRatingView.hidden = true
+            tmdbRatingTitleLabel.hidden = true
         }
         
         yourRatingView.delegate = self
@@ -335,14 +349,14 @@ class DetailViewController: UIViewController {
             fatalCoreDataError(error)
             return
         }
-        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "EditTitle" {
             let navigationController = segue.destinationViewController as! UINavigationController
             let controller = navigationController.viewControllers[0] as! EditTitleViewController
-            controller.movieToEdit = movie
+            controller.movie = movie
+            controller.isEditingMovie = true
             controller.delegate = self
         }
     }

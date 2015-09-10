@@ -12,7 +12,6 @@ import CoreData
 class MovieListViewController: UIViewController {
     
     var managedObjectContext: NSManagedObjectContext!
-    var films = [Film]()
     lazy var fetchedResultsController: NSFetchedResultsController = {
         let fetchRequest = NSFetchRequest()
         
@@ -29,6 +28,9 @@ class MovieListViewController: UIViewController {
         return fetchedResultsController
     }()
     
+    @IBAction func addButtenPressed(sender: UIBarButtonItem) {
+        performSegueWithIdentifier("AddMovie", sender: nil)
+    }
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -68,9 +70,20 @@ class MovieListViewController: UIViewController {
             film.convertToMovieObject(movie)
             controller.movie = movie
             controller.managedObjectContext = managedObjectContext
+        } else if segue.identifier == "AddMovie" {
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let controller = navigationController.viewControllers[0] as! EditTitleViewController
+            var movie = Movie()
+            movie.id = Movie.nextMovieID()
+            controller.movie = movie
+            controller.isEditingMovie = false
+            controller.delegate = self
+            controller.title = "Add Title"
         }
     }
 }
+
+// MARK: - UITableView Delegate / Data Source
 
 extension MovieListViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -95,6 +108,8 @@ extension MovieListViewController: UITableViewDataSource {
         return cell
     }
 }
+
+// MARK: - NSFetchedResultsControllerDelegate
 
 extension MovieListViewController: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
@@ -143,6 +158,26 @@ extension MovieListViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         println("*** controllerDidChangeContent")
         tableView.endUpdates()
+    }
+}
+
+extension MovieListViewController: EditTitleViewControllerDelegate {
+    func editTitleViewControllerDidCancel(controller: EditTitleViewController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func editTitleViewControllerDidFinishEditingMovieTitle(controller: EditTitleViewController, movieTitle: Movie) {
+        var film = NSEntityDescription.insertNewObjectForEntityForName("Film", inManagedObjectContext: managedObjectContext) as! Film
+        
+        movieTitle.convertToFilmObject(film)
+        movieTitle.film = film
+        
+        var error: NSError?
+        if !managedObjectContext.save(&error) {
+            fatalCoreDataError(error)
+            return
+        }
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }
 

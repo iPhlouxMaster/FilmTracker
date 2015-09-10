@@ -103,6 +103,7 @@ class PickerViewController: UITableViewController {
             _ in
             let textField = addElementAlert.textFields![0] as! UITextField
             self.addElement(textField.text)
+            self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: self.numberOfItems - 1, inSection: 0), atScrollPosition: .Top, animated: true)
         })
         
         addElementAlert.addAction(cancelAction)
@@ -151,7 +152,6 @@ class PickerViewController: UITableViewController {
                     isSelected[index] = true
                 }
             }
-            
         } else {
             for (index, genre) in enumerate(genreList) {
                 if contains(genresArray!, genre) {

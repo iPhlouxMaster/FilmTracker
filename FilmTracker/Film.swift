@@ -96,5 +96,4 @@ class Film: NSManagedObject {
             movie.lastUpdateDate = lastUpdateDate
         }
     }
-
 }

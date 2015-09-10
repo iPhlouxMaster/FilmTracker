@@ -142,4 +142,12 @@ class Movie {
             film.comments = comments
         }
     }
+    
+    class func nextMovieID() -> Int {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let currentID = userDefaults.integerForKey("MovieID")
+        userDefaults.setInteger(currentID - 1, forKey: "Movie")
+        userDefaults.synchronize()
+        return currentID
+    }
 }
