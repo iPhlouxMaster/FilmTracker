@@ -45,7 +45,7 @@ class PickerViewController: UITableViewController {
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(observer)
-        println("*** PickerViewController deinited")
+        print("*** PickerViewController deinited")
     }
     
     // MARK: - KVO
@@ -65,7 +65,7 @@ class PickerViewController: UITableViewController {
     
     func doneButtonPressed(sender: UIButton) {
         var selectedElements = [String]()
-        for (index, selectedIndex) in enumerate(isSelected) {
+        for (index, selectedIndex) in isSelected.enumerate() {
             if selectedIndex {
                 if isPickingCountries {
                     selectedElements.append(countryList[index])
@@ -74,7 +74,7 @@ class PickerViewController: UITableViewController {
                 }
             }
         }
-        selectedElements = sorted(selectedElements)
+        selectedElements = selectedElements.sort()
         
         if let delegate = delegate {
             delegate.pickerViewControllerDidPickItems(self, items: selectedElements, isPickingCountries: isPickingCountries)
@@ -101,8 +101,8 @@ class PickerViewController: UITableViewController {
         
         let addAction = UIAlertAction(title: "Add", style: .Default, handler: {
             _ in
-            let textField = addElementAlert.textFields![0] as! UITextField
-            self.addElement(textField.text)
+            let textField = addElementAlert.textFields![0]
+            self.addElement(textField.text!)
             self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: self.numberOfItems - 1, inSection: 0), atScrollPosition: .Top, animated: true)
         })
         
@@ -115,7 +115,7 @@ class PickerViewController: UITableViewController {
     // MARK: - Helper Methods
     
     func configureBarButtonItems() {
-        var rightDoneBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .Done, target: self, action: "doneButtonPressed:")
+        let rightDoneBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .Done, target: self, action: "doneButtonPressed:")
         
         var buttonTitle = ""
         if isPickingCountries {
@@ -126,7 +126,7 @@ class PickerViewController: UITableViewController {
             buttonTitle = "Add Genre"
         }
         
-        var rightAddBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: buttonTitle, style: .Plain, target: self, action: "addButtonPressed:")
+        let rightAddBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: buttonTitle, style: .Plain, target: self, action: "addButtonPressed:")
         
         navigationItem.setRightBarButtonItems([rightDoneBarButtonItem, rightAddBarButtonItem], animated: false)
     }
@@ -135,11 +135,11 @@ class PickerViewController: UITableViewController {
         
         if isPickingCountries {
             countryList = userDefault.valueForKey("CountryList") as! [String]
-            countryList = sorted(countryList)
+            countryList = countryList.sort()
             numberOfItems = countryList.count
         } else {
             genreList = userDefault.valueForKey("GenreList") as! [String]
-            genreList = sorted(genreList)
+            genreList = genreList.sort()
             numberOfItems = genreList.count
         }
         
@@ -147,14 +147,14 @@ class PickerViewController: UITableViewController {
         
         if isPickingCountries {
             
-            for (index, country) in enumerate(countryList) {
-                if contains(countriesArray!, country) {
+            for (index, country) in countryList.enumerate() {
+                if countriesArray!.contains(country) {
                     isSelected[index] = true
                 }
             }
         } else {
-            for (index, genre) in enumerate(genreList) {
-                if contains(genresArray!, genre) {
+            for (index, genre) in genreList.enumerate() {
+                if genresArray!.contains(genre) {
                     isSelected[index] = true
                 }
             }
@@ -163,24 +163,24 @@ class PickerViewController: UITableViewController {
     
     func addElement(element: String) {
         if isPickingCountries {
-            if !contains(countryList, element) {
+            if !countryList.contains(element) {
                 countryList.append(element)
                 isSelected.append(true)
                 numberOfItems++
                 userDefault.setObject(countryList, forKey: "CountryList")
                 userDefault.synchronize()
             } else {
-                isSelected[find(countryList, element)!] = true
+                isSelected[countryList.indexOf(element)!] = true
             }
         } else {
-            if !contains(genreList, element) {
+            if !genreList.contains(element) {
                 genreList.append(element)
                 isSelected.append(true)
                 numberOfItems++
                 userDefault.setObject(genreList, forKey: "GenreList")
                 userDefault.synchronize()
             } else {
-                isSelected[find(genreList, element)!] = true
+                isSelected[genreList.indexOf(element)!] = true
             }
         }
         tableView.reloadData()
@@ -189,20 +189,20 @@ class PickerViewController: UITableViewController {
     // MARK: - TableView Delegate / Data Source
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("PickerCell") as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("PickerCell")
         if isPickingCountries {
-            cell.textLabel!.text = countryList[indexPath.row]
+            cell!.textLabel!.text = countryList[indexPath.row]
         } else {
-            cell.textLabel!.text = genreList[indexPath.row]
+            cell!.textLabel!.text = genreList[indexPath.row]
         }
         
         if isSelected[indexPath.row] {
-            cell.accessoryType = .Checkmark
+            cell!.accessoryType = .Checkmark
         } else {
-            cell.accessoryType = .None
+            cell!.accessoryType = .None
         }
         
-        return cell
+        return cell!
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

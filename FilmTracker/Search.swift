@@ -47,12 +47,12 @@ class Search {
                 self.state = .Loading
                 
                 if let error = error {
-                    println("*** Failure! \(error)")
+                    print("*** Failure! \(error)")
                     // if error.code == -999 { return }
                 } else if let httpResponse = response as? NSHTTPURLResponse {
                     if httpResponse.statusCode == 200 {
-                        if let dictionary = self.parseJSON(data) {
-                            var searchResults = self.parseDictionary(dictionary, type: type)
+                        if let dictionary = self.parseJSON(data!) {
+                            let searchResults = self.parseDictionary(dictionary, type: type)
                             if searchResults.isEmpty {
                                 self.state = .NoResults
                             } else {
@@ -72,13 +72,12 @@ class Search {
     }
     
     func parseJSON(data: NSData) ->[String: AnyObject]? {
-        var error: NSError?
-        if let json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: &error) as? [String: AnyObject] {
+        
+        do {
+            let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0)) as? [String: AnyObject]
             return json
-        } else if let error = error {
-            println("*** Parsing JSON Error \(error)")
-        } else {
-            println("*** Unknown Parsing JSON Error")
+        } catch let error as NSError {
+            print("*** Parsing JSON Error \(error)")
         }
         return nil
     }
@@ -120,7 +119,7 @@ class Search {
     }
     
     private func parseMovie(dictionary: [String : AnyObject]) -> Movie {
-        var movie = Movie()
+        let movie = Movie()
         
         movie.id = dictionary["id"] as! Int
         
@@ -183,8 +182,8 @@ class Search {
             fatalError("*** A bug here!")
         }
         
-        let escapedSearchText = searchText.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-        let urlString = String(format: "https://api.themoviedb.org/3/search/%@?api_key=%@&search_type=ngram&query=%@", movieType, Constants.kFTAPIKey , escapedSearchText)
+        let escapedSearchText = "search"
+        let urlString = String(format: "https://api.themoviedb.org/3/search/%@?api_key=%@&query=%@", movieType, Constants.kFTAPIKey , escapedSearchText)
         let url = NSURL(string: urlString)
         return url!
     }

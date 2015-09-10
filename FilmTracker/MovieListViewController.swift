@@ -37,27 +37,30 @@ class MovieListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let fetchRequest = NSFetchRequest()
-        let entity = NSEntityDescription.entityForName("Film", inManagedObjectContext: managedObjectContext)
-        fetchRequest.entity = entity
-        
-        var error: NSError?
-        let foundObjects = managedObjectContext.executeFetchRequest(fetchRequest, error: &error)
-        if foundObjects == nil {
-            fatalCoreDataError(error)
-            return
-        }
+//        let fetchRequest = NSFetchRequest()
+//        let entity = NSEntityDescription.entityForName("Film", inManagedObjectContext: managedObjectContext)
+//        fetchRequest.entity = entity
+//        
+//        
+//        
+//        var error: NSError?
+//        let foundObjects = managedObjectContext.executeFetchRequest(fetchRequest, error: &error)
+//        if foundObjects == nil {
+//            fatalCoreDataError(error)
+//            return
+//        }
         
         performFetch()
         
-        var cellNib = UINib(nibName: "SearchResultCell", bundle: nil)
+        let cellNib = UINib(nibName: "SearchResultCell", bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: "SearchResultCell")
         tableView.rowHeight = 140
     }
     
     func performFetch() {
-        var error: NSError?
-        if !fetchedResultsController.performFetch(&error) {
+        do {
+            try fetchedResultsController.performFetch()
+        } catch let error as NSError {
             fatalCoreDataError(error)
         }
     }
@@ -65,15 +68,15 @@ class MovieListViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowFilmDetail" {
             let controller = segue.destinationViewController as! DetailViewController
-            var film = fetchedResultsController.objectAtIndexPath(sender as! NSIndexPath) as! Film
-            var movie = Movie()
+            let film = fetchedResultsController.objectAtIndexPath(sender as! NSIndexPath) as! Film
+            let movie = Movie()
             film.convertToMovieObject(movie)
             controller.movie = movie
             controller.managedObjectContext = managedObjectContext
         } else if segue.identifier == "AddMovie" {
             let navigationController = segue.destinationViewController as! UINavigationController
             let controller = navigationController.viewControllers[0] as! EditTitleViewController
-            var movie = Movie()
+            let movie = Movie()
             movie.id = Movie.nextMovieID()
             controller.movie = movie
             controller.isEditingMovie = false
@@ -94,14 +97,14 @@ extension MovieListViewController: UITableViewDelegate {
 
 extension MovieListViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionInfo = fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
+        let sectionInfo = fetchedResultsController.sections![section]
         return sectionInfo.numberOfObjects
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("SearchResultCell", forIndexPath: indexPath) as! SearchResultCell
         let film = fetchedResultsController.objectAtIndexPath(indexPath) as! Film
-        var movie = Movie()
+        let movie = Movie()
         film.convertToMovieObject(movie)
         cell.configureForSearchResult(movie)
         
@@ -113,28 +116,28 @@ extension MovieListViewController: UITableViewDataSource {
 
 extension MovieListViewController: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        println("*** controllerWillChangeContent")
+        print("*** controllerWillChangeContent")
         tableView.beginUpdates()
     }
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch type {
         case .Insert:
-            println("*** NSFetchedResultsChangeInsert (object)")
+            print("*** NSFetchedResultsChangeInsert (object)")
             tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
         case .Delete:
-            println("*** NSFetchedResultsChangeDelete (object)")
+            print("*** NSFetchedResultsChangeDelete (object)")
             tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
         case .Update:
-            println("*** NSFetchedResultsChangeUpdate (object)")
+            print("*** NSFetchedResultsChangeUpdate (object)")
             if let cell = tableView.cellForRowAtIndexPath(indexPath!) as? SearchResultCell {
                 let film = controller.objectAtIndexPath(indexPath!) as! Film
-                var movie = Movie()
+                let movie = Movie()
                 film.convertToMovieObject(movie)
                 cell.configureForSearchResult(movie)
             }
         case .Move:
-            println("*** NSFetchedResultsChangeMove (object)")
+            print("*** NSFetchedResultsChangeMove (object)")
             tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
             tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
         }
@@ -156,7 +159,7 @@ extension MovieListViewController: NSFetchedResultsControllerDelegate {
 //    }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        println("*** controllerDidChangeContent")
+        print("*** controllerDidChangeContent")
         tableView.endUpdates()
     }
 }
@@ -167,16 +170,18 @@ extension MovieListViewController: EditTitleViewControllerDelegate {
     }
     
     func editTitleViewControllerDidFinishEditingMovieTitle(controller: EditTitleViewController, movieTitle: Movie) {
-        var film = NSEntityDescription.insertNewObjectForEntityForName("Film", inManagedObjectContext: managedObjectContext) as! Film
+        let film = NSEntityDescription.insertNewObjectForEntityForName("Film", inManagedObjectContext: managedObjectContext) as! Film
         
         movieTitle.convertToFilmObject(film)
         movieTitle.film = film
         
-        var error: NSError?
-        if !managedObjectContext.save(&error) {
+        do {
+            try managedObjectContext.save()
+        } catch let error as NSError {
             fatalCoreDataError(error)
             return
         }
+
         dismissViewControllerAnimated(true, completion: nil)
     }
 }

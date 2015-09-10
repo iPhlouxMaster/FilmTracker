@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>2193EF45-D7B3-4949-ABCA-F7016BFB5FC2</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>FilmTracker</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>4FE5203A72421B2C8CA5D23A3BE8653CC7260965</key>
 		<string>https://github.com/rivertea/FilmTracker.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>FilmTracker.xcodeproj/project.xcworkspace</string>
+	<string>FilmTracker.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>4FE5203A72421B2C8CA5D23A3BE8653CC7260965</key>

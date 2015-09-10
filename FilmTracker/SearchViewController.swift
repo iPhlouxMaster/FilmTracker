@@ -68,9 +68,11 @@ class SearchViewController: UIViewController {
         let entity = NSEntityDescription.entityForName("Film", inManagedObjectContext: managedObjectContext)
         fetchRequest.entity = entity
         
-        var error: NSError?
-        let foundObjects = managedObjectContext.executeFetchRequest(fetchRequest, error: &error)
-        if foundObjects == nil {
+        let foundObjects: [AnyObject]
+        
+        do {
+            foundObjects = try managedObjectContext.executeFetchRequest(fetchRequest)
+        } catch let error as NSError {
             fatalCoreDataError(error)
             return
         }
@@ -110,17 +112,17 @@ extension SearchViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch search.state {
         case .Results(let results):
-            var cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
             cell.configureForSearchResult(results[indexPath.row])
             
             return cell
         case .Loading:
-            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.loadingCell, forIndexPath: indexPath) as! UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.loadingCell, forIndexPath: indexPath) 
             let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
             spinner.startAnimating()
             return cell
         case .NoResults:
-            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.nothingFoundCell, forIndexPath: indexPath) as! UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.nothingFoundCell, forIndexPath: indexPath) 
             return cell
         case .NotSearchedYet:
             fatalError("*** You're not supposed to be here.")
@@ -162,9 +164,9 @@ extension SearchViewController: UISearchBarDelegate {
         
         // If the film exists, read the film object instead of the movie while they have the save id.
         
-        search.performSearchForText(searchBar.text, type: segmentedControl.selectedSegmentIndex, films: films, completion: { success in
+        search.performSearchForText(searchBar.text!, type: segmentedControl.selectedSegmentIndex, films: films, completion: { success in
             if !success {
-                println("*** performSearchForText error")
+                print("*** performSearchForText error")
             }
             self.tableView.reloadData()
         })

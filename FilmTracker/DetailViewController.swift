@@ -81,7 +81,7 @@ class DetailViewController: UIViewController {
     // MARK: - Funcs
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         modalPresentationStyle = .Custom
         transitioningDelegate = self
     }
@@ -104,11 +104,11 @@ class DetailViewController: UIViewController {
     deinit {
         imageDownloadTask?.cancel()
         NSNotificationCenter.defaultCenter().removeObserver(observer)
-        println("*** DetailViewController deinited")
+        print("*** DetailViewController deinited")
     }
     
     func configureView() {
-        if let posterAddress = movie.posterAddress {
+        if let _ = movie.posterAddress {
             if let image = movie.w300Poster {
                 posterImageView.image = image
             } else {
@@ -121,13 +121,13 @@ class DetailViewController: UIViewController {
         titleLabel.text = movie.title
         
         if let directors = movie.directors {
-            directorLabel.text = ", ".join(directors)
+            directorLabel.text = directors.joinWithSeparator(", ")
         } else {
             directorLabel.text = "Not Available"
         }
         
         if let countries = movie.productionCountries {
-            productionCountriesLabel.text = ", ".join(countries)
+            productionCountriesLabel.text = countries.joinWithSeparator(", ")
         } else {
             productionCountriesLabel.text = "Not Available"
         }
@@ -151,12 +151,12 @@ class DetailViewController: UIViewController {
         }
         
         if let genres = movie.genres {
-            genresLabel.text = ", ".join(genres)
+            genresLabel.text = genres.joinWithSeparator(", ")
         } else {
             genresLabel.text = "Not Available"
         }
         
-        if let film = movie.film {
+        if let _ = movie.film {
             switch movie.watchStatus {
             case .watching:
                 watchStatusLabel.text = "Watching"
@@ -239,7 +239,7 @@ class DetailViewController: UIViewController {
         editTitleButton.layer.borderWidth = 0.7
         editTitleButton.layer.cornerRadius = 5
         
-        if let film = movie.film {
+        if let _ = movie.film {
             if movie.id > 0 {
                 showTMDBPageButton.hidden = false
                 showTMDBPageButton.backgroundColor = UIColor.clearColor()
@@ -304,7 +304,7 @@ class DetailViewController: UIViewController {
                 var genreList = userDefaults.valueForKey("GenreList") as! [String]
                 let formerGenresCounter = genreList.count
                 for genre in genres {
-                    if !contains(genreList, genre) {
+                    if !genreList.contains(genre) {
                         genreList.append(genre)
                     }
                 }
@@ -319,7 +319,7 @@ class DetailViewController: UIViewController {
                 var countryList = userDefaults.valueForKey("CountryList") as! [String]
                 let formerCountriesCounter = countryList.count
                 for country in countries {
-                    if !contains(countryList, country) {
+                    if !countryList.contains(country) {
                         countryList.append(country)
                     }
                 }
@@ -344,11 +344,13 @@ class DetailViewController: UIViewController {
         movieToSave.convertToFilmObject(film)
         movieToSave.film = film
         
-        var error: NSError?
-        if !managedObjectContext.save(&error) {
+        do {
+            try managedObjectContext.save()
+        } catch let error as NSError {
             fatalCoreDataError(error)
             return
         }
+
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -378,7 +380,7 @@ extension DetailViewController: FloatRatingViewDelegate {
 // MARK: - UIViewControllerTransitioningDelegate
 
 extension DetailViewController: UIViewControllerTransitioningDelegate {
-    func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController!, sourceViewController source: UIViewController) -> UIPresentationController? {
+    func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController, sourceViewController source: UIViewController) -> UIPresentationController? {
         return DimmingPresentationController(presentedViewController: presented, presentingViewController: presenting)
     }
 }

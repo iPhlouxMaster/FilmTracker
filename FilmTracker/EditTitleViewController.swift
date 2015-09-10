@@ -54,11 +54,11 @@ class EditTitleViewController: UITableViewController {
     
     @IBAction func doneButtonPressed(sender: UIBarButtonItem) {
         
-        movie.title = movieTitleTextField.text
+        movie.title = movieTitleTextField.text!
         
-        if !directorsTextField.text.isEmpty {
+        if !directorsTextField.text!.isEmpty {
             movie.directors = [String]()
-            let directors = directorsTextField.text.componentsSeparatedByString(",")
+            let directors = directorsTextField.text!.componentsSeparatedByString(",")
             for director in directors {
                 let newDirector = director.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
                 if !newDirector.isEmpty {
@@ -111,7 +111,7 @@ class EditTitleViewController: UITableViewController {
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(observer)
         posterDownloadTask?.cancel()
-        println("*** EditTitleViewController deinited")
+        print("*** EditTitleViewController deinited")
     }
 
     // MARK: - Table view data source / delegate
@@ -187,7 +187,7 @@ class EditTitleViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
         if indexPath.section == 1 && indexPath.row == 4 && isEditingReleaseDate {
-            var cell: UITableViewCell! = tableView.dequeueReusableCellWithIdentifier("ReleaseDatePickerCell") as? UITableViewCell
+            var cell: UITableViewCell! = tableView.dequeueReusableCellWithIdentifier("ReleaseDatePickerCell")
             if cell == nil {
                 cell = UITableViewCell(style: .Default, reuseIdentifier: "ReleaseDatePickerCell")
                 cell.selectionStyle = .None
@@ -205,7 +205,7 @@ class EditTitleViewController: UITableViewController {
             }
             return cell
         } else if indexPath.section == 1 && indexPath.row == 9 && isEditingWatchStatus {
-            var cell: UITableViewCell! = tableView.dequeueReusableCellWithIdentifier("WatchStatusPickerCell") as? UITableViewCell
+            var cell: UITableViewCell! = tableView.dequeueReusableCellWithIdentifier("WatchStatusPickerCell")
             if cell == nil {
                 cell = UITableViewCell(style: .Default, reuseIdentifier: "WatchStatusPickerCell")
                 cell.selectionStyle = .None
@@ -216,7 +216,7 @@ class EditTitleViewController: UITableViewController {
             }
             return cell
         } else if indexPath.section == 1 && indexPath.row == 11 && isEditingWatchedDate {
-            var cell: UITableViewCell! = tableView.dequeueReusableCellWithIdentifier("WatchedDatePickerCell") as? UITableViewCell
+            var cell: UITableViewCell! = tableView.dequeueReusableCellWithIdentifier("WatchedDatePickerCell")
             if cell == nil {
                 cell = UITableViewCell(style: .Default, reuseIdentifier: "WatchedDatePickerCell")
                 cell.selectionStyle = .None
@@ -299,9 +299,9 @@ class EditTitleViewController: UITableViewController {
         
     }
     
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         if indexPath.section == 1 && indexPath.row == 3 {
-            var clearReleaseDateAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Clear") { _ in
+            let clearReleaseDateAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Clear") { _ in
                 self.editing = false
                 self.releaseDateLabel.text = "Tap to add"
                 if let movie = self.movie {
@@ -337,15 +337,15 @@ class EditTitleViewController: UITableViewController {
         movieTitleTextField.text = movie.title
         
         if let directors = movie.directors {
-            directorsTextField.text = ", ".join(directors)
+            directorsTextField.text = directors.joinWithSeparator(", ")
         }
         
         if let countries = movie.productionCountries {
-            countriesLabel.text = ", ".join(countries)
+            countriesLabel.text = countries.joinWithSeparator(", ")
         }
         
         if let genres = movie.genres {
-            genreLabel.text = ", ".join(genres)
+            genreLabel.text = genres.joinWithSeparator(", ")
         }
         
         if let releaseDate = movie.releaseDate {
@@ -476,7 +476,7 @@ extension EditTitleViewController: FloatRatingViewDelegate {
 // MARK: - UIPickerViewDelegate / Data Source
 
 extension EditTitleViewController: UIPickerViewDelegate {
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return pickerData[row]
     }
     
@@ -590,7 +590,7 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
         presentViewController(imagePicker, animated: true, completion: nil)
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject]) {
         // optional because the value of key may not exist
         imageView.image = info[UIImagePickerControllerEditedImage] as? UIImage
         movie.w300Poster = info[UIImagePickerControllerEditedImage] as? UIImage
@@ -629,12 +629,12 @@ extension EditTitleViewController: PickerViewControllerDelegate {
         if isPickingCountries {
             movie.productionCountries = items
             if let countries = movie.productionCountries {
-                countriesLabel.text = ", ".join(countries)
+                countriesLabel.text = countries.joinWithSeparator(", ")
             }
         } else {
             movie.genres = items
             if let genres = movie.genres {
-                genreLabel.text = ", ".join(genres)
+                genreLabel.text = genres.joinWithSeparator(", ")
                 
             }
         }
@@ -646,7 +646,7 @@ extension EditTitleViewController: PickerViewControllerDelegate {
 
 extension EditTitleViewController: UITextFieldDelegate {
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let oldText: NSString = textField.text
+        let oldText: NSString = textField.text!
         let newText: NSString = oldText.stringByReplacingCharactersInRange(range, withString: string)
         
         doneBarButton.enabled = (newText.length > 0)

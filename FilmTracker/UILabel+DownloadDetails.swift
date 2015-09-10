@@ -14,7 +14,7 @@ extension UILabel {
         let session = NSURLSession.sharedSession()
         let downloadTask = session.downloadTaskWithURL( url, completionHandler: { [weak self] url, response, error in
             if error == nil && url != nil {
-                if let data = NSData(contentsOfURL: url) {
+                if let data = NSData(contentsOfURL: url!) {
                     let search = Search()
                     if let dictionary = search.parseJSON(data) {
                         if let imdb_id = dictionary["imdb_id"] as? String {
@@ -34,7 +34,7 @@ extension UILabel {
                                         strongSelf.text = "Not Available"
                                         // movie.productionCountries.append("Not Available")
                                     } else {
-                                        strongSelf.text = ", ".join(countries)
+                                        strongSelf.text = countries.joinWithSeparator(", ")
                                         movie.productionCountries = countries
                                     }
                                 }
@@ -67,7 +67,7 @@ extension UILabel {
         let session = NSURLSession.sharedSession()
         let downloadTask = session.downloadTaskWithURL( url, completionHandler: { [weak self] url, response, error in
             if error == nil && url != nil {
-                if let data = NSData(contentsOfURL: url) {
+                if let data = NSData(contentsOfURL: url!) {
                     let search = Search()
                     if let dictionary = search.parseJSON(data) {
                         if let crews = dictionary["crew"] as? [AnyObject] {
@@ -85,7 +85,7 @@ extension UILabel {
                                         strongSelf.text = "Not Available"
                                         // movie.directors.append("Not Available")
                                     } else {
-                                        strongSelf.text = ", ".join(directors)
+                                        strongSelf.text = directors.joinWithSeparator(", ")
                                         movie.directors = directors
                                     }
                                 }

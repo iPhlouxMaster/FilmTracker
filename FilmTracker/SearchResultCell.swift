@@ -52,7 +52,7 @@ class SearchResultCell: UITableViewCell {
     func configureForSearchResult(movie: Movie) {
         movieTitleLabel.text = movie.title
         
-        if let film = movie.film {
+        if let _ = movie.film {
             if let yourRating = movie.yourRating {
                 floatRatingView.rating = yourRating
             }
@@ -64,13 +64,13 @@ class SearchResultCell: UITableViewCell {
         }
         
         if let directors = movie.directors {
-            directorLabel.text = ", ".join(directors)
+            directorLabel.text = directors.joinWithSeparator(", ")
         } else {
             directorDownloadTask = directorLabel.loadCreditsWithMovieObject(movie)
         }
         
         if let countries = movie.productionCountries {
-            productionCountriesLabel.text = ", ".join(countries)
+            productionCountriesLabel.text = countries.joinWithSeparator(", ")
         } else {
             productionCountriesDownloadTask = productionCountriesLabel.loadDetailsWithMovieObject(movie)
         }
@@ -78,14 +78,14 @@ class SearchResultCell: UITableViewCell {
         if let image = movie.w92Poster {
             posterImageView.image = image
         } else {
-            if let posterAddress = movie.posterAddress  {
+            if let _ = movie.posterAddress  {
                 imageDownloadTask = posterImageView.loadImageWithMovieObject(movie, imageSize: Movie.ImageSize.w92)
             } else {
                 posterImageView.image = UIImage(named: "no-poster.jpeg")
             }
         }
         
-        if let film = movie.film {
+        if let _ = movie.film {
             switch movie.watchStatus {
             case .wantToWatch:
                 watchStatusLabel.hidden = false

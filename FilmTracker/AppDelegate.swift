@@ -13,7 +13,7 @@ let MyManagedObjectContextSaveDidFailNotification = "MyManagedObjectContextSaveD
 
 func fatalCoreDataError(error: NSError?) {
     if let error = error {
-        println("*** Fatal error: \(error), \(error.userInfo)")
+        print("*** Fatal error: \(error), \(error.userInfo)")
     }
     NSNotificationCenter.defaultCenter().postNotificationName(MyManagedObjectContextSaveDidFailNotification, object: error)
 }
@@ -28,22 +28,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let model = NSManagedObjectModel(contentsOfURL: modelURL) {
                 let coordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
                 let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-                let documentsDirectory = urls[0] as! NSURL
+                let documentsDirectory = urls[0] 
                 let storeURL = documentsDirectory.URLByAppendingPathComponent("DataStore.sqlite")
                 // println("\(storeURL)")
-                var error: NSError?
-                if let store = coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: nil, error: &error) {
+                
+                do {
+                    let store = try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: nil)
                     let context = NSManagedObjectContext()
                     context.persistentStoreCoordinator = coordinator
                     return context
-                } else {
-                    println("Error adding persistent store at \(storeURL): \(error!)")
+                } catch let error as NSError {
+                    print("Error adding persistent store at \(storeURL): \(error)")
                 }
             } else {
-                println("Error initializing model from: \(modelURL)")
+                print("Error initializing model from: \(modelURL)")
             }
         } else {
-            println("Could not find data model in app bundle")
+            print("Could not find data model in app bundle")
         }
         
         abort()
@@ -63,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             searchViewController.managedObjectContext = managedObjectContext
         }
         
-        let countriesAndGenres = CountriesAndGenres()
+        _ = CountriesAndGenres()
         
         listenForFatalCoreDataNotifications()
         return true
