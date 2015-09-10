@@ -227,7 +227,6 @@ class EditTitleViewController: UITableViewController {
                 imageLabel.hidden = true
                 return 320
             }
-            
         case (1, 4):
             if isEditingReleaseDate {
                 return 216
@@ -570,7 +569,7 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-        // optional because the key may not exist
+        // optional because the value of key may not exist
         imageView.image = info[UIImagePickerControllerEditedImage] as? UIImage
         if let movie = movieToEdit {
             movie.w300Poster = info[UIImagePickerControllerEditedImage] as? UIImage

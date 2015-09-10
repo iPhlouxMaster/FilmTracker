@@ -19,9 +19,13 @@ class SearchResultCell: UITableViewCell {
     @IBOutlet weak var directorLabel: UILabel!
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var floatRatingView: FloatRatingView!
-
+    @IBOutlet weak var watchStatusLabel: UILabel!
+    @IBOutlet weak var rateLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        watchStatusLabel.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI_2))
         
         floatRatingView.emptyImage = UIImage(named: "StarEmpty")
         floatRatingView.fullImage = UIImage(named: "StarFull")
@@ -48,8 +52,15 @@ class SearchResultCell: UITableViewCell {
     func configureForSearchResult(movie: Movie) {
         movieTitleLabel.text = movie.title
         
-        if let tmdbRating = movie.tmdbRating {
+        if let film = movie.film {
+            if let yourRating = movie.yourRating {
+                floatRatingView.rating = yourRating
+            }
+        } else if let tmdbRating = movie.tmdbRating {
             floatRatingView.rating = tmdbRating
+            rateLabel.text = "TMDB Rate:"
+        } else {
+            floatRatingView.rating = 0.0
         }
         
         if let directors = movie.directors {
@@ -75,9 +86,24 @@ class SearchResultCell: UITableViewCell {
         }
         
         if let film = movie.film {
-            contentView.backgroundColor = UIColor.lightGrayColor()
+            switch movie.watchStatus {
+            case .wantToWatch:
+                watchStatusLabel.hidden = false
+                watchStatusLabel.text = "Wanna See"
+                watchStatusLabel.font = UIFont(name: "Helvetica-Bold", size: 18.0)
+            case .watched:
+                watchStatusLabel.hidden = false
+                watchStatusLabel.text = "Watched"
+                watchStatusLabel.font = UIFont(name: "Helvetica-Bold", size: 21.0)
+            case .watching:
+                watchStatusLabel.hidden = false
+                watchStatusLabel.text = "Watching"
+                watchStatusLabel.font = UIFont(name: "Helvetica-Bold", size: 21.0)
+            default:
+                watchStatusLabel.hidden = true
+            }
         } else {
-            contentView.backgroundColor = UIColor.clearColor()
+            watchStatusLabel.hidden = true
         }
     }
 
@@ -88,6 +114,8 @@ class SearchResultCell: UITableViewCell {
         productionCountriesDownloadTask?.cancel()
         movieTitleLabel.text = nil
         productionCountriesLabel.text = nil
+        directorLabel.text = nil
+        watchStatusLabel.text = nil
         posterImageView.image = nil
         floatRatingView.delegate = nil
     }

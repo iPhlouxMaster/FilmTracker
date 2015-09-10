@@ -35,6 +35,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var showTMDBPageButton: UIButton!
     @IBOutlet weak var showIMDBPageButton: UIButton!
     @IBOutlet weak var editTitleButton: UIButton!
+    @IBOutlet weak var watchStatusLabel: UILabel!
     
     //MARK: - IBActions
     
@@ -153,6 +154,21 @@ class DetailViewController: UIViewController {
             genresLabel.text = "Not Available"
         }
         
+        if let film = movie.film {
+            switch movie.watchStatus {
+            case .watching:
+                watchStatusLabel.text = "Watching"
+            case .watched:
+                watchStatusLabel.text = String(format: "Watched on %@", movie.convertDateToString(movie.watchedDate!))
+            case .wantToWatch:
+                watchStatusLabel.text = "Want to watch"
+            default:
+                watchStatusLabel.hidden = true
+            }
+        } else {
+            watchStatusLabel.hidden = true
+        }
+        
         overviewTextView.scrollRangeToVisible(NSMakeRange(0, 1))
         overviewTextView.text = movie.overview
         
@@ -195,31 +211,40 @@ class DetailViewController: UIViewController {
         closeButton.layer.borderWidth = 0.7
         closeButton.layer.cornerRadius = 5
         
-        saveTitleButton.backgroundColor = UIColor.clearColor()
-        saveTitleButton.layer.borderColor = UIColor.whiteColor().CGColor
-        saveTitleButton.layer.borderWidth = 0.7
-        saveTitleButton.layer.cornerRadius = 5
+        if movie.film != nil {
+            saveTitleButton.hidden = true
+        } else {
+            saveTitleButton.backgroundColor = UIColor.clearColor()
+            saveTitleButton.layer.borderColor = UIColor.whiteColor().CGColor
+            saveTitleButton.layer.borderWidth = 0.7
+            saveTitleButton.layer.cornerRadius = 5
+        }
         
         editTitleButton.backgroundColor = UIColor.clearColor()
         editTitleButton.layer.borderColor = UIColor.whiteColor().CGColor
         editTitleButton.layer.borderWidth = 0.7
         editTitleButton.layer.cornerRadius = 5
         
-        /*
-        showTMDBPageButton.backgroundColor = UIColor.clearColor()
-        showTMDBPageButton.layer.borderColor = UIColor.whiteColor().CGColor
-        showTMDBPageButton.layer.borderWidth = 0.7
-        showTMDBPageButton.layer.cornerRadius = 5
-        
-        if movie.imdbID.isEmpty {
-            showIMDBPageButton.hidden = true
-        } else {
-            showIMDBPageButton.backgroundColor = UIColor.clearColor()
-            showIMDBPageButton.layer.borderColor = UIColor.whiteColor().CGColor
-            showIMDBPageButton.layer.borderWidth = 0.7
-            showIMDBPageButton.layer.cornerRadius = 5
+        if let film = movie.film {
+            if movie.id > 0 {
+                showTMDBPageButton.hidden = false
+                showTMDBPageButton.backgroundColor = UIColor.clearColor()
+                showTMDBPageButton.layer.borderColor = UIColor.whiteColor().CGColor
+                showTMDBPageButton.layer.borderWidth = 0.7
+                showTMDBPageButton.layer.cornerRadius = 5
+            }
+            
+            if movie.imdbID == nil {
+                showIMDBPageButton.hidden = true
+            } else {
+                showIMDBPageButton.hidden = false
+                showIMDBPageButton.backgroundColor = UIColor.clearColor()
+                showIMDBPageButton.layer.borderColor = UIColor.whiteColor().CGColor
+                showIMDBPageButton.layer.borderWidth = 0.7
+                showIMDBPageButton.layer.cornerRadius = 5
+            }
         }
-        */
+
     }
     
     func showWatchStatusMenu() {
@@ -247,6 +272,7 @@ class DetailViewController: UIViewController {
         let selectWatchedAction = UIAlertAction(title: "I've watched", style: .Default, handler: {
             _ in
             self.movie.watchStatus = .watched
+            self.movie.watchedDate = NSDate()
             self.saveMovieObject(self.movie)
             self.dismissViewControllerAnimated(true, completion: nil)
         })

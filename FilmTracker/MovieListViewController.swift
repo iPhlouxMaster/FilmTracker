@@ -13,6 +13,22 @@ class MovieListViewController: UIViewController {
     
     var managedObjectContext: NSManagedObjectContext!
     var films = [Film]()
+    lazy var fetchedResultsController: NSFetchedResultsController = {
+        let fetchRequest = NSFetchRequest()
+        
+        let entity = NSEntityDescription.entityForName("Film", inManagedObjectContext: self.managedObjectContext)
+        fetchRequest.entity = entity
+        
+        let sortDescriptor1 = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor1]
+        
+        fetchRequest.fetchBatchSize = 20
+        
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "Film")
+        fetchedResultsController.delegate = self
+        return fetchedResultsController
+    }()
+    
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -23,9 +39,6 @@ class MovieListViewController: UIViewController {
         let entity = NSEntityDescription.entityForName("Film", inManagedObjectContext: managedObjectContext)
         fetchRequest.entity = entity
         
-//        let sortDescriptor = NSSortDescriptor(key: "date", ascending: true)
-//        fetchRequest.sortDescriptors = [sortDescriptor]
-        
         var error: NSError?
         let foundObjects = managedObjectContext.executeFetchRequest(fetchRequest, error: &error)
         if foundObjects == nil {
@@ -33,30 +46,103 @@ class MovieListViewController: UIViewController {
             return
         }
         
-        films = foundObjects as! [Film]
+        performFetch()
         
         var cellNib = UINib(nibName: "SearchResultCell", bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: "SearchResultCell")
         tableView.rowHeight = 140
     }
+    
+    func performFetch() {
+        var error: NSError?
+        if !fetchedResultsController.performFetch(&error) {
+            fatalCoreDataError(error)
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowFilmDetail" {
+            let controller = segue.destinationViewController as! DetailViewController
+            var film = fetchedResultsController.objectAtIndexPath(sender as! NSIndexPath) as! Film
+            var movie = Movie()
+            film.convertToMovieObject(movie)
+            controller.movie = movie
+            controller.managedObjectContext = managedObjectContext
+        }
+    }
 }
 
 extension MovieListViewController: UITableViewDelegate {
-    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        performSegueWithIdentifier("ShowFilmDetail", sender: indexPath)
+    }
 }
 
 extension MovieListViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return films.count
+        let sectionInfo = fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
+        return sectionInfo.numberOfObjects
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("SearchResultCell", forIndexPath: indexPath) as! SearchResultCell
-        let film = films[indexPath.row]
+        let film = fetchedResultsController.objectAtIndexPath(indexPath) as! Film
         var movie = Movie()
         film.convertToMovieObject(movie)
-        
         cell.configureForSearchResult(movie)
+        
         return cell
     }
 }
+
+extension MovieListViewController: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        println("*** controllerWillChangeContent")
+        tableView.beginUpdates()
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        switch type {
+        case .Insert:
+            println("*** NSFetchedResultsChangeInsert (object)")
+            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+        case .Delete:
+            println("*** NSFetchedResultsChangeDelete (object)")
+            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+        case .Update:
+            println("*** NSFetchedResultsChangeUpdate (object)")
+            if let cell = tableView.cellForRowAtIndexPath(indexPath!) as? SearchResultCell {
+                let film = controller.objectAtIndexPath(indexPath!) as! Film
+                var movie = Movie()
+                film.convertToMovieObject(movie)
+                cell.configureForSearchResult(movie)
+            }
+        case .Move:
+            println("*** NSFetchedResultsChangeMove (object)")
+            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+        }
+    }
+    
+//    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+//        switch type {
+//        case .Insert:
+//            println("*** NSFetchedResultsChangeInsert (section)")
+//            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+//        case .Delete:
+//            println("*** NSFetchedResultsChangeDelete (section)")
+//            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+//        case .Update:
+//            println("*** NSFetchedResultsChangeUpdate (section)")
+//        case .Move:
+//            println("*** NSFetchedResultsChangeMove (section)")
+//        }
+//    }
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        println("*** controllerDidChangeContent")
+        tableView.endUpdates()
+    }
+}
+

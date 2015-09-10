@@ -11,7 +11,7 @@ import CoreData
 
 class SearchViewController: UIViewController {
     
-    // Set KVO to monitor if any managedObject changed, fetch the objects for the performSearch() and reload data.
+    // Set KVO to monitor if any managedObject changed, fetch the objects for the performSearch() and reload tableView.
     
     var managedObjectContext: NSManagedObjectContext! {
         didSet {
@@ -23,6 +23,7 @@ class SearchViewController: UIViewController {
             }
         }
     }
+    
     let search = Search()
     var films = [Film]()
     
