@@ -33,6 +33,9 @@ extension UIImageView {
                                     movie.w92Poster = image
                                 case .w300:
                                     movie.w300Poster = image
+                                    if movie.w92Poster == nil {
+                                        movie.w92Poster = movie.w300Poster!.resizedImageWithBounds(CGSizeMake(92, 138))
+                                    }
                                 }
                             }
                         })

@@ -73,7 +73,7 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <searchBar userInteractionEnabled="NO" contentMode="redraw" placeholder="Fill me up..." translatesAutoresizingMaskIntoConstraints="NO" id="Ws6-CC-WWu">
+                            <searchBar contentMode="redraw" placeholder="Fill me up..." translatesAutoresizingMaskIntoConstraints="NO" id="Ws6-CC-WWu">
                                 <rect key="frame" x="0.0" y="20" width="600" height="44"/>
                                 <animations/>
                                 <constraints>
@@ -1273,7 +1273,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Ce7-pJ-eld"/>
-        <segue reference="zZk-OV-gYQ"/>
+        <segue reference="eFB-PN-Rdk"/>
         <segue reference="Vka-dX-4Tj"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>

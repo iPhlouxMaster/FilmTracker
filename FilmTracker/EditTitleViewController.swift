@@ -615,8 +615,9 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
 extension EditTitleViewController: UITextViewDelegate {
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         movie.comments = (textView.text as NSString).stringByReplacingCharactersInRange(range, withString: text)
-        if textView.text == "" {
+        if text == "\n" {
             textView.resignFirstResponder()
+            return false
         }
         
         return true

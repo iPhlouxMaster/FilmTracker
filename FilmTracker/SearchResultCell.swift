@@ -66,7 +66,7 @@ class SearchResultCell: UITableViewCell {
         if let directors = movie.directors {
             directorLabel.text = directors.joinWithSeparator(", ")
         } else {
-            if movie.id > 0 {
+            if movie.id > 0 && movie.film == nil {
                 directorDownloadTask = directorLabel.loadCreditsWithMovieObject(movie)
             } else {
                 directorLabel.text = "Not Available"
@@ -76,7 +76,7 @@ class SearchResultCell: UITableViewCell {
         if let countries = movie.productionCountries {
             productionCountriesLabel.text = countries.joinWithSeparator(", ")
         } else {
-            if movie.id > 0 {
+            if movie.id > 0 && movie.film == nil {
                 productionCountriesDownloadTask = productionCountriesLabel.loadDetailsWithMovieObject(movie)
             } else {
                 productionCountriesLabel.text = "Not Available"

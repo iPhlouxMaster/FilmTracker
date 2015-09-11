@@ -249,20 +249,20 @@ extension MovieListViewController: NSFetchedResultsControllerDelegate {
         }
     }
     
-//    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-//        switch type {
-//        case .Insert:
-//            println("*** NSFetchedResultsChangeInsert (section)")
-//            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-//        case .Delete:
-//            println("*** NSFetchedResultsChangeDelete (section)")
-//            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-//        case .Update:
-//            println("*** NSFetchedResultsChangeUpdate (section)")
-//        case .Move:
-//            println("*** NSFetchedResultsChangeMove (section)")
-//        }
-//    }
+    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+        switch type {
+        case .Insert:
+            print("*** NSFetchedResultsChangeInsert (section)")
+            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        case .Delete:
+            print("*** NSFetchedResultsChangeDelete (section)")
+            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        case .Update:
+            print("*** NSFetchedResultsChangeUpdate (section)")
+        case .Move:
+            print("*** NSFetchedResultsChangeMove (section)")
+        }
+    }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         print("*** controllerDidChangeContent")

@@ -177,7 +177,12 @@ class DetailViewController: UIViewController {
         }
         
         if movie.id > 0 {
-            overviewTextView.text = movie.overview
+            if movie.comments != nil {
+                overviewTitleLabel.text = "Comments:"
+                overviewTextView.text = movie.comments!
+            } else {
+                overviewTextView.text = movie.overview
+            }
         } else {
             overviewTitleLabel.text = "Comments:"
             overviewTextView.text = movie.comments
@@ -404,6 +409,7 @@ extension DetailViewController: EditTitleViewControllerDelegate {
     
     func editTitleViewControllerDidFinishEditingMovieTitle(controller: EditTitleViewController, movieTitle: Movie) {
         movie = movieTitle
+        configureView()
         saveMovieObject(movieTitle)
         dismissViewControllerAnimated(true, completion: {
             self.dismissViewControllerAnimated(true, completion: nil)
