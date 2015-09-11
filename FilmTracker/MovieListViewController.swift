@@ -12,21 +12,8 @@ import CoreData
 class MovieListViewController: UIViewController {
     
     var managedObjectContext: NSManagedObjectContext!
-    lazy var fetchedResultsController: NSFetchedResultsController = {
-        let fetchRequest = NSFetchRequest()
-        
-        let entity = NSEntityDescription.entityForName("Film", inManagedObjectContext: self.managedObjectContext)
-        fetchRequest.entity = entity
-        
-        let sortDescriptor1 = NSSortDescriptor(key: "title", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor1]
-        
-        fetchRequest.fetchBatchSize = 20
-        
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "Film")
-        fetchedResultsController.delegate = self
-        return fetchedResultsController
-    }()
+    var sectionNameKeyPath: String!
+    var fetchedResultsController: NSFetchedResultsController!
     
     var observer: AnyObject!
     
@@ -50,6 +37,8 @@ class MovieListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        sectionNameKeyPath = "watchStatus"
+        fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath(sectionNameKeyPath)
         performFetch()
         
         let cellNib = UINib(nibName: "SearchResultCell", bundle: nil)
@@ -60,6 +49,18 @@ class MovieListViewController: UIViewController {
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(observer)
         print("*** EditTitleViewController deinited")
+    }
+    
+    func createFetchedResultsControllerWithSectionNameKeyPath(sectionNameKeyPath: String) -> NSFetchedResultsController {
+        let fetchRequest = NSFetchRequest()
+        let entity = NSEntityDescription.entityForName("Film", inManagedObjectContext: self.managedObjectContext)
+        fetchRequest.entity = entity
+        let sortDescriptor1 = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor1]
+        fetchRequest.fetchBatchSize = 20
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: sectionNameKeyPath, cacheName: "Film")
+        fetchedResultsController.delegate = self
+        return fetchedResultsController
     }
     
     func performFetch() {
@@ -198,6 +199,15 @@ extension MovieListViewController: UITableViewDelegate {
 }
 
 extension MovieListViewController: UITableViewDataSource {
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let sectionInfo = fetchedResultsController.sections![section] 
+        return sectionInfo.name
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return fetchedResultsController.sections!.count
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let sectionInfo = fetchedResultsController.sections![section]
         return sectionInfo.numberOfObjects

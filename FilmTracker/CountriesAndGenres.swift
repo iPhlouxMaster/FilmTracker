@@ -31,8 +31,8 @@ class CountriesAndGenres {
         if firstRunning {
             userDefaults.setObject(genres, forKey: "GenreList")
             userDefaults.setObject(countries, forKey: "CountryList")
-            userDefaults.synchronize()
             userDefaults.setBool(false, forKey: "FirstRunning")
+            userDefaults.synchronize()
         }
     }
     
