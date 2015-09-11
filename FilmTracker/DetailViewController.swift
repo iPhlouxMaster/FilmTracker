@@ -54,7 +54,12 @@ class DetailViewController: UIViewController {
     }
     
     @IBAction func saveTitleButtonPressed(sender: UIButton) {
-        showWatchStatusMenu()
+        if movie.film == nil {
+            showWatchStatusMenu()
+        } else {
+            saveMovieObject(movie)
+            dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     @IBAction func editTitleButtonPressed(sender: UIButton) {
@@ -95,9 +100,9 @@ class DetailViewController: UIViewController {
         swipeDownGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Down
         view.addGestureRecognizer(swipeDownGestureRecognizer)
         
+        configureView()
         configureFloatRatingView()
         configureButtons()
-        configureView()
         handleCountrieAndGenreList()
     }
     
@@ -108,14 +113,14 @@ class DetailViewController: UIViewController {
     }
     
     func configureView() {
-        if let _ = movie.posterAddress {
-            if let image = movie.w300Poster {
-                posterImageView.image = image
-            } else {
-                imageDownloadTask = posterImageView.loadImageWithMovieObject(movie, imageSize: Movie.ImageSize.w300)
-            }
+        if let image = movie.w300Poster {
+            posterImageView.image = image
         } else {
-            posterImageView.image = UIImage(named: "no-poster.jpeg")
+            if movie.posterAddress != nil {
+                imageDownloadTask = posterImageView.loadImageWithMovieObject(movie, imageSize: Movie.ImageSize.w300)
+            } else {
+                posterImageView.image = UIImage(named: "no-poster")
+            }
         }
         
         titleLabel.text = movie.title
@@ -171,8 +176,6 @@ class DetailViewController: UIViewController {
             watchStatusLabel.hidden = true
         }
         
-        overviewTextView.scrollRangeToVisible(NSMakeRange(0, 1))
-        
         if movie.id > 0 {
             overviewTextView.text = movie.overview
         } else {
@@ -180,6 +183,9 @@ class DetailViewController: UIViewController {
             overviewTextView.text = movie.comments
         }
         
+        // not able to scroll textView to top
+        
+        overviewTextView.scrollRangeToVisible(NSMakeRange(0, 1))
     }
     
     func configureFloatRatingView() {
@@ -225,7 +231,7 @@ class DetailViewController: UIViewController {
         closeButton.layer.borderWidth = 0.7
         closeButton.layer.cornerRadius = 5
         
-        if movie.film != nil {
+        if let _ = movie.film {
             saveTitleButton.hidden = true
         } else {
             saveTitleButton.backgroundColor = UIColor.clearColor()
@@ -374,6 +380,10 @@ extension DetailViewController: FloatRatingViewDelegate {
     func floatRatingView(ratingView: FloatRatingView, didUpdate rating: Float) {
         yourRatingLabel.text = String(format: "%.1f/10.0", rating)
         movie.yourRating = rating
+        
+        if let _ = movie.film {
+            saveMovieObject(movie)
+        }
     }
 }
 

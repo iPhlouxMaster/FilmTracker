@@ -37,19 +37,6 @@ class MovieListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        let fetchRequest = NSFetchRequest()
-//        let entity = NSEntityDescription.entityForName("Film", inManagedObjectContext: managedObjectContext)
-//        fetchRequest.entity = entity
-//        
-//        
-//        
-//        var error: NSError?
-//        let foundObjects = managedObjectContext.executeFetchRequest(fetchRequest, error: &error)
-//        if foundObjects == nil {
-//            fatalCoreDataError(error)
-//            return
-//        }
-        
         performFetch()
         
         let cellNib = UINib(nibName: "SearchResultCell", bundle: nil)

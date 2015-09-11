@@ -11,9 +11,9 @@ import UIKit
 class Movie {
     
     enum Status: Int {
-        case watched
-        case watching
         case wantToWatch
+        case watching
+        case watched
         case other
     }
     

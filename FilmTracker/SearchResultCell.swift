@@ -90,15 +90,15 @@ class SearchResultCell: UITableViewCell {
             case .wantToWatch:
                 watchStatusLabel.hidden = false
                 watchStatusLabel.text = "Wanna See"
-                watchStatusLabel.font = UIFont(name: "Helvetica-Bold", size: 18.0)
+                watchStatusLabel.font = UIFont.boldSystemFontOfSize(18.0)
             case .watched:
                 watchStatusLabel.hidden = false
                 watchStatusLabel.text = "Watched"
-                watchStatusLabel.font = UIFont(name: "Helvetica-Bold", size: 21.0)
+                watchStatusLabel.font = UIFont.boldSystemFontOfSize(21.0)
             case .watching:
                 watchStatusLabel.hidden = false
                 watchStatusLabel.text = "Watching"
-                watchStatusLabel.font = UIFont(name: "Helvetica-Bold", size: 21.0)
+                watchStatusLabel.font = UIFont.boldSystemFontOfSize(21.0)
             default:
                 watchStatusLabel.hidden = true
             }

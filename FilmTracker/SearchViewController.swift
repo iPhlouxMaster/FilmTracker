@@ -55,13 +55,14 @@ class SearchViewController: UIViewController {
         tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.loadingCell)
   
         performFetch()
-        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    // MARK: - Help methods
     
     func performFetch() {
         let fetchRequest = NSFetchRequest()
@@ -173,4 +174,11 @@ extension SearchViewController: UISearchBarDelegate {
         tableView.reloadData()
         searchBar.resignFirstResponder()
     }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            searchBar.performSelector(Selector("resignFirstResponder"), withObject: nil, afterDelay: 0)
+        }
+    }
+    
 }

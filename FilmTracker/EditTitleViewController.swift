@@ -212,6 +212,7 @@ class EditTitleViewController: UITableViewController {
                 let statusPicker = UIPickerView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 150))
                 statusPicker.delegate = self
                 statusPicker.dataSource = self
+                statusPicker.selectRow(movie.watchStatus.rawValue, inComponent: 0, animated: true)
                 cell.contentView.addSubview(statusPicker)
             }
             return cell
@@ -533,11 +534,11 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
             alertActionTitle = "Replace from library"
         }
         
-        let takePhotoAction = UIAlertAction(title: "Take Photo", style: .Default, handler: {
-            _ in
-            self.takePhotoWithCamera()
-        })
-        alertController.addAction(takePhotoAction)
+//        let takePhotoAction = UIAlertAction(title: "Take Photo", style: .Default, handler: {
+//            _ in
+//            self.takePhotoWithCamera()
+//        })
+//        alertController.addAction(takePhotoAction)
         
         let pickFromLibraryAction = UIAlertAction(title: alertActionTitle, style: .Default, handler: {
             _ in
@@ -573,14 +574,14 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
         }
     }
     
-    func takePhotoWithCamera() {
-        let imagePicker = UIImagePickerController()
-        imagePicker.showsCameraControls = true
-        imagePicker.sourceType = .Camera
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = true
-        presentViewController(imagePicker, animated: true, completion: nil)
-    }
+//    func takePhotoWithCamera() {
+//        let imagePicker = UIImagePickerController()
+//        imagePicker.delegate = self
+//        imagePicker.showsCameraControls = true
+//        imagePicker.sourceType = .Camera
+//        imagePicker.allowsEditing = true
+//        presentViewController(imagePicker, animated: true, completion: nil)
+//    }
     
     func choosePhotoFromLibrary() {
         let imagePicker = UIImagePickerController()
@@ -594,7 +595,7 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
         // optional because the value of key may not exist
         imageView.image = info[UIImagePickerControllerEditedImage] as? UIImage
         movie.w300Poster = info[UIImagePickerControllerEditedImage] as? UIImage
-        movie.w92Poster = movie.w92Poster?.resizedImageWithBounds(CGSize(width: 92, height: 138))
+        movie.w92Poster = movie.w300Poster!.resizedImageWithBounds(CGSize(width: 92, height: 138))
         
         if imageView.hidden == true {
             imageView.hidden = false
@@ -614,12 +615,17 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
 extension EditTitleViewController: UITextViewDelegate {
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         movie.comments = (textView.text as NSString).stringByReplacingCharactersInRange(range, withString: text)
+        if textView.text == "" {
+            textView.resignFirstResponder()
+        }
+        
         return true
     }
     
     func textViewDidEndEditing(textView: UITextView) {
         movie.comments = commentsTextView.text
     }
+    
 }
 
 // MARK: - PickerViewControllerDelegate
@@ -649,7 +655,14 @@ extension EditTitleViewController: UITextFieldDelegate {
         let oldText: NSString = textField.text!
         let newText: NSString = oldText.stringByReplacingCharactersInRange(range, withString: string)
         
-        doneBarButton.enabled = (newText.length > 0)
+        if textField.isEqual(movieTitleTextField) {
+            doneBarButton.enabled = (newText.length > 0)
+        }
+        return true
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
 }

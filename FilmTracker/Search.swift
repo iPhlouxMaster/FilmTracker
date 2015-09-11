@@ -182,8 +182,8 @@ class Search {
             fatalError("*** A bug here!")
         }
         
-        let escapedSearchText = "search"
-        let urlString = String(format: "https://api.themoviedb.org/3/search/%@?api_key=%@&query=%@", movieType, Constants.kFTAPIKey , escapedSearchText)
+        let escapedSearchText = searchText.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.alphanumericCharacterSet())!
+        let urlString = String(format: "https://api.themoviedb.org/3/search/%@?api_key=%@&search_type=ngram&query=%@", movieType, Constants.kFTAPIKey , escapedSearchText)
         let url = NSURL(string: urlString)
         return url!
     }

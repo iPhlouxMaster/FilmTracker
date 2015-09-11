@@ -30,8 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
                 let documentsDirectory = urls[0] 
                 let storeURL = documentsDirectory.URLByAppendingPathComponent("DataStore.sqlite")
-                // println("\(storeURL)")
-                
                 do {
                     let store = try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: nil)
                     let context = NSManagedObjectContext()

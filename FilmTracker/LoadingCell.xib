@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,35 +14,32 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="139.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <activityIndicatorView opaque="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="tVf-8B-qch">
-                        <rect key="frame" x="198" y="44" width="20" height="53"/>
-                        <animations/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="20" id="gci-Sw-goQ"/>
-                            <constraint firstAttribute="height" constant="53" id="pto-2i-DlG"/>
-                        </constraints>
-                    </activityIndicatorView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uBq-QS-CI8">
-                        <rect key="frame" x="102" y="42" width="88" height="57"/>
+                        <rect key="frame" x="101" y="59" width="89" height="24"/>
                         <animations/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="88" id="NXE-Cp-3as"/>
-                            <constraint firstAttribute="height" constant="57" id="cuL-wo-khz"/>
+                            <constraint firstAttribute="height" constant="24" id="2KB-i3-e9H"/>
+                            <constraint firstAttribute="width" constant="89" id="P5H-qh-iMR"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <activityIndicatorView opaque="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="tVf-8B-qch">
+                        <rect key="frame" x="198" y="45" width="20" height="53"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="38L-kt-zx3"/>
+                            <constraint firstAttribute="height" constant="53" id="pbF-I2-e0l"/>
+                        </constraints>
+                    </activityIndicatorView>
                 </subviews>
                 <animations/>
                 <constraints>
-                    <constraint firstItem="tVf-8B-qch" firstAttribute="top" secondItem="FYc-fD-ZZC" secondAttribute="topMargin" constant="36" id="If4-dd-x1O"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="uBq-QS-CI8" secondAttribute="bottom" constant="33" id="Ov9-D7-gkW"/>
-                    <constraint firstItem="uBq-QS-CI8" firstAttribute="leading" secondItem="FYc-fD-ZZC" secondAttribute="leadingMargin" constant="94" id="UGm-yC-V9G"/>
-                    <constraint firstItem="tVf-8B-qch" firstAttribute="leading" secondItem="uBq-QS-CI8" secondAttribute="trailing" constant="8" id="qOy-Fl-HvS"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="tVf-8B-qch" secondAttribute="bottom" constant="35" id="rks-ij-bGe"/>
-                    <constraint firstItem="uBq-QS-CI8" firstAttribute="top" secondItem="FYc-fD-ZZC" secondAttribute="topMargin" constant="34" id="s71-fW-MAr"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="tVf-8B-qch" secondAttribute="trailing" constant="94" id="tor-cF-yc3"/>
+                    <constraint firstItem="uBq-QS-CI8" firstAttribute="centerY" secondItem="FYc-fD-ZZC" secondAttribute="centerY" constant="1" id="7mf-tL-NsP"/>
+                    <constraint firstItem="tVf-8B-qch" firstAttribute="baseline" secondItem="uBq-QS-CI8" secondAttribute="baseline" constant="20" id="OYD-4Z-fer"/>
+                    <constraint firstItem="uBq-QS-CI8" firstAttribute="centerX" secondItem="FYc-fD-ZZC" secondAttribute="centerX" constant="-15" id="Tah-kD-gCg"/>
+                    <constraint firstItem="tVf-8B-qch" firstAttribute="leading" secondItem="uBq-QS-CI8" secondAttribute="trailing" constant="8" id="rWa-BN-MP8"/>
                 </constraints>
             </tableViewCellContentView>
             <animations/>
