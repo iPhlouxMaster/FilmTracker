@@ -46,18 +46,26 @@ class Film: NSManagedObject {
         
         if let releaseDate = releaseDate {
             movie.releaseDate = releaseDate
+        } else {
+            movie.releaseDate = nil
         }
         
         if let directors = directors as? [String] {
             movie.directors = directors
+        } else {
+            movie.directors = nil
         }
         
         if let genres = genres as? [String] {
             movie.genres = genres
+        } else {
+            movie.genres = nil
         }
         
         if let productionCountries = productionCountries as? [String] {
             movie.productionCountries = productionCountries
+        } else {
+            movie.productionCountries = nil
         }
         
         if let tmdbRating = tmdbRating as? Float {
@@ -66,6 +74,8 @@ class Film: NSManagedObject {
         
         if let yourRating = yourRating as? Float {
             movie.yourRating = yourRating
+        } else {
+            movie.yourRating = nil
         }
         
         if let overview = overview {
@@ -74,10 +84,14 @@ class Film: NSManagedObject {
         
         if let w92Poster = w92Poster {
             movie.w92Poster = UIImage(data: w92Poster)
+        } else {
+            movie.w92Poster = nil
         }
         
         if let w300Poster = w300Poster {
             movie.w300Poster = UIImage(data: w300Poster)
+        } else {
+            movie.w300Poster = nil
         }
         
         if let imdbID = imdbID {
@@ -86,14 +100,20 @@ class Film: NSManagedObject {
         
         if let watchedDate = watchedDate {
             movie.watchedDate = watchedDate
+        } else {
+            movie.watchedDate = nil
         }
 
         if let comments = comments {
             movie.comments = comments
+        } else {
+            movie.comments = nil
         }
         
         if let lastUpdateDate = lastUpdateDate {
             movie.lastUpdateDate = lastUpdateDate
+        } else {
+            movie.lastUpdateDate = nil
         }
     }
 }

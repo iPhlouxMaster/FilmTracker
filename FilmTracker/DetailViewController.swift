@@ -116,10 +116,10 @@ class DetailViewController: UIViewController {
         if let image = movie.w300Poster {
             posterImageView.image = image
         } else {
-            if movie.posterAddress != nil {
+            if movie.posterAddress != nil && movie.film == nil {
                 imageDownloadTask = posterImageView.loadImageWithMovieObject(movie, imageSize: Movie.ImageSize.w300)
             } else {
-                posterImageView.image = UIImage(named: "no-poster")
+                posterImageView.image = UIImage(named: "no-poster.jpeg")
             }
         }
         
@@ -345,10 +345,10 @@ class DetailViewController: UIViewController {
             film = filmToSave
         } else {
             film = NSEntityDescription.insertNewObjectForEntityForName("Film", inManagedObjectContext: managedObjectContext) as! Film
+            movieToSave.film = film
         }
         
         movieToSave.convertToFilmObject(film)
-        movieToSave.film = film
         
         do {
             try managedObjectContext.save()
@@ -403,6 +403,7 @@ extension DetailViewController: EditTitleViewControllerDelegate {
     }
     
     func editTitleViewControllerDidFinishEditingMovieTitle(controller: EditTitleViewController, movieTitle: Movie) {
+        movie = movieTitle
         saveMovieObject(movieTitle)
         dismissViewControllerAnimated(true, completion: {
             self.dismissViewControllerAnimated(true, completion: nil)

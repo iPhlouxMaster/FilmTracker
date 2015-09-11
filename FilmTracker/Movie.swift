@@ -88,6 +88,8 @@ class Movie {
         
         if let releaseDate = releaseDate {
             film.releaseDate = releaseDate
+        } else {
+            film.releaseDate = nil
         }
         
         if let posterAddress = posterAddress {
@@ -96,14 +98,20 @@ class Movie {
         
         if let directors = directors {
             film.directors = directors
+        } else {
+            film.directors = nil
         }
         
         if let genres = genres {
             film.genres = genres
+        } else {
+            film.genres = nil
         }
         
         if let countries = productionCountries {
             film.productionCountries = countries
+        } else {
+            film.productionCountries = nil
         }
         
         if let tmdbRating = tmdbRating {
@@ -112,6 +120,8 @@ class Movie {
         
         if let yourRating = yourRating {
             film.yourRating = yourRating
+        } else {
+            film.yourRating = nil
         }
         
         if let overview = overview {
@@ -120,10 +130,14 @@ class Movie {
         
         if let w92Poster = w92Poster {
             film.w92Poster = UIImageJPEGRepresentation(w92Poster, 1.0)
+        } else {
+            film.w92Poster = nil
         }
         
         if let w300Poster = w300Poster {
             film.w300Poster = UIImageJPEGRepresentation(w300Poster, 1.0)
+        } else {
+            film.w300Poster = nil
         }
         
         if let imdbID = imdbID {
@@ -136,10 +150,14 @@ class Movie {
         
         if let watchedDate = watchedDate {
             film.watchedDate = watchedDate
+        } else {
+            film.watchedDate = nil
         }
         
         if let comments = comments {
             film.comments = comments
+        } else {
+            film.comments = nil
         }
     }
     

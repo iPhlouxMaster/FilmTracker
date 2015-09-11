@@ -28,11 +28,24 @@ class MovieListViewController: UIViewController {
         return fetchedResultsController
     }()
     
+    var observer: AnyObject!
+    
     @IBAction func addButtenPressed(sender: UIBarButtonItem) {
         performSegueWithIdentifier("AddMovie", sender: nil)
     }
     
     @IBOutlet weak var tableView: UITableView!
+    
+    func listenForBackgroundNotification() {
+        observer = NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidEnterBackgroundNotification, object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: {
+            [weak self] _ in
+            if let strongSelf = self {
+                if strongSelf.presentedViewController != nil && !strongSelf.presentedViewController!.isMemberOfClass(UINavigationController) {
+                    strongSelf.dismissViewControllerAnimated(false, completion: nil)
+                }
+            }
+        })
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,11 +57,77 @@ class MovieListViewController: UIViewController {
         tableView.rowHeight = 140
     }
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(observer)
+        print("*** EditTitleViewController deinited")
+    }
+    
     func performFetch() {
         do {
             try fetchedResultsController.performFetch()
         } catch let error as NSError {
             fatalCoreDataError(error)
+        }
+    }
+    
+    func showWatchStatusMenu(film: Film) {
+        let alertController = UIAlertController(title: "Choose Your Watch Status:", message: nil, preferredStyle: .ActionSheet)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        let selectWantToWatchAction = UIAlertAction(title: "I wanna watch", style: .Default, handler: {
+            _ in
+            film.watchStatus = Movie.Status.wantToWatch.rawValue
+            if film.watchedDate != nil {
+                film.watchedDate = nil
+            }
+            self.tableView.reloadData()
+        })
+        
+        let selectWatchingAction = UIAlertAction(title: "I'm watching", style: .Default, handler: {
+            _ in
+            film.watchStatus = Movie.Status.watching.rawValue
+            if film.watchedDate != nil {
+                film.watchedDate = nil
+            }
+            self.tableView.reloadData()
+        })
+        
+        
+        let selectWatchedAction = UIAlertAction(title: "I've watched", style: .Default, handler: {
+            _ in
+            film.watchStatus = Movie.Status.watched.rawValue
+            film.watchedDate = NSDate()
+            self.tableView.reloadData()
+        })
+        
+        switch film.watchStatus {
+        case Movie.Status.wantToWatch.rawValue:
+            alertController.addAction(selectWatchingAction)
+            alertController.addAction(selectWatchedAction)
+        case Movie.Status.watched.rawValue:
+            alertController.addAction(selectWantToWatchAction)
+            alertController.addAction(selectWatchingAction)
+        case Movie.Status.watching.rawValue:
+            alertController.addAction(selectWantToWatchAction)
+            alertController.addAction(selectWatchedAction)
+        default:
+            alertController.addAction(selectWantToWatchAction)
+            alertController.addAction(selectWatchingAction)
+            alertController.addAction(selectWatchedAction)
+        }
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func saveFilmObject() {
+        do {
+            try managedObjectContext.save()
+            print("*** managedObjectContext saved")
+        } catch let error as NSError {
+            fatalCoreDataError(error)
+            return
         }
     }
     
@@ -69,6 +148,15 @@ class MovieListViewController: UIViewController {
             controller.isEditingMovie = false
             controller.delegate = self
             controller.title = "Add Title"
+        } else if segue.identifier == "EditMovie" {
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let controller = navigationController.viewControllers[0] as! EditTitleViewController
+            let film = fetchedResultsController.objectAtIndexPath(sender as! NSIndexPath) as! Film
+            let movie = Movie()
+            film.convertToMovieObject(movie)
+            controller.movie = movie
+            controller.isEditingMovie = true
+            controller.delegate = self
         }
     }
 }
@@ -79,6 +167,33 @@ extension MovieListViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         performSegueWithIdentifier("ShowFilmDetail", sender: indexPath)
+    }
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let editMovieAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Edit") { _ in
+            self.performSegueWithIdentifier("EditMovie", sender: indexPath)
+            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        }
+        
+        editMovieAction.backgroundColor = UIColor.lightGrayColor()
+        
+        let deleteMovieAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete") { _ in
+            self.managedObjectContext.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! Film)
+            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        }
+        
+        deleteMovieAction.backgroundColor = UIColor.redColor()
+        
+        let changeMovieStatusAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Status") { _ in
+            let film = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Film
+            self.showWatchStatusMenu(film)
+            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        }
+        
+        changeMovieStatusAction.backgroundColor = UIColor.greenColor()
+        
+        return [deleteMovieAction, editMovieAction, changeMovieStatusAction]
+        
     }
 }
 
@@ -111,18 +226,22 @@ extension MovieListViewController: NSFetchedResultsControllerDelegate {
         switch type {
         case .Insert:
             print("*** NSFetchedResultsChangeInsert (object)")
+            self.saveFilmObject()
             tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
         case .Delete:
             print("*** NSFetchedResultsChangeDelete (object)")
+            self.saveFilmObject()
             tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
         case .Update:
             print("*** NSFetchedResultsChangeUpdate (object)")
+            self.saveFilmObject()
             if let cell = tableView.cellForRowAtIndexPath(indexPath!) as? SearchResultCell {
                 let film = controller.objectAtIndexPath(indexPath!) as! Film
                 let movie = Movie()
                 film.convertToMovieObject(movie)
                 cell.configureForSearchResult(movie)
             }
+            tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
         case .Move:
             print("*** NSFetchedResultsChangeMove (object)")
             tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
@@ -151,24 +270,24 @@ extension MovieListViewController: NSFetchedResultsControllerDelegate {
     }
 }
 
+// MARK: - EditTitleViewControllerDelegate
+
 extension MovieListViewController: EditTitleViewControllerDelegate {
     func editTitleViewControllerDidCancel(controller: EditTitleViewController) {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     func editTitleViewControllerDidFinishEditingMovieTitle(controller: EditTitleViewController, movieTitle: Movie) {
-        let film = NSEntityDescription.insertNewObjectForEntityForName("Film", inManagedObjectContext: managedObjectContext) as! Film
+        var film: Film
+        
+        if movieTitle.film == nil {
+            film = NSEntityDescription.insertNewObjectForEntityForName("Film", inManagedObjectContext: managedObjectContext) as! Film
+        } else {
+            film = movieTitle.film!
+        }
         
         movieTitle.convertToFilmObject(film)
-        movieTitle.film = film
         
-        do {
-            try managedObjectContext.save()
-        } catch let error as NSError {
-            fatalCoreDataError(error)
-            return
-        }
-
         dismissViewControllerAnimated(true, completion: nil)
     }
 }

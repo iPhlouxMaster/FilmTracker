@@ -66,19 +66,27 @@ class SearchResultCell: UITableViewCell {
         if let directors = movie.directors {
             directorLabel.text = directors.joinWithSeparator(", ")
         } else {
-            directorDownloadTask = directorLabel.loadCreditsWithMovieObject(movie)
+            if movie.id > 0 {
+                directorDownloadTask = directorLabel.loadCreditsWithMovieObject(movie)
+            } else {
+                directorLabel.text = "Not Available"
+            }
         }
         
         if let countries = movie.productionCountries {
             productionCountriesLabel.text = countries.joinWithSeparator(", ")
         } else {
-            productionCountriesDownloadTask = productionCountriesLabel.loadDetailsWithMovieObject(movie)
+            if movie.id > 0 {
+                productionCountriesDownloadTask = productionCountriesLabel.loadDetailsWithMovieObject(movie)
+            } else {
+                productionCountriesLabel.text = "Not Available"
+            }
         }
         
         if let image = movie.w92Poster {
             posterImageView.image = image
         } else {
-            if let _ = movie.posterAddress  {
+            if movie.posterAddress != nil && movie.film == nil {
                 imageDownloadTask = posterImageView.loadImageWithMovieObject(movie, imageSize: Movie.ImageSize.w92)
             } else {
                 posterImageView.image = UIImage(named: "no-poster.jpeg")
