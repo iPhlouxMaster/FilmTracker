@@ -12,17 +12,18 @@
         <attribute name="productionCountries" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="releaseDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="releaseDateSection" optional="YES" transient="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="title" attributeType="String" syncable="YES"/>
+        <attribute name="title" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES"/>
         <attribute name="titleSection" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="tmdbRating" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="w92Poster" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="w300Poster" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="watchedDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="watchStatus" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="watchStatusSection" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="yourRating" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="yourRatingSection" optional="YES" transient="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Film" positionX="-63" positionY="-18" width="128" height="345"/>
+        <element name="Film" positionX="-63" positionY="-18" width="128" height="360"/>
     </elements>
 </model>

@@ -43,7 +43,6 @@ class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.contentInset = UIEdgeInsetsMake(108, 0, 0, 0)
         tableView.rowHeight = 140
         searchBar.becomeFirstResponder()
         

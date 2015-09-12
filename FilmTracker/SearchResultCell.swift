@@ -55,10 +55,10 @@ class SearchResultCell: UITableViewCell {
         if let _ = movie.film {
             if let yourRating = movie.yourRating {
                 floatRatingView.rating = yourRating
+            } else if let tmdbRating = movie.tmdbRating {
+                floatRatingView.rating = tmdbRating
+                rateLabel.text = "TMDB Rate:"
             }
-        } else if let tmdbRating = movie.tmdbRating {
-            floatRatingView.rating = tmdbRating
-            rateLabel.text = "TMDB Rate:"
         } else {
             floatRatingView.rating = 0.0
         }

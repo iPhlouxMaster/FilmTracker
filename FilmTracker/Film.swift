@@ -34,35 +34,52 @@ class Film: NSManagedObject {
     // Transient Properties
     
     var releaseDateSection: String {
-        if releaseDate == nil {
-            return "Not Available"
-        } else {
+        if releaseDate != nil {
             return String(NSCalendar.currentCalendar().component(.Year, fromDate: releaseDate!))
+        } else {
+            return "N/A"
         }
     }
     
     var yourRatingSection: String {
-        if yourRating == nil {
-            return "Not Available"
-        } else {
+        if yourRating != nil {
             let rating = Float(yourRating!)
             switch rating {
-            case 1.0...2.0: return "10%"
-            case 2.0...3.0: return "20%"
-            case 3.0...4.0: return "30%"
-            case 4.0...5.0: return "40%"
-            case 5.0...6.0: return "50%"
-            case 6.0...7.0: return "60%"
-            case 7.0...8.0: return "70%"
-            case 8.0...9.0: return "80%"
-            case 9.0...10.0: return "90%"
+            case 1.0...2.0: return "From 10% - 20%"
+            case 2.0...3.0: return "From 20% - 30%"
+            case 3.0...4.0: return "From 30% - 40%"
+            case 4.0...5.0: return "From 40% - 50%"
+            case 5.0...6.0: return "From 50% - 50%"
+            case 6.0...7.0: return "From 60% - 70%"
+            case 7.0...8.0: return "From 70% - 80%"
+            case 8.0...9.0: return "From 80% - 90%"
+            case 9.0...10.0: return "From 90% - 100%"
             default: return "The bug"
             }
+        } else {
+            return "N/A"
         }
     }
     
     var titleSection: String {
-        return (title as NSString).substringToIndex(1).uppercaseString
+        let characterSet = "ABCDEFGHIJKLMNOPQUSTUVWXYZ"
+        let titleCharacter = (title as NSString).substringToIndex(1).uppercaseString
+        
+        if characterSet.rangeOfString(titleCharacter) != nil {
+            return titleCharacter
+        } else {
+            return "Others"
+        }
+    }
+    
+    var watchStatusSection: String {
+        switch watchStatus {
+        case 0: return "Want to see"
+        case 1: return "Watching"
+        case 2: return "Watched"
+        case 3: return "None"
+        default: return "The bug"
+        }
     }
     
     // Search Results are Movie objects, it's necessary to convert the Movie object to Film object for storing in Core Data

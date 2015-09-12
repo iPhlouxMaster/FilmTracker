@@ -14,6 +14,7 @@ class MovieListViewController: UIViewController {
     var managedObjectContext: NSManagedObjectContext!
     var fetchedResultsController: NSFetchedResultsController!
     var observer: AnyObject!
+    var filteredObjects : [Film]? = nil
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var sectionNameKeyPathSegmentedControl: UISegmentedControl!
@@ -21,14 +22,25 @@ class MovieListViewController: UIViewController {
         performSegueWithIdentifier("AddMovie", sender: nil)
     }
     
+    let titleIndex = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "-"]
+    let statusIndex = ["•", "•", "•", "•"]
+    let yearIndex = ["-", "E", "•", "-", "•", "-", "•", "-", "•", "-", "•", "L"]
+    let ratingIndex = ["-", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    
+    
     @IBAction func segmentedControlValueChanged(sender: AnyObject) {
+        fetchedResultsController = nil
         switch sectionNameKeyPathSegmentedControl.selectedSegmentIndex {
         case 0:
             fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("titleSection", withSortDescriptorKey: "title")
         case 1:
+            fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("watchStatusSection", withSortDescriptorKey: "watchStatus")
+        case 2:
+            fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("yourRatingSection", withSortDescriptorKey: "yourRating")
+        case 3:
             fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("releaseDateSection", withSortDescriptorKey: "releaseDate")
         default:
-            fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("yourRatingSection", withSortDescriptorKey: "yourRating")
+            return
         }
         performFetch()
         tableView.reloadData()
@@ -38,7 +50,7 @@ class MovieListViewController: UIViewController {
         observer = NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidEnterBackgroundNotification, object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: {
             [weak self] _ in
             if let strongSelf = self {
-                if strongSelf.presentedViewController != nil && !strongSelf.presentedViewController!.isMemberOfClass(UINavigationController) {
+                if strongSelf.presentedViewController != nil && strongSelf.presentedViewController!.isMemberOfClass(UIAlertView) {
                     strongSelf.dismissViewControllerAnimated(false, completion: nil)
                 }
             }
@@ -48,7 +60,7 @@ class MovieListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("watchStatus", withSortDescriptorKey: "watchStatus")
+        fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("titleSection", withSortDescriptorKey: "title")
         performFetch()
         
         let cellNib = UINib(nibName: "SearchResultCell", bundle: nil)
@@ -210,6 +222,22 @@ extension MovieListViewController: UITableViewDelegate {
 }
 
 extension MovieListViewController: UITableViewDataSource {
+    
+    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+        switch sectionNameKeyPathSegmentedControl.selectedSegmentIndex {
+        case 0:
+            return titleIndex
+        case 1:
+            return statusIndex
+        case 2:
+            return ratingIndex
+        case 3:
+            return yearIndex
+        default:
+            return nil
+        }
+    }
+    
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let sectionInfo = fetchedResultsController.sections![section] 
         return sectionInfo.name

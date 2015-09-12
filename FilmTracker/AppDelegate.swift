@@ -54,11 +54,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBarController = window!.rootViewController as! UITabBarController
         
         if let tabBarViewControllers = tabBarController.viewControllers {
-            let navigationController = tabBarViewControllers[0] as! UINavigationController
-            let movieListViewController = navigationController.viewControllers[0] as! MovieListViewController
+            let movieNavigationController = tabBarViewControllers[0] as! UINavigationController
+            let movieListViewController = movieNavigationController.viewControllers[0] as! MovieListViewController
             movieListViewController.managedObjectContext = managedObjectContext
             
-            let searchViewController = tabBarViewControllers[1] as! SearchViewController
+            
+            let searchNavigationController = tabBarViewControllers[1] as! UINavigationController
+            let searchViewController = searchNavigationController.viewControllers[0] as! SearchViewController
             searchViewController.managedObjectContext = managedObjectContext
         }
         
