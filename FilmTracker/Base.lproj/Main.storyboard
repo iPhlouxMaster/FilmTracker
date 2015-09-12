@@ -145,7 +145,20 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="xAc-aK-eIY">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" title="Item" id="vv4-rg-RFb"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="V5C-5v-srY">
+                            <rect key="frame" x="180" y="7" width="240" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
+                            <segments>
+                                <segment title="First"/>
+                                <segment title="Second"/>
+                            </segments>
+                            <connections>
+                                <action selector="segmentedControlValueChanged:" destination="XRA-KT-n8h" eventType="valueChanged" id="2bs-Ue-seA"/>
+                            </connections>
+                        </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="GJo-Cu-ljO">
                             <connections>
                                 <action selector="addButtenPressed:" destination="XRA-KT-n8h" id="euU-Jp-yFZ"/>
@@ -153,6 +166,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="sectionNameKeyPathSegmentedControl" destination="V5C-5v-srY" id="SLY-D7-IZS"/>
                         <outlet property="tableView" destination="acS-GP-dqu" id="4KD-Wa-KdX"/>
                         <segue destination="Mcs-ej-HET" kind="presentation" identifier="ShowFilmDetail" id="eFB-PN-Rdk"/>
                         <segue destination="eZm-he-jC7" kind="presentation" identifier="AddMovie" id="dwd-ap-R53"/>

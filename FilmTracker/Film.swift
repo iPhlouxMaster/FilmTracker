@@ -31,6 +31,40 @@ class Film: NSManagedObject {
     @NSManaged var watchedDate: NSDate?
     @NSManaged var comments: String?
     
+    // Transient Properties
+    
+    var releaseDateSection: String {
+        if releaseDate == nil {
+            return "Not Available"
+        } else {
+            return String(NSCalendar.currentCalendar().component(.Year, fromDate: releaseDate!))
+        }
+    }
+    
+    var yourRatingSection: String {
+        if yourRating == nil {
+            return "Not Available"
+        } else {
+            let rating = Float(yourRating!)
+            switch rating {
+            case 1.0...2.0: return "10%"
+            case 2.0...3.0: return "20%"
+            case 3.0...4.0: return "30%"
+            case 4.0...5.0: return "40%"
+            case 5.0...6.0: return "50%"
+            case 6.0...7.0: return "60%"
+            case 7.0...8.0: return "70%"
+            case 8.0...9.0: return "80%"
+            case 9.0...10.0: return "90%"
+            default: return "The bug"
+            }
+        }
+    }
+    
+    var titleSection: String {
+        return (title as NSString).substringToIndex(1).uppercaseString
+    }
+    
     // Search Results are Movie objects, it's necessary to convert the Movie object to Film object for storing in Core Data
     
     func convertToMovieObject(movie: Movie) {

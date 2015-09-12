@@ -12,16 +12,27 @@ import CoreData
 class MovieListViewController: UIViewController {
     
     var managedObjectContext: NSManagedObjectContext!
-    var sectionNameKeyPath: String!
     var fetchedResultsController: NSFetchedResultsController!
-    
     var observer: AnyObject!
     
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var sectionNameKeyPathSegmentedControl: UISegmentedControl!
     @IBAction func addButtenPressed(sender: UIBarButtonItem) {
         performSegueWithIdentifier("AddMovie", sender: nil)
     }
     
-    @IBOutlet weak var tableView: UITableView!
+    @IBAction func segmentedControlValueChanged(sender: AnyObject) {
+        switch sectionNameKeyPathSegmentedControl.selectedSegmentIndex {
+        case 0:
+            fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("titleSection", withSortDescriptorKey: "title")
+        case 1:
+            fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("releaseDateSection", withSortDescriptorKey: "releaseDate")
+        default:
+            fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("yourRatingSection", withSortDescriptorKey: "yourRating")
+        }
+        performFetch()
+        tableView.reloadData()
+    }
     
     func listenForBackgroundNotification() {
         observer = NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidEnterBackgroundNotification, object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: {
@@ -37,8 +48,7 @@ class MovieListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sectionNameKeyPath = "watchStatus"
-        fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath(sectionNameKeyPath)
+        fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("watchStatus", withSortDescriptorKey: "watchStatus")
         performFetch()
         
         let cellNib = UINib(nibName: "SearchResultCell", bundle: nil)
@@ -51,12 +61,13 @@ class MovieListViewController: UIViewController {
         print("*** EditTitleViewController deinited")
     }
     
-    func createFetchedResultsControllerWithSectionNameKeyPath(sectionNameKeyPath: String) -> NSFetchedResultsController {
+    func createFetchedResultsControllerWithSectionNameKeyPath(sectionNameKeyPath: String, withSortDescriptorKey: String) -> NSFetchedResultsController {
         let fetchRequest = NSFetchRequest()
         let entity = NSEntityDescription.entityForName("Film", inManagedObjectContext: self.managedObjectContext)
         fetchRequest.entity = entity
-        let sortDescriptor1 = NSSortDescriptor(key: "title", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor1]
+        let sortDescriptor1 = NSSortDescriptor(key: withSortDescriptorKey, ascending: true)
+        let sortDescriptor2 = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor1, sortDescriptor2]
         fetchRequest.fetchBatchSize = 20
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: sectionNameKeyPath, cacheName: "Film")
         fetchedResultsController.delegate = self
