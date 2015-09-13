@@ -13,7 +13,6 @@ class MovieListViewController: UIViewController {
     
     var managedObjectContext: NSManagedObjectContext!
     var fetchedResultsController: NSFetchedResultsController!
-    var observer: AnyObject!
     var searchController: UISearchController!
     var searchPredicate: NSPredicate?
     var filteredObjects : [Film]? = nil
@@ -47,17 +46,6 @@ class MovieListViewController: UIViewController {
         tableView.reloadData()
     }
     
-    func listenForBackgroundNotification() {
-        observer = NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidEnterBackgroundNotification, object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: {
-            [weak self] _ in
-            if let strongSelf = self {
-                if strongSelf.presentedViewController != nil && strongSelf.presentedViewController!.isMemberOfClass(UIAlertView) {
-                    strongSelf.dismissViewControllerAnimated(false, completion: nil)
-                }
-            }
-        })
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Movie List"
@@ -65,8 +53,11 @@ class MovieListViewController: UIViewController {
         fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("titleSection", withSortDescriptorKey: "title")
         performFetch()
         
+        tableView.sectionIndexBackgroundColor = UIColor.clearColor()
+        
         searchController = UISearchController(searchResultsController: nil)
         searchController.dimsBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchResultsUpdater = self
         searchController.delegate = self
         tableView.tableHeaderView = searchController.searchBar
@@ -79,7 +70,6 @@ class MovieListViewController: UIViewController {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(observer)
         print("*** EditTitleViewController deinited")
     }
     
