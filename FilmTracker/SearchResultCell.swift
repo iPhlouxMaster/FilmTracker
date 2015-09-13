@@ -52,17 +52,17 @@ class SearchResultCell: UITableViewCell {
     func configureForSearchResult(movie: Movie) {
         movieTitleLabel.text = movie.title
         
-        if let _ = movie.film {
-            if let yourRating = movie.yourRating {
-                floatRatingView.rating = yourRating
-            } else if let tmdbRating = movie.tmdbRating {
-                floatRatingView.rating = tmdbRating
-                rateLabel.text = "TMDB Rate:"
-            }
+        if let yourRating = movie.yourRating {
+            rateLabel.text = "Your Rate:"
+            floatRatingView.rating = yourRating
+        } else if let tmdbRating = movie.tmdbRating {
+            floatRatingView.rating = tmdbRating
+            rateLabel.text = "TMDB Rate:"
         } else {
+            rateLabel.text = "Your Rate:"
             floatRatingView.rating = 0.0
         }
-        
+    
         if let directors = movie.directors {
             directorLabel.text = directors.joinWithSeparator(", ")
         } else {

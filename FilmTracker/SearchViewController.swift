@@ -18,6 +18,7 @@ class SearchViewController: UIViewController {
             NSNotificationCenter.defaultCenter().addObserverForName(NSManagedObjectContextObjectsDidChangeNotification, object: nil, queue: NSOperationQueue.mainQueue()) { notification in
                 if self.isViewLoaded() {
                     self.performFetch()
+                    self.performSearch()
                     self.tableView.reloadData()
                 }
             }
@@ -43,6 +44,7 @@ class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Search"
         tableView.rowHeight = 140
         searchBar.becomeFirstResponder()
         

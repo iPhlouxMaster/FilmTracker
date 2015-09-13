@@ -14,22 +14,21 @@ class MovieListViewController: UIViewController {
     var managedObjectContext: NSManagedObjectContext!
     var fetchedResultsController: NSFetchedResultsController!
     var observer: AnyObject!
+    var searchController: UISearchController!
+    var searchPredicate: NSPredicate?
     var filteredObjects : [Film]? = nil
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var sectionNameKeyPathSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     @IBAction func addButtenPressed(sender: UIBarButtonItem) {
         performSegueWithIdentifier("AddMovie", sender: nil)
     }
-    
-    let titleIndex = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "-"]
-    let statusIndex = ["•", "•", "•", "•"]
-    let yearIndex = ["-", "E", "•", "-", "•", "-", "•", "-", "•", "-", "•", "L"]
-    let ratingIndex = ["-", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    
-    
+
     @IBAction func segmentedControlValueChanged(sender: AnyObject) {
         fetchedResultsController = nil
+        
         switch sectionNameKeyPathSegmentedControl.selectedSegmentIndex {
         case 0:
             fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("titleSection", withSortDescriptorKey: "title")
@@ -42,7 +41,9 @@ class MovieListViewController: UIViewController {
         default:
             return
         }
+        
         performFetch()
+        
         tableView.reloadData()
     }
     
@@ -59,9 +60,18 @@ class MovieListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Movie List"
         
         fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("titleSection", withSortDescriptorKey: "title")
         performFetch()
+        
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchResultsUpdater = self
+        searchController.delegate = self
+        tableView.tableHeaderView = searchController.searchBar
+        searchController.searchBar.sizeToFit()
+        definesPresentationContext = true
         
         let cellNib = UINib(nibName: "SearchResultCell", bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: "SearchResultCell")
@@ -80,6 +90,7 @@ class MovieListViewController: UIViewController {
         let sortDescriptor1 = NSSortDescriptor(key: withSortDescriptorKey, ascending: true)
         let sortDescriptor2 = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor1, sortDescriptor2]
+        fetchRequest.predicate = nil
         fetchRequest.fetchBatchSize = 20
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: sectionNameKeyPath, cacheName: "Film")
         fetchedResultsController.delegate = self
@@ -183,6 +194,8 @@ class MovieListViewController: UIViewController {
             controller.delegate = self
         }
     }
+    
+    
 }
 
 // MARK: - UITableView Delegate / Data Source
@@ -202,7 +215,11 @@ extension MovieListViewController: UITableViewDelegate {
         editMovieAction.backgroundColor = UIColor.lightGrayColor()
         
         let deleteMovieAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete") { _ in
-            self.managedObjectContext.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! Film)
+            if self.searchPredicate == nil {
+                self.managedObjectContext.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! Film)
+            } else {
+                self.managedObjectContext.deleteObject(self.filteredObjects![indexPath.row])
+            }
             self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
         
@@ -224,40 +241,70 @@ extension MovieListViewController: UITableViewDelegate {
 extension MovieListViewController: UITableViewDataSource {
     
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
-        switch sectionNameKeyPathSegmentedControl.selectedSegmentIndex {
-        case 0:
-            return titleIndex
-        case 1:
-            return statusIndex
-        case 2:
-            return ratingIndex
-        case 3:
-            return yearIndex
-        default:
+        if searchPredicate == nil {
+            switch sectionNameKeyPathSegmentedControl.selectedSegmentIndex {
+            case 0:
+                return Constants.titleIndex
+            case 1:
+                return Constants.statusIndex
+            case 2:
+                return Constants.ratingIndex
+            case 3:
+                return Constants.yearIndex
+            default:
+                return nil
+            }
+        } else {
             return nil
         }
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let sectionInfo = fetchedResultsController.sections![section] 
-        return sectionInfo.name
+        if searchPredicate == nil {
+            let sectionInfo = fetchedResultsController.sections![section]
+            return sectionInfo.name
+        } else {
+            return nil
+        }
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return fetchedResultsController.sections!.count
+        if searchPredicate == nil {
+            return fetchedResultsController.sections!.count
+        } else {
+            return 1 ?? 0
+        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionInfo = fetchedResultsController.sections![section]
-        return sectionInfo.numberOfObjects
+        if searchPredicate == nil {
+            let sectionInfo = fetchedResultsController.sections![section]
+            return sectionInfo.numberOfObjects
+        } else {
+            return filteredObjects?.count ?? 0
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("SearchResultCell", forIndexPath: indexPath) as! SearchResultCell
-        let film = fetchedResultsController.objectAtIndexPath(indexPath) as! Film
-        let movie = Movie()
-        film.convertToMovieObject(movie)
-        cell.configureForSearchResult(movie)
+        var film: Film
+        if searchPredicate == nil {
+            film = fetchedResultsController.objectAtIndexPath(indexPath) as! Film
+            let movie = Movie()
+            film.convertToMovieObject(movie)
+            cell.configureForSearchResult(movie)
+        } else {
+            if filteredObjects?.count > 0 {
+                film = filteredObjects![indexPath.row]
+                let movie = Movie()
+                film.convertToMovieObject(movie)
+                cell.configureForSearchResult(movie)
+            } else {
+                
+            }
+        }
+        
+        
         
         return cell
     }
@@ -285,10 +332,18 @@ extension MovieListViewController: NSFetchedResultsControllerDelegate {
             print("*** NSFetchedResultsChangeUpdate (object)")
             self.saveFilmObject()
             if let cell = tableView.cellForRowAtIndexPath(indexPath!) as? SearchResultCell {
-                let film = controller.objectAtIndexPath(indexPath!) as! Film
-                let movie = Movie()
-                film.convertToMovieObject(movie)
-                cell.configureForSearchResult(movie)
+                if searchPredicate == nil {
+                    let film = controller.objectAtIndexPath(indexPath!) as! Film
+                    let movie = Movie()
+                    film.convertToMovieObject(movie)
+                    cell.configureForSearchResult(movie)
+                } else {
+                    let film = filteredObjects![indexPath!.row]
+                    let movie = Movie()
+                    film.convertToMovieObject(movie)
+                    cell.configureForSearchResult(movie)
+                }
+                
             }
             tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
         case .Move:
@@ -315,7 +370,11 @@ extension MovieListViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         print("*** controllerDidChangeContent")
-        tableView.endUpdates()
+        if searchPredicate == nil {
+            tableView.endUpdates()
+        } else {
+            (searchController.searchResultsUpdater as! MovieListViewController).tableView.endUpdates()
+        }
     }
 }
 
@@ -338,6 +397,36 @@ extension MovieListViewController: EditTitleViewControllerDelegate {
         movieTitle.convertToFilmObject(film)
         
         dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+
+extension MovieListViewController: UISearchResultsUpdating {
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        let searchText = self.searchController?.searchBar.text
+        if let searchText = searchText {
+            searchPredicate = NSPredicate(format: "title contains[c] %@", searchText)
+            filteredObjects = fetchedResultsController.fetchedObjects!.filter() {
+                return self.searchPredicate!.evaluateWithObject($0)
+                } as? [Film]
+            self.tableView.reloadData()
+        }
+    }
+}
+
+extension MovieListViewController: UISearchControllerDelegate {
+    func didDismissSearchController(searchController: UISearchController) {
+        searchPredicate = nil
+        filteredObjects = nil
+        tableView.reloadData()
+    }
+}
+
+extension MovieListViewController: UISearchBarDelegate {
+    func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        updateSearchResultsForSearchController(searchController)
+        tableView.reloadData()
     }
 }
 

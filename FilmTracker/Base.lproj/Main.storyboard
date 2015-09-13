@@ -136,16 +136,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="sBG-Bn-0dR">
-                                <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="acS-GP-dqu">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="MlW-nf-Nhv"/>
+                                    <constraint firstAttribute="height" constant="487" id="S7P-TB-dvO"/>
                                 </constraints>
-                                <textInputTraits key="textInputTraits"/>
-                            </searchBar>
+                                <connections>
+                                    <outlet property="dataSource" destination="XRA-KT-n8h" id="3R8-1L-59S"/>
+                                    <outlet property="delegate" destination="XRA-KT-n8h" id="V5g-a6-dIQ"/>
+                                </connections>
+                            </tableView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kQO-qk-cD0">
-                                <rect key="frame" x="0.0" y="108" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="507" width="600" height="44"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="QGo-LL-Ex1"/>
@@ -160,7 +164,7 @@
                                             <segments>
                                                 <segment title="Title"/>
                                                 <segment title="Status"/>
-                                                <segment title="Your Rating"/>
+                                                <segment title="Your Rate"/>
                                                 <segment title="Release"/>
                                             </segments>
                                             <connections>
@@ -170,48 +174,17 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="acS-GP-dqu">
-                                <rect key="frame" x="0.0" y="152" width="600" height="404"/>
-                                <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="XRA-KT-n8h" id="3R8-1L-59S"/>
-                                    <outlet property="delegate" destination="XRA-KT-n8h" id="V5g-a6-dIQ"/>
-                                </connections>
-                            </tableView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="rYK-gs-Qx0" firstAttribute="top" secondItem="kQO-qk-cD0" secondAttribute="bottom" constant="399" id="6y0-sG-QZh"/>
-                            <constraint firstAttribute="trailing" secondItem="sBG-Bn-0dR" secondAttribute="trailing" id="9Qp-Ds-JoC"/>
-                            <constraint firstItem="kQO-qk-cD0" firstAttribute="top" secondItem="sBG-Bn-0dR" secondAttribute="bottom" id="Cc8-y4-a59"/>
                             <constraint firstAttribute="trailing" secondItem="kQO-qk-cD0" secondAttribute="trailing" id="GCV-ZF-x3B"/>
-                            <constraint firstItem="sBG-Bn-0dR" firstAttribute="leading" secondItem="aES-iS-Nb5" secondAttribute="leading" id="KGg-pR-O8f"/>
-                            <constraint firstItem="acS-GP-dqu" firstAttribute="top" secondItem="aES-iS-Nb5" secondAttribute="top" constant="44" id="Nn6-xM-rOI"/>
-                            <constraint firstItem="rYK-gs-Qx0" firstAttribute="top" secondItem="kQO-qk-cD0" secondAttribute="bottom" id="OJb-if-Rrp"/>
-                            <constraint firstItem="kQO-qk-cD0" firstAttribute="top" secondItem="sBG-Bn-0dR" secondAttribute="bottom" id="Pz4-V0-TA0"/>
                             <constraint firstItem="kQO-qk-cD0" firstAttribute="leading" secondItem="aES-iS-Nb5" secondAttribute="leading" id="Qn0-mr-RlQ"/>
                             <constraint firstItem="acS-GP-dqu" firstAttribute="leading" secondItem="aES-iS-Nb5" secondAttribute="leading" id="YbM-k3-I2x"/>
-                            <constraint firstItem="kQO-qk-cD0" firstAttribute="top" secondItem="sBG-Bn-0dR" secondAttribute="bottom" id="cwz-7f-QLg"/>
-                            <constraint firstItem="sBG-Bn-0dR" firstAttribute="top" secondItem="8y4-W7-H6O" secondAttribute="bottom" id="eLp-sp-qeM"/>
-                            <constraint firstItem="sBG-Bn-0dR" firstAttribute="top" secondItem="8y4-W7-H6O" secondAttribute="bottom" id="fTH-9B-59s"/>
+                            <constraint firstItem="rYK-gs-Qx0" firstAttribute="top" secondItem="kQO-qk-cD0" secondAttribute="bottom" id="cUc-J2-77J"/>
                             <constraint firstAttribute="trailing" secondItem="acS-GP-dqu" secondAttribute="trailing" id="hI1-vL-9dj"/>
-                            <constraint firstAttribute="bottom" secondItem="acS-GP-dqu" secondAttribute="bottom" constant="36" id="n3W-hQ-VGk"/>
-                            <constraint firstItem="acS-GP-dqu" firstAttribute="top" secondItem="kQO-qk-cD0" secondAttribute="bottom" id="q85-HL-49U"/>
-                            <constraint firstItem="acS-GP-dqu" firstAttribute="bottom" secondItem="aES-iS-Nb5" secondAttribute="bottomMargin" constant="-44" id="rGC-WV-OBh"/>
+                            <constraint firstItem="acS-GP-dqu" firstAttribute="bottom" secondItem="aES-iS-Nb5" secondAttribute="bottomMargin" constant="-49" id="rGC-WV-OBh"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="fTH-9B-59s"/>
-                                <exclude reference="Cc8-y4-a59"/>
-                                <exclude reference="Pz4-V0-TA0"/>
-                                <exclude reference="Nn6-xM-rOI"/>
-                                <exclude reference="n3W-hQ-VGk"/>
-                                <exclude reference="6y0-sG-QZh"/>
-                                <exclude reference="OJb-if-Rrp"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="xAc-aK-eIY">
                         <nil key="title"/>
@@ -1364,8 +1337,8 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="dwd-ap-R53"/>
+        <segue reference="eFB-PN-Rdk"/>
         <segue reference="Vka-dX-4Tj"/>
-        <segue reference="zZk-OV-gYQ"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
 </document>
