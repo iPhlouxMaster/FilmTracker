@@ -13,20 +13,11 @@ class SearchViewController: UIViewController {
     
     // Set KVO to monitor if any managedObject changed, fetch the objects for the performSearch() and reload tableView.
     
-    var managedObjectContext: NSManagedObjectContext! {
-        didSet {
-            NSNotificationCenter.defaultCenter().addObserverForName(NSManagedObjectContextObjectsDidChangeNotification, object: nil, queue: NSOperationQueue.mainQueue()) { notification in
-                if self.isViewLoaded() {
-                    self.performFetch()
-                    self.performSearch()
-                    self.tableView.reloadData()
-                }
-            }
-        }
-    }
+    var managedObjectContext: NSManagedObjectContext!
     
     let search = Search()
     var films = [Film]()
+    var observer: AnyObject!
     
     struct TableViewCellIdentifiers {
         static let searchResultCell = "SearchResultCell"
@@ -38,15 +29,31 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
+    @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBAction func segmentValueChanged(sender: AnyObject) {
         performSearch()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        managedObjectContext = appDelegate.managedObjectContext
+        
+        listenForMOCObjectsDidChangeNotification()
+        
         title = "Search"
         tableView.rowHeight = 140
         searchBar.becomeFirstResponder()
+        
+        if self.revealViewController() != nil {
+            menuButton.target = self.revealViewController()
+            menuButton.action = "revealToggle:"
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+            // Uncomment to change the width of menu
+            //self.revealViewController().rearViewRevealWidth = 62
+        }
         
         var cellNib = UINib(nibName: TableViewCellIdentifiers.searchResultCell, bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.searchResultCell)
@@ -57,6 +64,12 @@ class SearchViewController: UIViewController {
   
         performFetch()
     }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(observer)
+        print("*** SearchViewController deinited")
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -80,6 +93,15 @@ class SearchViewController: UIViewController {
         }
         
         films = foundObjects as! [Film]
+    }
+    
+    func listenForMOCObjectsDidChangeNotification() {
+        observer = NSNotificationCenter.defaultCenter().addObserverForName(NSManagedObjectContextObjectsDidChangeNotification, object: nil, queue: NSOperationQueue.mainQueue()) { [weak self]_ in
+            if let strongSelf = self {
+                strongSelf.performFetch()
+                strongSelf.tableView.reloadData()
+            }
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -116,7 +138,6 @@ extension SearchViewController: UITableViewDataSource {
         case .Results(let results):
             let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
             cell.configureForSearchResult(results[indexPath.row])
-            
             return cell
         case .Loading:
             let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.loadingCell, forIndexPath: indexPath) 

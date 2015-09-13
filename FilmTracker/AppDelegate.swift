@@ -51,19 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        let tabBarController = window!.rootViewController as! UITabBarController
-        
-        if let tabBarViewControllers = tabBarController.viewControllers {
-            let movieNavigationController = tabBarViewControllers[0] as! UINavigationController
-            let movieListViewController = movieNavigationController.viewControllers[0] as! MovieListViewController
-            movieListViewController.managedObjectContext = managedObjectContext
-            
-            
-            let searchNavigationController = tabBarViewControllers[1] as! UINavigationController
-            let searchViewController = searchNavigationController.viewControllers[0] as! SearchViewController
-            searchViewController.managedObjectContext = managedObjectContext
-        }
-        
         _ = CountriesAndGenres()
         
         listenForFatalCoreDataNotifications()

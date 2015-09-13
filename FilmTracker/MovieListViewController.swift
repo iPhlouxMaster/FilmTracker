@@ -11,15 +11,17 @@ import CoreData
 
 class MovieListViewController: UIViewController {
     
+    
     var managedObjectContext: NSManagedObjectContext!
     var fetchedResultsController: NSFetchedResultsController!
     var searchController: UISearchController!
     var searchPredicate: NSPredicate?
     var filteredObjects : [Film]? = nil
     
+    @IBOutlet weak var searchBarView: UIView!
+    @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var sectionNameKeyPathSegmentedControl: UISegmentedControl!
-    @IBOutlet weak var searchBar: UISearchBar!
     
     @IBAction func addButtenPressed(sender: UIBarButtonItem) {
         performSegueWithIdentifier("AddMovie", sender: nil)
@@ -46,22 +48,37 @@ class MovieListViewController: UIViewController {
         tableView.reloadData()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        searchBarView.addSubview(searchController.searchBar)
+        searchController.searchBar.frame = CGRectMake(0, 0, searchBarView.bounds.size.width, 44)
+        searchController.searchBar.tintColor = view.tintColor
+        searchController.searchBar.placeholder = "Search movie title..."
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Movie List"
+        
+        if self.revealViewController() != nil {
+            menuButton.target = self.revealViewController()
+            menuButton.action = "revealToggle:"
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+            // Uncomment to change the width of menu
+            //self.revealViewController().rearViewRevealWidth = 62
+        }
         
         fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("titleSection", withSortDescriptorKey: "title")
         performFetch()
         
         tableView.sectionIndexBackgroundColor = UIColor.clearColor()
-        
+
         searchController = UISearchController(searchResultsController: nil)
         searchController.dimsBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchResultsUpdater = self
         searchController.delegate = self
-        tableView.tableHeaderView = searchController.searchBar
-        searchController.searchBar.sizeToFit()
         definesPresentationContext = true
         
         let cellNib = UINib(nibName: "SearchResultCell", bundle: nil)
@@ -70,10 +87,14 @@ class MovieListViewController: UIViewController {
     }
     
     deinit {
-        print("*** EditTitleViewController deinited")
+        NSFetchedResultsController.deleteCacheWithName("Film")
+        print("*** MovieListViewController deinited")
     }
     
     func createFetchedResultsControllerWithSectionNameKeyPath(sectionNameKeyPath: String, withSortDescriptorKey: String) -> NSFetchedResultsController {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        managedObjectContext = appDelegate.managedObjectContext
+        
         let fetchRequest = NSFetchRequest()
         let entity = NSEntityDescription.entityForName("Film", inManagedObjectContext: self.managedObjectContext)
         fetchRequest.entity = entity
@@ -184,8 +205,6 @@ class MovieListViewController: UIViewController {
             controller.delegate = self
         }
     }
-    
-    
 }
 
 // MARK: - UITableView Delegate / Data Source
@@ -209,8 +228,9 @@ extension MovieListViewController: UITableViewDelegate {
                 self.managedObjectContext.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! Film)
             } else {
                 self.managedObjectContext.deleteObject(self.filteredObjects![indexPath.row])
+                self.filteredObjects!.removeAtIndex(indexPath.row)
             }
-            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            // self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
         
         deleteMovieAction.backgroundColor = UIColor.redColor()
@@ -226,6 +246,7 @@ extension MovieListViewController: UITableViewDelegate {
         return [deleteMovieAction, editMovieAction, changeMovieStatusAction]
         
     }
+    
 }
 
 extension MovieListViewController: UITableViewDataSource {
@@ -251,8 +272,8 @@ extension MovieListViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if searchPredicate == nil {
-            let sectionInfo = fetchedResultsController.sections![section]
-            return sectionInfo.name
+            let sectionInfo = fetchedResultsController.sections?[section]
+            return sectionInfo?.name
         } else {
             return nil
         }
@@ -260,9 +281,9 @@ extension MovieListViewController: UITableViewDataSource {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if searchPredicate == nil {
-            return fetchedResultsController.sections!.count
+            return fetchedResultsController.sections?.count ?? 0
         } else {
-            return 1 ?? 0
+            return filteredObjects?.count ?? 0
         }
     }
     
@@ -280,23 +301,22 @@ extension MovieListViewController: UITableViewDataSource {
         var film: Film
         if searchPredicate == nil {
             film = fetchedResultsController.objectAtIndexPath(indexPath) as! Film
-            let movie = Movie()
-            film.convertToMovieObject(movie)
-            cell.configureForSearchResult(movie)
         } else {
-            if filteredObjects?.count > 0 {
-                film = filteredObjects![indexPath.row]
-                let movie = Movie()
-                film.convertToMovieObject(movie)
-                cell.configureForSearchResult(movie)
-            } else {
-                
-            }
+            film = filteredObjects![indexPath.row]
         }
-        
-        
-        
+        let movie = Movie()
+        film.convertToMovieObject(movie)
+        cell.configureForSearchResult(movie)
+
         return cell
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if searchPredicate == nil {
+            return true
+        } else {
+            return false
+        }
     }
 }
 
@@ -309,6 +329,14 @@ extension MovieListViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        var tableView = UITableView()
+        
+        if searchPredicate == nil {
+            tableView = self.tableView
+        } else {
+            tableView  = (searchController.searchResultsUpdater as! MovieListViewController).tableView
+        }
+        
         switch type {
         case .Insert:
             print("*** NSFetchedResultsChangeInsert (object)")
@@ -328,14 +356,15 @@ extension MovieListViewController: NSFetchedResultsControllerDelegate {
                     film.convertToMovieObject(movie)
                     cell.configureForSearchResult(movie)
                 } else {
-                    let film = filteredObjects![indexPath!.row]
-                    let movie = Movie()
-                    film.convertToMovieObject(movie)
-                    cell.configureForSearchResult(movie)
+                    if filteredObjects?.count > 0 {
+                        let film = filteredObjects![indexPath!.row]
+                        let movie = Movie()
+                        film.convertToMovieObject(movie)
+                        cell.configureForSearchResult(movie)
+                    }
                 }
-                
+                // tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
             }
-            tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
         case .Move:
             print("*** NSFetchedResultsChangeMove (object)")
             tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
@@ -360,11 +389,8 @@ extension MovieListViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         print("*** controllerDidChangeContent")
-        if searchPredicate == nil {
-            tableView.endUpdates()
-        } else {
-            (searchController.searchResultsUpdater as! MovieListViewController).tableView.endUpdates()
-        }
+        tableView.reloadData()
+        tableView.endUpdates()
     }
 }
 
@@ -399,7 +425,7 @@ extension MovieListViewController: UISearchResultsUpdating {
             searchPredicate = NSPredicate(format: "title contains[c] %@", searchText)
             filteredObjects = fetchedResultsController.fetchedObjects!.filter() {
                 return self.searchPredicate!.evaluateWithObject($0)
-                } as? [Film]
+            } as? [Film]
             self.tableView.reloadData()
         }
     }
@@ -409,13 +435,6 @@ extension MovieListViewController: UISearchControllerDelegate {
     func didDismissSearchController(searchController: UISearchController) {
         searchPredicate = nil
         filteredObjects = nil
-        tableView.reloadData()
-    }
-}
-
-extension MovieListViewController: UISearchBarDelegate {
-    func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        updateSearchResultsForSearchController(searchController)
         tableView.reloadData()
     }
 }
