@@ -144,7 +144,7 @@ extension SearchResultCell: FloatRatingViewDelegate {
     }
     
     func floatRatingView(ratingView: FloatRatingView, didUpdate rating: Float) {
-        floatRatingView.rating = rating
+        // floatRatingView.rating = rating
     }
 
 }

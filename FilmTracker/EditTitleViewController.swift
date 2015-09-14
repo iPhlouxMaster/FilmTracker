@@ -14,7 +14,7 @@ protocol EditTitleViewControllerDelegate: class {
 }
 
 class EditTitleViewController: UITableViewController {
-    
+
     var isEditingMovie = false
     var movie: Movie!
     weak var delegate: EditTitleViewControllerDelegate?
@@ -56,6 +56,11 @@ class EditTitleViewController: UITableViewController {
         
         movie.title = movieTitleTextField.text!
         
+        if imageView.hidden {
+            movie.w300Poster = nil
+            movie.w92Poster = nil
+        }
+        
         if !directorsTextField.text!.isEmpty {
             movie.directors = [String]()
             let directors = directorsTextField.text!.componentsSeparatedByString(",")
@@ -94,6 +99,7 @@ class EditTitleViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         listenForBackgroundNotification()
         commentsTextView.delegate = self
         configureCellsContent(movie)
@@ -101,6 +107,10 @@ class EditTitleViewController: UITableViewController {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("hideKeyboard:"))
         gestureRecognizer.cancelsTouchesInView = false
         tableView.addGestureRecognizer(gestureRecognizer)
+        
+        if isEditingMovie {
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -552,8 +562,6 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
                 self.tableView.beginUpdates()
                 self.imageView.hidden = true
                 self.imageView.image = nil
-                self.movie.w300Poster = nil
-                self.movie.w92Poster = nil
                 self.tableView.reloadData()
                 self.tableView.endUpdates()
             })

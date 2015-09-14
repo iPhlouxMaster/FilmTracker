@@ -11,7 +11,6 @@ import CoreData
 
 class MovieListViewController: UIViewController {
     
-    
     var managedObjectContext: NSManagedObjectContext!
     var fetchedResultsController: NSFetchedResultsController!
     var searchController: UISearchController!
@@ -53,9 +52,8 @@ class MovieListViewController: UIViewController {
         super.viewWillLayoutSubviews()
         searchBarView.addSubview(searchController.searchBar)
         searchController.searchBar.frame = CGRectMake(0, 0, searchBarView.bounds.size.width, 44)
-        searchController.searchBar.tintColor = UIColor(red: 141.0 / 255.0, green: 141.0 / 255.0, blue: 141.0 / 255.0, alpha: 1.0)
+        searchController.searchBar.barTintColor = UIColor(red: 178.0 / 255.0, green: 178.0 / 255.0, blue: 178.0 / 255.0, alpha: 1.0)
         searchController.searchBar.placeholder = "Search film title..."
-        searchController.searchBar.barTintColor = UIColor.lightGrayColor()
     }
     
     override func viewDidLoad() {
