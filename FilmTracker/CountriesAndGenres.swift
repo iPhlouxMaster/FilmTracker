@@ -21,7 +21,8 @@ class CountriesAndGenres {
     }
 
     func registerDefaults() {
-        let dictionary = ["FirstRunning": true]
+        let dictionary = ["FirstRunning": true,
+                           "MovieID": -1 ]
         NSUserDefaults.standardUserDefaults().registerDefaults(dictionary)
     }
     

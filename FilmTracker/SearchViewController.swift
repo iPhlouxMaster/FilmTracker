@@ -18,6 +18,7 @@ class SearchViewController: UIViewController {
     let search = Search()
     var films = [Film]()
     var observer: AnyObject!
+    var sidebarMenuOpen = false
     
     struct TableViewCellIdentifiers {
         static let searchResultCell = "SearchResultCell"
@@ -42,15 +43,16 @@ class SearchViewController: UIViewController {
         
         listenForMOCObjectsDidChangeNotification()
         
-        title = "Search"
+        title = "Search Title"
         tableView.rowHeight = 140
         searchBar.becomeFirstResponder()
+        
+        revealViewController().delegate = self
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = "revealToggle:"
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
             // Uncomment to change the width of menu
             //self.revealViewController().rearViewRevealWidth = 62
         }
@@ -202,6 +204,38 @@ extension SearchViewController: UISearchBarDelegate {
             searchBar.performSelector(Selector("resignFirstResponder"), withObject: nil, afterDelay: 0)
         }
     }
-    
-    
 }
+
+// MARK: - SWRevealViewControllerDelegate
+
+extension SearchViewController: SWRevealViewControllerDelegate {
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if position == FrontViewPosition.Left {
+            searchBar.userInteractionEnabled = true
+            segmentedControl.userInteractionEnabled = true
+            tableView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            searchBar.resignFirstResponder()
+            searchBar.userInteractionEnabled = false
+            segmentedControl.userInteractionEnabled = false
+            tableView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if position == FrontViewPosition.Left {
+            searchBar.userInteractionEnabled = true
+            segmentedControl.userInteractionEnabled = true
+            tableView.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            searchBar.userInteractionEnabled = false
+            segmentedControl.userInteractionEnabled = false
+            tableView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+}
+

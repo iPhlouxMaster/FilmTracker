@@ -54,12 +54,7 @@ class DetailViewController: UIViewController {
     }
     
     @IBAction func saveTitleButtonPressed(sender: UIButton) {
-        if movie.film == nil {
-            showWatchStatusMenu()
-        } else {
-            saveMovieObject(movie)
-            dismissViewControllerAnimated(true, completion: nil)
-        }
+        showWatchStatusMenu()
     }
     
     @IBAction func editTitleButtonPressed(sender: UIButton) {
@@ -194,10 +189,15 @@ class DetailViewController: UIViewController {
     }
     
     func configureFloatRatingView() {
+        
+        let starEmptyImage = UIImage(named: "StarEmpty")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+
+        let starFullImage = UIImage(named: "StarFull")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        
         if movie.id > 0 {
             tmdbRatingView.delegate = self
-            tmdbRatingView.emptyImage = UIImage(named: "StarEmpty")
-            tmdbRatingView.fullImage = UIImage(named: "StarFull")
+            tmdbRatingView.emptyImage = starEmptyImage
+            tmdbRatingView.fullImage = starFullImage
             tmdbRatingView.contentMode = UIViewContentMode.ScaleAspectFit
             tmdbRatingView.maxRating = 10
             tmdbRatingView.minRating = 1
@@ -215,8 +215,8 @@ class DetailViewController: UIViewController {
         }
         
         yourRatingView.delegate = self
-        yourRatingView.emptyImage = UIImage(named: "StarEmpty")
-        yourRatingView.fullImage = UIImage(named: "StarFull")
+        yourRatingView.emptyImage = starEmptyImage
+        yourRatingView.fullImage = starFullImage
         yourRatingView.contentMode = UIViewContentMode.ScaleAspectFit
         yourRatingView.maxRating = 10
         yourRatingView.minRating = 1
@@ -274,32 +274,49 @@ class DetailViewController: UIViewController {
     
     func showWatchStatusMenu() {
         let alertController = UIAlertController(title: "Please Select Your Watch Status:", message: nil, preferredStyle: .ActionSheet)
+        alertController.view.tintColor = view.tintColor
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
         alertController.addAction(cancelAction)
         
         let selectWantToWatchAction = UIAlertAction(title: "I wanna watch", style: .Default, handler: {
             _ in
+            let hudView = HudView.hudInView(self.view, animated: true)
+            hudView.text = "Added"
             self.movie.watchStatus = .wantToWatch
             self.saveMovieObject(self.movie)
-            self.dismissViewControllerAnimated(true, completion: nil)
+            
+            hudView.afterDelay(0.7, closure: {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            })
         })
         alertController.addAction(selectWantToWatchAction)
         
         let selectWatchingAction = UIAlertAction(title: "I'm watching", style: .Default, handler: {
             _ in
+            let hudView = HudView.hudInView(self.view, animated: true)
+            hudView.text = "Added"
             self.movie.watchStatus = .watching
             self.saveMovieObject(self.movie)
-            self.dismissViewControllerAnimated(true, completion: nil)
+            
+            hudView.afterDelay(0.7, closure: {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            })
         })
         alertController.addAction(selectWatchingAction)
         
         let selectWatchedAction = UIAlertAction(title: "I've watched", style: .Default, handler: {
             _ in
+            let hudView = HudView.hudInView(self.view, animated: true)
+            hudView.text = "Added"
+            
             self.movie.watchStatus = .watched
             self.movie.watchedDate = NSDate()
             self.saveMovieObject(self.movie)
-            self.dismissViewControllerAnimated(true, completion: nil)
+            
+            hudView.afterDelay(0.7, closure: {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            })
         })
         alertController.addAction(selectWatchedAction)
         
@@ -411,8 +428,12 @@ extension DetailViewController: EditTitleViewControllerDelegate {
         movie = movieTitle
         configureView()
         saveMovieObject(movieTitle)
+        let hudView = HudView.hudInView(self.view, animated: true)
+        hudView.text = "Edited"
         dismissViewControllerAnimated(true, completion: {
-            self.dismissViewControllerAnimated(true, completion: nil)
+            hudView.afterDelay(0.8, closure: {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            })
         })
     }
 }

@@ -164,7 +164,7 @@ class Movie {
     class func nextMovieID() -> Int {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         let currentID = userDefaults.integerForKey("MovieID")
-        userDefaults.setInteger(currentID - 1, forKey: "Movie")
+        userDefaults.setInteger(currentID - 1, forKey: "MovieID")
         userDefaults.synchronize()
         return currentID
     }

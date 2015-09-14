@@ -17,6 +17,7 @@ class MovieListViewController: UIViewController {
     var searchController: UISearchController!
     var searchPredicate: NSPredicate?
     var filteredObjects : [Film]? = nil
+    var sidebarMenuOpen = false
     
     @IBOutlet weak var searchBarView: UIView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -53,12 +54,13 @@ class MovieListViewController: UIViewController {
         searchBarView.addSubview(searchController.searchBar)
         searchController.searchBar.frame = CGRectMake(0, 0, searchBarView.bounds.size.width, 44)
         searchController.searchBar.tintColor = view.tintColor
-        searchController.searchBar.placeholder = "Search movie title..."
+        searchController.searchBar.placeholder = "Search film title..."
+        searchController.searchBar.barTintColor = UIColor.lightGrayColor()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Movie List"
+        title = "Film List"
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
@@ -68,6 +70,8 @@ class MovieListViewController: UIViewController {
             // Uncomment to change the width of menu
             //self.revealViewController().rearViewRevealWidth = 62
         }
+        
+        revealViewController().delegate = self
         
         fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("titleSection", withSortDescriptorKey: "title")
         performFetch()
@@ -120,6 +124,7 @@ class MovieListViewController: UIViewController {
         let alertController = UIAlertController(title: "Choose Your Watch Status:", message: nil, preferredStyle: .ActionSheet)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alertController.view.tintColor = view.tintColor
         alertController.addAction(cancelAction)
         
         let selectWantToWatchAction = UIAlertAction(title: "I wanna watch", style: .Default, handler: {
@@ -210,18 +215,27 @@ class MovieListViewController: UIViewController {
 // MARK: - UITableView Delegate / Data Source
 
 extension MovieListViewController: UITableViewDelegate {
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        if sidebarMenuOpen == true {
+            return nil
+        } else {
+            return indexPath
+        }
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        searchController.searchBar.resignFirstResponder()
         performSegueWithIdentifier("ShowFilmDetail", sender: indexPath)
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let editMovieAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Edit") { _ in
+        let editMovieAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: " Edit ") { _ in
             self.performSegueWithIdentifier("EditMovie", sender: indexPath)
             self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
         
-        editMovieAction.backgroundColor = UIColor.lightGrayColor()
+        editMovieAction.backgroundColor = UIColor.grayColor()
         
         let deleteMovieAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete") { _ in
             if self.searchPredicate == nil {
@@ -233,7 +247,7 @@ extension MovieListViewController: UITableViewDelegate {
             // self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
         
-        deleteMovieAction.backgroundColor = UIColor.redColor()
+        deleteMovieAction.backgroundColor = UIColor.blackColor()
         
         let changeMovieStatusAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Status") { _ in
             let film = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Film
@@ -241,7 +255,7 @@ extension MovieListViewController: UITableViewDelegate {
             self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
         
-        changeMovieStatusAction.backgroundColor = UIColor.greenColor()
+        changeMovieStatusAction.backgroundColor = UIColor.lightGrayColor()
         
         return [deleteMovieAction, editMovieAction, changeMovieStatusAction]
         
@@ -403,16 +417,23 @@ extension MovieListViewController: EditTitleViewControllerDelegate {
     
     func editTitleViewControllerDidFinishEditingMovieTitle(controller: EditTitleViewController, movieTitle: Movie) {
         var film: Film
+        var hudView: HudView
         
         if movieTitle.film == nil {
+            hudView = HudView.hudInView(controller.navigationController!.view, animated: true)
+            hudView.text = "Added"
             film = NSEntityDescription.insertNewObjectForEntityForName("Film", inManagedObjectContext: managedObjectContext) as! Film
         } else {
+            hudView = HudView.hudInView(controller.navigationController!.view, animated: true)
+            hudView.text = "Edited"
             film = movieTitle.film!
         }
         
         movieTitle.convertToFilmObject(film)
         
-        dismissViewControllerAnimated(true, completion: nil)
+        hudView.afterDelay(0.8, closure: {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
     }
 }
 
@@ -436,6 +457,39 @@ extension MovieListViewController: UISearchControllerDelegate {
         searchPredicate = nil
         filteredObjects = nil
         tableView.reloadData()
+    }
+}
+
+// MARK: - SWRevealViewControllerDelegate
+
+extension MovieListViewController: SWRevealViewControllerDelegate {
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+        if position == FrontViewPosition.Left {
+            searchController.searchBar.userInteractionEnabled = true
+            tableView.userInteractionEnabled = true
+            sectionNameKeyPathSegmentedControl.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            // searchController.searchBar.resignFirstResponder()
+            searchController.searchBar.userInteractionEnabled = false
+            sectionNameKeyPathSegmentedControl.userInteractionEnabled = false
+            tableView.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
+    }
+    
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+        if position == FrontViewPosition.Left {
+            searchController.searchBar.userInteractionEnabled = true
+            tableView.userInteractionEnabled = true
+            sectionNameKeyPathSegmentedControl.userInteractionEnabled = true
+            sidebarMenuOpen = false
+        } else {
+            searchController.searchBar.userInteractionEnabled = false
+            tableView.userInteractionEnabled = false
+            sectionNameKeyPathSegmentedControl.userInteractionEnabled = false
+            sidebarMenuOpen = true
+        }
     }
 }
 

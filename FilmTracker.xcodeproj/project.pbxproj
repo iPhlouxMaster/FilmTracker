@@ -16,6 +16,7 @@
 		374235AC1BA540CD00DBD5DC /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 374235AB1BA540CD00DBD5DC /* SWRevealViewController.m */; settings = {ASSET_TAGS = (); }; };
 		374235AE1BA543D300DBD5DC /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374235AD1BA543D300DBD5DC /* MenuViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		3750EC771B96B5EF00CACE69 /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3750EC761B96B5EF00CACE69 /* UIImageView+DownloadImage.swift */; };
+		37AD2BBC1BA646C30068F80C /* HudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD2BBB1BA646C30068F80C /* HudView.swift */; settings = {ASSET_TAGS = (); }; };
 		37BABF4A1B92C11D00E6E6EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BABF491B92C11D00E6E6EE /* AppDelegate.swift */; };
 		37BABF4C1B92C11D00E6E6EE /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BABF4B1B92C11D00E6E6EE /* SearchViewController.swift */; };
 		37BABF4F1B92C11D00E6E6EE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37BABF4D1B92C11D00E6E6EE /* Main.storyboard */; };
@@ -58,6 +59,7 @@
 		374235AB1BA540CD00DBD5DC /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		374235AD1BA543D300DBD5DC /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		3750EC761B96B5EF00CACE69 /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
+		37AD2BBB1BA646C30068F80C /* HudView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudView.swift; sourceTree = "<group>"; };
 		37BABF441B92C11D00E6E6EE /* FilmTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FilmTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37BABF481B92C11D00E6E6EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37BABF491B92C11D00E6E6EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				37406C411B9973370051CBBA /* EditTitleViewController.swift */,
 				37CC47D61B9BE8B300262292 /* PickerViewController.swift */,
 				371F5C741B99403A009153AC /* DimmingPresentationController.swift */,
+				37AD2BBB1BA646C30068F80C /* HudView.swift */,
 				3716AB941B9427AD000F6D60 /* Search.swift */,
 				370CED191B96FBB200D44FD4 /* Extension Methods */,
 				37BE2A5C1B96772600BA6C2B /* View */,
@@ -313,6 +316,7 @@
 				37CFC0AF1B965092000FC228 /* Constants.swift in Sources */,
 				3716AB951B9427AD000F6D60 /* Search.swift in Sources */,
 				37D277EB1B979C700023ADEF /* UILabel+DownloadDetails.swift in Sources */,
+				37AD2BBC1BA646C30068F80C /* HudView.swift in Sources */,
 				37CC47DF1B9C2E7800262292 /* CountriesAndGenres.swift in Sources */,
 				37BE2A641B96794200BA6C2B /* FloatRatingView.swift in Sources */,
 				37BABF4C1B92C11D00E6E6EE /* SearchViewController.swift in Sources */,
