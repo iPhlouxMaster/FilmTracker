@@ -53,7 +53,7 @@ class MovieListViewController: UIViewController {
         super.viewWillLayoutSubviews()
         searchBarView.addSubview(searchController.searchBar)
         searchController.searchBar.frame = CGRectMake(0, 0, searchBarView.bounds.size.width, 44)
-        searchController.searchBar.tintColor = view.tintColor
+        searchController.searchBar.tintColor = UIColor(red: 141.0 / 255.0, green: 141.0 / 255.0, blue: 141.0 / 255.0, alpha: 1.0)
         searchController.searchBar.placeholder = "Search film title..."
         searchController.searchBar.barTintColor = UIColor.lightGrayColor()
     }
@@ -124,7 +124,6 @@ class MovieListViewController: UIViewController {
         let alertController = UIAlertController(title: "Choose Your Watch Status:", message: nil, preferredStyle: .ActionSheet)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-        alertController.view.tintColor = view.tintColor
         alertController.addAction(cancelAction)
         
         let selectWantToWatchAction = UIAlertAction(title: "I wanna watch", style: .Default, handler: {
@@ -168,6 +167,8 @@ class MovieListViewController: UIViewController {
             alertController.addAction(selectWatchingAction)
             alertController.addAction(selectWatchedAction)
         }
+        
+        alertController.view.tintColor = view.tintColor
         
         self.presentViewController(alertController, animated: true, completion: nil)
     }
@@ -235,7 +236,7 @@ extension MovieListViewController: UITableViewDelegate {
             self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
         
-        editMovieAction.backgroundColor = UIColor.grayColor()
+        editMovieAction.backgroundColor = UIColor(red: 141.0 / 255.0, green: 141.0 / 255.0, blue: 141.0 / 255.0, alpha: 1.0)
         
         let deleteMovieAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete") { _ in
             if self.searchPredicate == nil {
@@ -246,8 +247,7 @@ extension MovieListViewController: UITableViewDelegate {
             }
             // self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
-        
-        deleteMovieAction.backgroundColor = UIColor.blackColor()
+        deleteMovieAction.backgroundColor = UIColor(red: 126.0 / 255.0, green: 126.0 / 255.0, blue: 126.0 / 255.0, alpha: 1.0)
         
         let changeMovieStatusAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Status") { _ in
             let film = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Film
@@ -255,7 +255,7 @@ extension MovieListViewController: UITableViewDelegate {
             self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
         
-        changeMovieStatusAction.backgroundColor = UIColor.lightGrayColor()
+        changeMovieStatusAction.backgroundColor = UIColor(red: 178.0 / 255.0, green: 178.0 / 255.0, blue: 178.0 / 255.0, alpha: 1.0)
         
         return [deleteMovieAction, editMovieAction, changeMovieStatusAction]
         
@@ -470,7 +470,7 @@ extension MovieListViewController: SWRevealViewControllerDelegate {
             sectionNameKeyPathSegmentedControl.userInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            // searchController.searchBar.resignFirstResponder()
+            searchController.searchBar.resignFirstResponder()
             searchController.searchBar.userInteractionEnabled = false
             sectionNameKeyPathSegmentedControl.userInteractionEnabled = false
             tableView.userInteractionEnabled = false
@@ -485,6 +485,7 @@ extension MovieListViewController: SWRevealViewControllerDelegate {
             sectionNameKeyPathSegmentedControl.userInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
+            searchController.searchBar.resignFirstResponder()
             searchController.searchBar.userInteractionEnabled = false
             tableView.userInteractionEnabled = false
             sectionNameKeyPathSegmentedControl.userInteractionEnabled = false

@@ -65,7 +65,7 @@ class SearchResultCell: UITableViewCell {
             if let yourRating = movie.yourRating {
                 floatRatingView.rating = yourRating
             } else {
-                floatRatingView.rating = 1.0
+                floatRatingView.rating = 0.0
             }
         }
     
@@ -144,7 +144,7 @@ extension SearchResultCell: FloatRatingViewDelegate {
     }
     
     func floatRatingView(ratingView: FloatRatingView, didUpdate rating: Float) {
-        
+        floatRatingView.rating = rating
     }
 
 }

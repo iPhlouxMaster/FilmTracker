@@ -169,11 +169,11 @@
 			children = (
 				374235AA1BA540CD00DBD5DC /* SWRevealViewController.h */,
 				374235AB1BA540CD00DBD5DC /* SWRevealViewController.m */,
+				374235A91BA540CD00DBD5DC /* FilmTracker-Bridging-Header.h */,
 				371F5C721B992F92009153AC /* no-poster.jpeg */,
 				37BABF481B92C11D00E6E6EE /* Info.plist */,
 				37CFC0AE1B965092000FC228 /* Constants.swift */,
 				37BE2A631B96794200BA6C2B /* FloatRatingView.swift */,
-				374235A91BA540CD00DBD5DC /* FilmTracker-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";

@@ -562,6 +562,7 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
             
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
         alertController.addAction(cancelAction)
+        alertController.view.tintColor = view.tintColor
         
         presentViewController(alertController, animated: true, completion: nil)
     }
@@ -585,6 +586,7 @@ extension EditTitleViewController: UIImagePickerControllerDelegate, UINavigation
     
     func choosePhotoFromLibrary() {
         let imagePicker = UIImagePickerController()
+        imagePicker.view.tintColor = view.tintColor
         imagePicker.sourceType = .PhotoLibrary
         imagePicker.delegate = self
         imagePicker.allowsEditing = true

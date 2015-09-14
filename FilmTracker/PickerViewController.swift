@@ -108,6 +108,7 @@ class PickerViewController: UITableViewController {
         
         addElementAlert.addAction(cancelAction)
         addElementAlert.addAction(addAction)
+        addElementAlert.view.tintColor = view.tintColor
         
         self.presentViewController(addElementAlert, animated: true, completion: nil)
     }

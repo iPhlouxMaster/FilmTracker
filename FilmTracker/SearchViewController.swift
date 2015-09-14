@@ -45,6 +45,7 @@ class SearchViewController: UIViewController {
         
         title = "Search Title"
         tableView.rowHeight = 140
+        searchBar.tintColor = UIColor(red: 141.0 / 255.0, green: 141.0 / 255.0, blue: 141.0 / 255.0, alpha: 1.0)
         searchBar.becomeFirstResponder()
         
         revealViewController().delegate = self

@@ -95,8 +95,8 @@ class DetailViewController: UIViewController {
         swipeDownGestureRecognizer.direction = UISwipeGestureRecognizerDirection.Down
         view.addGestureRecognizer(swipeDownGestureRecognizer)
         
-        configureView()
         configureFloatRatingView()
+        configureView()
         configureButtons()
         handleCountrieAndGenreList()
     }
@@ -274,7 +274,7 @@ class DetailViewController: UIViewController {
     
     func showWatchStatusMenu() {
         let alertController = UIAlertController(title: "Please Select Your Watch Status:", message: nil, preferredStyle: .ActionSheet)
-        alertController.view.tintColor = view.tintColor
+        
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
         alertController.addAction(cancelAction)
@@ -319,7 +319,7 @@ class DetailViewController: UIViewController {
             })
         })
         alertController.addAction(selectWatchedAction)
-        
+        alertController.view.tintColor = view.tintColor
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     
