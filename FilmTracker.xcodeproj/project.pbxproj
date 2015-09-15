@@ -15,6 +15,8 @@
 		37406C421B9973370051CBBA /* EditTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37406C411B9973370051CBBA /* EditTitleViewController.swift */; };
 		374235AC1BA540CD00DBD5DC /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 374235AB1BA540CD00DBD5DC /* SWRevealViewController.m */; settings = {ASSET_TAGS = (); }; };
 		374235AE1BA543D300DBD5DC /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374235AD1BA543D300DBD5DC /* MenuViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		3742942F1BA7A9CC00DE9FCB /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3742942E1BA7A9CC00DE9FCB /* Launch Screen.storyboard */; settings = {ASSET_TAGS = (); }; };
+		374294311BA7ABCF00DE9FCB /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374294301BA7ABCF00DE9FCB /* AboutViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		3750EC771B96B5EF00CACE69 /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3750EC761B96B5EF00CACE69 /* UIImageView+DownloadImage.swift */; };
 		37AD2BBC1BA646C30068F80C /* HudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD2BBB1BA646C30068F80C /* HudView.swift */; settings = {ASSET_TAGS = (); }; };
 		37BABF4A1B92C11D00E6E6EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BABF491B92C11D00E6E6EE /* AppDelegate.swift */; };
@@ -58,6 +60,8 @@
 		374235AA1BA540CD00DBD5DC /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		374235AB1BA540CD00DBD5DC /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		374235AD1BA543D300DBD5DC /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		3742942E1BA7A9CC00DE9FCB /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "../Launch Screen.storyboard"; sourceTree = "<group>"; };
+		374294301BA7ABCF00DE9FCB /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		3750EC761B96B5EF00CACE69 /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
 		37AD2BBB1BA646C30068F80C /* HudView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudView.swift; sourceTree = "<group>"; };
 		37BABF441B92C11D00E6E6EE /* FilmTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FilmTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +157,7 @@
 				37D277EC1B97B05D0023ADEF /* DetailViewController.swift */,
 				37406C411B9973370051CBBA /* EditTitleViewController.swift */,
 				37CC47D61B9BE8B300262292 /* PickerViewController.swift */,
+				374294301BA7ABCF00DE9FCB /* AboutViewController.swift */,
 				371F5C741B99403A009153AC /* DimmingPresentationController.swift */,
 				37AD2BBB1BA646C30068F80C /* HudView.swift */,
 				3716AB941B9427AD000F6D60 /* Search.swift */,
@@ -202,6 +207,7 @@
 				37BE2A5D1B96775400BA6C2B /* SearchResultCell.xib */,
 				37BE2A5F1B9677AD00BA6C2B /* NoResultCell.xib */,
 				37BE2A611B9677B600BA6C2B /* LoadingCell.xib */,
+				3742942E1BA7A9CC00DE9FCB /* Launch Screen.storyboard */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -294,6 +300,7 @@
 				37BE2A5E1B96775400BA6C2B /* SearchResultCell.xib in Resources */,
 				37BE2A601B9677AD00BA6C2B /* NoResultCell.xib in Resources */,
 				37BABF511B92C11D00E6E6EE /* Images.xcassets in Resources */,
+				3742942F1BA7A9CC00DE9FCB /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +320,7 @@
 			files = (
 				37D277ED1B97B05D0023ADEF /* DetailViewController.swift in Sources */,
 				374235AC1BA540CD00DBD5DC /* SWRevealViewController.m in Sources */,
+				374294311BA7ABCF00DE9FCB /* AboutViewController.swift in Sources */,
 				37CFC0AF1B965092000FC228 /* Constants.swift in Sources */,
 				3716AB951B9427AD000F6D60 /* Search.swift in Sources */,
 				37D277EB1B979C700023ADEF /* UILabel+DownloadDetails.swift in Sources */,

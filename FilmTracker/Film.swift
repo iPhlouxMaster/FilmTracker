@@ -49,7 +49,7 @@ class Film: NSManagedObject {
             case 2.0..<3.0: return "From 20% - 30%"
             case 3.0..<4.0: return "From 30% - 40%"
             case 4.0..<5.0: return "From 40% - 50%"
-            case 5.0..<6.0: return "From 50% - 50%"
+            case 5.0..<6.0: return "From 50% - 60%"
             case 6.0..<7.0: return "From 60% - 70%"
             case 7.0..<8.0: return "From 70% - 80%"
             case 8.0..<9.0: return "From 80% - 90%"

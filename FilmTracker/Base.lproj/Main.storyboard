@@ -1308,6 +1308,46 @@
             </objects>
             <point key="canvasLocation" x="611" y="-519"/>
         </scene>
+        <!--About-->
+        <scene sceneID="Wmu-cf-dYN">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h6r-GR-NzW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController id="rqn-Bv-07i" customClass="AboutViewController" customModule="FilmTracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="dpq-eY-TOh">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AboutCell" id="26t-7y-Ub0">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="26t-7y-Ub0" id="1uC-La-ge7">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <animations/>
+                                </tableViewCellContentView>
+                                <animations/>
+                                <connections>
+                                    <segue destination="Mcs-ej-HET" kind="presentation" identifier="AboutDetail" id="aiP-Hn-D6I"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="rqn-Bv-07i" id="Kzs-6t-HNb"/>
+                            <outlet property="delegate" destination="rqn-Bv-07i" id="u89-Vo-N2P"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="About" id="vYu-HX-fPf">
+                        <barButtonItem key="leftBarButtonItem" image="Menu" id="ZQ8-co-rps"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="menuButton" destination="ZQ8-co-rps" id="awV-Vz-02o"/>
+                    </connections>
+                </tableViewController>
+            </objects>
+            <point key="canvasLocation" x="1319" y="981"/>
+        </scene>
         <!--Search-->
         <scene sceneID="A75-Hj-UoA">
             <objects>
@@ -1349,7 +1389,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3nG-8w-grl" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-164" y="-1431"/>
+            <point key="canvasLocation" x="-102" y="-519"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="qTk-Uk-Sg6">
@@ -1461,6 +1501,9 @@
                                         </tableViewCellContentView>
                                         <animations/>
                                         <color key="backgroundColor" red="0.94085192679999996" green="0.94903725390000004" blue="0.95307987930000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <segue destination="gR1-kx-dml" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="iJD-uD-pH6"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -1473,7 +1516,26 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8bw-Ze-Q5v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-164" y="-519"/>
+            <point key="canvasLocation" x="-102" y="251"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="OPA-ol-6RJ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="gR1-kx-dml" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cQu-0z-uuc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="rqn-Bv-07i" kind="relationship" relationship="rootViewController" id="ryi-zl-8kH"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UxF-fw-aPg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="611" y="981"/>
         </scene>
     </scenes>
     <resources>
@@ -1483,8 +1545,8 @@
         <image name="Search" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="zC4-bW-EFA"/>
-        <segue reference="eFB-PN-Rdk"/>
+        <segue reference="2YT-Vd-H49"/>
+        <segue reference="aiP-Hn-D6I"/>
         <segue reference="6gE-0h-1q8"/>
         <segue reference="UPL-8y-Z5K"/>
     </inferredMetricsTieBreakers>
