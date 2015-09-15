@@ -99,7 +99,7 @@ class SearchResultCell: UITableViewCell {
             }
         }
         
-        if let _ = movie.film {
+        if movie.film != nil || movie.id == 0 {
             switch movie.watchStatus {
             case .wantToWatch:
                 watchStatusLabel.hidden = false

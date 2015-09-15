@@ -57,6 +57,7 @@ class AboutViewController: UIViewController, UITableViewDataSource, UITableViewD
         movie.directors = ["Yunhan Yang"]
         movie.releaseDate = movie.convertStringToDate("2015-09-15")
         movie.genres = ["Lifestyle"]
+        movie.watchStatus = .watching
         movie.yourRating = 7.0
         movie.comments = "Film Tracker is an app helps to track watched films. Firstly, it searches the movie with movie title or actors / directors. Once selecting the watched movie, the movie will be added to the local database with detailed information retrieved from TMDB."
         
