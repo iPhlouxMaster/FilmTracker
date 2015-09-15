@@ -15,6 +15,12 @@ Firstly, it searches the movie with movie title or actors / directors. Once pick
 ##### Browse Title
 <img src="./Screenshots/BrowseTitle.gif" width="320" height="568"/>
 
+#### Mechanism of the controllers:
+- MovieListViewController: NSFetchedResultsController and UISearchController work with NSPredicate and Transient Properties;
+- SearchViewController: KVO to monitor NSManagedObjectContext, works with Search class which used to parse JSON;
+- DetailViewController and SearchResultCell: FloatRatingView to set the ratings;
+- EditTitleViewController: several pickers, NSUserDefaults to store genres and countries data
+
 ##### Credits
 - [SWRevealViewController](https://github.com/John-Lluch/SWRevealViewController): Slide-out navigation controller.
 - [FloatRatingView](https://github.com/strekfus/FloatRatingView): FloatRatingView
