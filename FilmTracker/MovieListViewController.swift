@@ -184,7 +184,15 @@ class MovieListViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowFilmDetail" {
             let controller = segue.destinationViewController as! DetailViewController
-            let film = fetchedResultsController.objectAtIndexPath(sender as! NSIndexPath) as! Film
+            var film: Film
+            let indexPath = sender as! NSIndexPath
+            
+            if searchPredicate == nil {
+                film = fetchedResultsController.objectAtIndexPath(indexPath) as! Film
+            } else {
+                film = filteredObjects![indexPath.row]
+            }
+            
             let movie = Movie()
             film.convertToMovieObject(movie)
             controller.movie = movie
@@ -201,7 +209,14 @@ class MovieListViewController: UIViewController {
         } else if segue.identifier == "EditMovie" {
             let navigationController = segue.destinationViewController as! UINavigationController
             let controller = navigationController.viewControllers[0] as! EditTitleViewController
-            let film = fetchedResultsController.objectAtIndexPath(sender as! NSIndexPath) as! Film
+            var film: Film
+            let indexPath = sender as! NSIndexPath
+            
+            if searchPredicate == nil {
+                film = fetchedResultsController.objectAtIndexPath(indexPath) as! Film
+            } else {
+                film = filteredObjects![indexPath.row]
+            }
             let movie = Movie()
             film.convertToMovieObject(movie)
             controller.movie = movie

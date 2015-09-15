@@ -133,13 +133,21 @@ class DetailViewController: UIViewController {
         titleLabel.text = movie.title
         
         if let directors = movie.directors {
-            directorLabel.text = directors.joinWithSeparator(", ")
+            if directors.isEmpty {
+                directorLabel.text = "Not Available"
+            } else {
+                directorLabel.text = directors.joinWithSeparator(", ")
+            }
         } else {
             directorLabel.text = "Not Available"
         }
         
         if let countries = movie.productionCountries {
-            productionCountriesLabel.text = countries.joinWithSeparator(", ")
+            if countries.isEmpty {
+                productionCountriesLabel.text = "Not Available"
+            } else {
+               productionCountriesLabel.text = countries.joinWithSeparator(", ")
+            }
         } else {
             productionCountriesLabel.text = "Not Available"
         }
@@ -163,7 +171,11 @@ class DetailViewController: UIViewController {
         }
         
         if let genres = movie.genres {
-            genresLabel.text = genres.joinWithSeparator(", ")
+            if genres.isEmpty {
+                genresLabel.text = "Not Available"
+            } else {
+                genresLabel.text = genres.joinWithSeparator(", ")
+            }
         } else {
             genresLabel.text = "Not Available"
         }

@@ -70,7 +70,11 @@ class SearchResultCell: UITableViewCell {
         }
     
         if let directors = movie.directors {
-            directorLabel.text = directors.joinWithSeparator(", ")
+            if directors.isEmpty {
+                directorLabel.text = "Not Available"
+            } else {
+                directorLabel.text = directors.joinWithSeparator(", ")
+            }
         } else {
             if movie.id > 0 && movie.film == nil {
                 directorDownloadTask = directorLabel.loadCreditsWithMovieObject(movie)
@@ -80,7 +84,11 @@ class SearchResultCell: UITableViewCell {
         }
         
         if let countries = movie.productionCountries {
-            productionCountriesLabel.text = countries.joinWithSeparator(", ")
+            if countries.isEmpty {
+                productionCountriesLabel.text = "Not Available"
+            } else {
+                productionCountriesLabel.text = countries.joinWithSeparator(", ")
+            }
         } else {
             if movie.id > 0 && movie.film == nil {
                 productionCountriesDownloadTask = productionCountriesLabel.loadDetailsWithMovieObject(movie)

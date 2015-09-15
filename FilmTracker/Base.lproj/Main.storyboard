@@ -1549,7 +1549,7 @@
     </scenes>
     <resources>
         <image name="Film" width="16" height="16"/>
-        <image name="Info" width="48" height="48"/>
+        <image name="Info" width="16" height="16"/>
         <image name="Menu" width="16" height="16"/>
         <image name="Search" width="16" height="16"/>
         <image name="TMDB" width="520" height="150"/>

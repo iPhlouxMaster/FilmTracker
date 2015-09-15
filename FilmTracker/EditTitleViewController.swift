@@ -352,11 +352,19 @@ class EditTitleViewController: UITableViewController {
         }
         
         if let countries = movie.productionCountries {
-            countriesLabel.text = countries.joinWithSeparator(", ")
+            if countries.isEmpty {
+                countriesLabel.text = "Tap to add"
+            } else {
+                countriesLabel.text = countries.joinWithSeparator(", ")
+            }
         }
         
         if let genres = movie.genres {
-            genreLabel.text = genres.joinWithSeparator(", ")
+            if genres.isEmpty{
+                genreLabel.text = "Tap to add"
+            } else {
+                genreLabel.text = genres.joinWithSeparator(", ")
+            }
         }
         
         if let releaseDate = movie.releaseDate {
@@ -646,13 +654,20 @@ extension EditTitleViewController: PickerViewControllerDelegate {
         if isPickingCountries {
             movie.productionCountries = items
             if let countries = movie.productionCountries {
-                countriesLabel.text = countries.joinWithSeparator(", ")
+                if countries.isEmpty {
+                    countriesLabel.text = "Tap to add"
+                } else {
+                    countriesLabel.text = countries.joinWithSeparator(", ")
+                }
             }
         } else {
             movie.genres = items
             if let genres = movie.genres {
-                genreLabel.text = genres.joinWithSeparator(", ")
-                
+                if genres.isEmpty {
+                    genreLabel.text = "Tap to add"
+                } else {
+                    genreLabel.text = genres.joinWithSeparator(", ")
+                }
             }
         }
         navigationController!.popViewControllerAnimated(true)
