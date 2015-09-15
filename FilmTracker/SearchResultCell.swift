@@ -60,7 +60,7 @@ class SearchResultCell: UITableViewCell {
                 floatRatingView.rating = tmdbRating
                 rateLabel.text = "TMDB Rate:"
             }
-        } else if movie.id < 0 {
+        } else if movie.id <= 0 {
             rateLabel.text = "Your Rate:"
             if let yourRating = movie.yourRating {
                 floatRatingView.rating = yourRating

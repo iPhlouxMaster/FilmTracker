@@ -116,6 +116,25 @@
 			name = "Extension Methods";
 			sourceTree = "<group>";
 		};
+		374294321BA7C4E300DE9FCB /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				37BABF491B92C11D00E6E6EE /* AppDelegate.swift */,
+				374235AD1BA543D300DBD5DC /* MenuViewController.swift */,
+				37BE2A5A1B96701900BA6C2B /* MovieListViewController.swift */,
+				37BABF4B1B92C11D00E6E6EE /* SearchViewController.swift */,
+				37BE2A651B967AE300BA6C2B /* SearchResultCell.swift */,
+				37D277EC1B97B05D0023ADEF /* DetailViewController.swift */,
+				37406C411B9973370051CBBA /* EditTitleViewController.swift */,
+				37CC47D61B9BE8B300262292 /* PickerViewController.swift */,
+				374294301BA7ABCF00DE9FCB /* AboutViewController.swift */,
+				371F5C741B99403A009153AC /* DimmingPresentationController.swift */,
+				37AD2BBB1BA646C30068F80C /* HudView.swift */,
+				3716AB941B9427AD000F6D60 /* Search.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		3750EC781B96D32800CACE69 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,20 +168,9 @@
 		37BABF461B92C11D00E6E6EE /* FilmTracker */ = {
 			isa = PBXGroup;
 			children = (
-				37BABF491B92C11D00E6E6EE /* AppDelegate.swift */,
-				374235AD1BA543D300DBD5DC /* MenuViewController.swift */,
-				37BE2A5A1B96701900BA6C2B /* MovieListViewController.swift */,
-				37BABF4B1B92C11D00E6E6EE /* SearchViewController.swift */,
-				37BE2A651B967AE300BA6C2B /* SearchResultCell.swift */,
-				37D277EC1B97B05D0023ADEF /* DetailViewController.swift */,
-				37406C411B9973370051CBBA /* EditTitleViewController.swift */,
-				37CC47D61B9BE8B300262292 /* PickerViewController.swift */,
-				374294301BA7ABCF00DE9FCB /* AboutViewController.swift */,
-				371F5C741B99403A009153AC /* DimmingPresentationController.swift */,
-				37AD2BBB1BA646C30068F80C /* HudView.swift */,
-				3716AB941B9427AD000F6D60 /* Search.swift */,
+				374294321BA7C4E300DE9FCB /* Controllers */,
 				370CED191B96FBB200D44FD4 /* Extension Methods */,
-				37BE2A5C1B96772600BA6C2B /* View */,
+				37BE2A5C1B96772600BA6C2B /* Views */,
 				3750EC781B96D32800CACE69 /* Model */,
 				37BABF471B92C11D00E6E6EE /* Supporting Files */,
 			);
@@ -200,7 +208,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		37BE2A5C1B96772600BA6C2B /* View */ = {
+		37BE2A5C1B96772600BA6C2B /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				37BABF4D1B92C11D00E6E6EE /* Main.storyboard */,
@@ -209,7 +217,7 @@
 				37BE2A611B9677B600BA6C2B /* LoadingCell.xib */,
 				3742942E1BA7A9CC00DE9FCB /* Launch Screen.storyboard */,
 			);
-			name = View;
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

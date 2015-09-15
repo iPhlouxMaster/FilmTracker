@@ -105,6 +105,50 @@
             </objects>
             <point key="canvasLocation" x="1319" y="251"/>
         </scene>
+        <!--About View Controller-->
+        <scene sceneID="F2r-gT-Tdi">
+            <objects>
+                <viewController id="VZk-pC-oGm" customClass="AboutViewController" customModule="FilmTracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pdg-jD-5Nm"/>
+                        <viewControllerLayoutGuide type="bottom" id="xxc-18-HvA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fSY-rA-QR2">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mYi-xR-FXj">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="VZk-pC-oGm" id="mkG-v5-NHY"/>
+                                    <outlet property="delegate" destination="VZk-pC-oGm" id="NY0-H4-t9M"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="mYi-xR-FXj" firstAttribute="top" secondItem="fSY-rA-QR2" secondAttribute="top" id="ErQ-Qo-fLz"/>
+                            <constraint firstItem="mYi-xR-FXj" firstAttribute="leading" secondItem="fSY-rA-QR2" secondAttribute="leading" id="WU5-jC-JCb"/>
+                            <constraint firstAttribute="trailing" secondItem="mYi-xR-FXj" secondAttribute="trailing" id="Xkx-4q-lf1"/>
+                            <constraint firstItem="xxc-18-HvA" firstAttribute="top" secondItem="mYi-xR-FXj" secondAttribute="bottom" id="sno-v5-JjY"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="9bJ-A1-lCi">
+                        <barButtonItem key="leftBarButtonItem" image="Menu" id="gGm-mv-tkW"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="menuButton" destination="gGm-mv-tkW" id="zbv-bg-fTd"/>
+                        <outlet property="tableView" destination="mYi-xR-FXj" id="yYL-aH-mS6"/>
+                        <segue destination="Mcs-ej-HET" kind="presentation" identifier="AboutSegue" id="Pxc-QF-77e"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6No-I4-0JV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1319" y="988"/>
+        </scene>
         <!--Movie List-->
         <scene sceneID="Ej3-es-GqS">
             <objects>
@@ -625,6 +669,7 @@
                         <outlet property="tmdbRatingView" destination="W6z-Kq-xth" id="elH-lY-j5Z"/>
                         <outlet property="watchStatusLabel" destination="A5K-K2-jh5" id="ma6-0Q-HL6"/>
                         <outlet property="yourRatingLabel" destination="aVv-ch-tzt" id="UNq-Xu-uYs"/>
+                        <outlet property="yourRatingTitleLabel" destination="56R-kH-OUM" id="iwX-PP-Z18"/>
                         <outlet property="yourRatingView" destination="kHX-Go-Jyy" id="phk-3z-gWD"/>
                         <segue destination="eZm-he-jC7" kind="presentation" identifier="EditTitle" id="6gE-0h-1q8"/>
                     </connections>
@@ -1308,46 +1353,6 @@
             </objects>
             <point key="canvasLocation" x="611" y="-519"/>
         </scene>
-        <!--About-->
-        <scene sceneID="Wmu-cf-dYN">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="h6r-GR-NzW" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController id="rqn-Bv-07i" customClass="AboutViewController" customModule="FilmTracker" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="dpq-eY-TOh">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AboutCell" id="26t-7y-Ub0">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="26t-7y-Ub0" id="1uC-La-ge7">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <animations/>
-                                </tableViewCellContentView>
-                                <animations/>
-                                <connections>
-                                    <segue destination="Mcs-ej-HET" kind="presentation" identifier="AboutDetail" id="aiP-Hn-D6I"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="rqn-Bv-07i" id="Kzs-6t-HNb"/>
-                            <outlet property="delegate" destination="rqn-Bv-07i" id="u89-Vo-N2P"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="About" id="vYu-HX-fPf">
-                        <barButtonItem key="leftBarButtonItem" image="Menu" id="ZQ8-co-rps"/>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="menuButton" destination="ZQ8-co-rps" id="awV-Vz-02o"/>
-                    </connections>
-                </tableViewController>
-            </objects>
-            <point key="canvasLocation" x="1319" y="981"/>
-        </scene>
         <!--Search-->
         <scene sceneID="A75-Hj-UoA">
             <objects>
@@ -1469,6 +1474,10 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="TMDB" translatesAutoresizingMaskIntoConstraints="NO" id="1Kc-cF-jOR">
+                                                    <rect key="frame" x="135" y="5" width="110" height="31"/>
+                                                    <animations/>
+                                                </imageView>
                                             </subviews>
                                             <animations/>
                                         </tableViewCellContentView>
@@ -1502,7 +1511,7 @@
                                         <animations/>
                                         <color key="backgroundColor" red="0.94085192679999996" green="0.94903725390000004" blue="0.95307987930000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <segue destination="gR1-kx-dml" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="iJD-uD-pH6"/>
+                                            <segue destination="uGK-jj-cW6" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="9Te-dt-L4C"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -1519,23 +1528,23 @@
             <point key="canvasLocation" x="-102" y="251"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="OPA-ol-6RJ">
+        <scene sceneID="gp8-We-POg">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="gR1-kx-dml" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uGK-jj-cW6" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cQu-0z-uuc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="V8B-g8-DxF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="rqn-Bv-07i" kind="relationship" relationship="rootViewController" id="ryi-zl-8kH"/>
+                        <segue destination="VZk-pC-oGm" kind="relationship" relationship="rootViewController" id="fTE-Mb-EyO"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="UxF-fw-aPg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ee0-RV-t9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="611" y="981"/>
+            <point key="canvasLocation" x="605" y="988"/>
         </scene>
     </scenes>
     <resources>
@@ -1543,12 +1552,13 @@
         <image name="Info" width="48" height="48"/>
         <image name="Menu" width="16" height="16"/>
         <image name="Search" width="16" height="16"/>
+        <image name="TMDB" width="520" height="150"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="2YT-Vd-H49"/>
-        <segue reference="aiP-Hn-D6I"/>
+        <segue reference="Pxc-QF-77e"/>
         <segue reference="6gE-0h-1q8"/>
         <segue reference="UPL-8y-Z5K"/>
+        <segue reference="zC4-bW-EFA"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
 </document>

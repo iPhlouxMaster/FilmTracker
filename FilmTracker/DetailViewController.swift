@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import MessageUI
 
 class DetailViewController: UIViewController {
     
@@ -24,12 +25,11 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var productionCountriesLabel: UILabel!
     @IBOutlet weak var releaseDateLabel: UILabel!
     @IBOutlet weak var genresLabel: UILabel!
-    @IBOutlet weak var yourRatingLabel: UILabel!
     @IBOutlet weak var tmdbRatingLabel: UILabel!
     @IBOutlet weak var tmdbRatingTitleLabel: UILabel!
-    @IBOutlet weak var overviewTextView: UITextView!
-    @IBOutlet weak var overviewTitleLabel: UILabel!
     @IBOutlet weak var tmdbRatingView: FloatRatingView!
+    @IBOutlet weak var yourRatingLabel: UILabel!
+    @IBOutlet weak var yourRatingTitleLabel: UILabel!
     @IBOutlet weak var yourRatingView: FloatRatingView!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var saveTitleButton: UIButton!
@@ -37,19 +37,31 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var showIMDBPageButton: UIButton!
     @IBOutlet weak var editTitleButton: UIButton!
     @IBOutlet weak var watchStatusLabel: UILabel!
+    @IBOutlet weak var overviewTextView: UITextView!
+    @IBOutlet weak var overviewTitleLabel: UILabel!
     
     
     //MARK: - IBActions
     
     @IBAction func showTMDBButtonPressed(sender: UIButton) {
-        let url = NSURL(string: String(format: "https://www.themoviedb.org/movie/%d", movie.id))
-        UIApplication.sharedApplication().openURL(url!)
+        if movie.id == 0 {
+            let url = NSURL(string: "https://www.themoviedb.org/")
+            UIApplication.sharedApplication().openURL(url!)
+        } else {
+            let url = NSURL(string: String(format: "https://www.themoviedb.org/movie/%d", movie.id))
+            UIApplication.sharedApplication().openURL(url!)
+        }
+        
     }
     
     @IBAction func showIMDBButtonPressed(sender: UIButton) {
-        if let imdbID = movie.imdbID {
-            let url = NSURL(string: String(format: "http://www.imdb.com/title/%@", imdbID))
-            UIApplication.sharedApplication().openURL(url!)
+        if movie.id == 0 {
+            showMailComposeViewController()
+        } else {
+            if let imdbID = movie.imdbID {
+                let url = NSURL(string: String(format: "http://www.imdb.com/title/%@", imdbID))
+                UIApplication.sharedApplication().openURL(url!)
+            }
         }
     }
     
@@ -208,10 +220,17 @@ class DetailViewController: UIViewController {
             } else {
                 tmdbRatingLabel.text = "0.0/10.0"
             }
-        } else {
+        } else if movie.id < 0 {
             tmdbRatingLabel.hidden = true
             tmdbRatingView.hidden = true
             tmdbRatingTitleLabel.hidden = true
+        } else if movie.id == 0 {
+            tmdbRatingLabel.hidden = true
+            tmdbRatingView.hidden = true
+            tmdbRatingTitleLabel.hidden = true
+            yourRatingLabel.hidden = true
+            yourRatingView.hidden = true
+            yourRatingTitleLabel.hidden = true
         }
         
         yourRatingView.delegate = self
@@ -236,7 +255,7 @@ class DetailViewController: UIViewController {
         closeButton.layer.borderWidth = 0.7
         closeButton.layer.cornerRadius = 5
         
-        if let _ = movie.film {
+        if movie.film != nil {
             saveTitleButton.hidden = true
         } else {
             saveTitleButton.backgroundColor = UIColor.clearColor()
@@ -268,6 +287,23 @@ class DetailViewController: UIViewController {
                 showIMDBPageButton.layer.borderWidth = 0.7
                 showIMDBPageButton.layer.cornerRadius = 5
             }
+        } else if movie.id == 0 {
+            saveTitleButton.hidden = true
+            editTitleButton.hidden = true
+            showIMDBPageButton.hidden = false
+            showIMDBPageButton.setTitle("Email", forState: .Normal)
+            showTMDBPageButton.hidden = false
+            
+            showTMDBPageButton.backgroundColor = UIColor.clearColor()
+            showTMDBPageButton.layer.borderColor = UIColor.whiteColor().CGColor
+            showTMDBPageButton.layer.borderWidth = 0.7
+            showTMDBPageButton.layer.cornerRadius = 5
+            
+            showIMDBPageButton.hidden = false
+            showIMDBPageButton.backgroundColor = UIColor.clearColor()
+            showIMDBPageButton.layer.borderColor = UIColor.whiteColor().CGColor
+            showIMDBPageButton.layer.borderWidth = 0.7
+            showIMDBPageButton.layer.cornerRadius = 5
         }
 
     }
@@ -435,5 +471,24 @@ extension DetailViewController: EditTitleViewControllerDelegate {
                 self.dismissViewControllerAnimated(true, completion: nil)
             })
         })
+    }
+}
+
+// MARK: - MenuViewControllerDelegate
+
+extension DetailViewController: MFMailComposeViewControllerDelegate {
+    func showMailComposeViewController() {
+        if MFMailComposeViewController.canSendMail() {
+            let controller = MFMailComposeViewController()
+            controller.setSubject(NSLocalizedString("Feedback of Film Track", comment: "Email subject"))
+            controller.setToRecipients(["rivertea@gmail.com"])
+            controller.mailComposeDelegate = self
+            controller.modalPresentationStyle = .FormSheet
+            self.presentViewController(controller, animated: true, completion: nil)
+        }
+    }
+    
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+        controller.dismissViewControllerAnimated(true, completion: nil)
     }
 }
