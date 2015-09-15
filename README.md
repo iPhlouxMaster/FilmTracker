@@ -1,7 +1,7 @@
 # FilmTracker
 
 Film Tracker is an app helps to track watched movies.
-Firstly, it searches the movie with movie title or actors / directors. Once picking the watched movie, the movie will be added to the database with detailed information retrieved from TMDB.
+Firstly, it searches the movie with movie title or actors / directors. Once picking the watched movie, the movie will be added to the database with detailed information retrieved from TMDB. The app has updated to Swift 2.0, Xcode 6 may not be able to run the program, please update to Xcode 7.
 
 ##### Search Title:
 <img src="./Screenshots/SearchTitle.gif" width="320" height="568"/>
@@ -25,5 +25,3 @@ Firstly, it searches the movie with movie title or actors / directors. Once pick
 - [SWRevealViewController](https://github.com/John-Lluch/SWRevealViewController): Slide-out navigation controller.
 - [FloatRatingView](https://github.com/strekfus/FloatRatingView): FloatRatingView
 - [Ico-Moon](https://github.com/Keyamoon/IcoMoon-Free): Images and icons
-
-
