@@ -207,7 +207,7 @@ class DetailViewController: UIViewController {
             overviewTextView.text = movie.comments
         }
         
-        // not able to scroll textView to top
+        // It seems don't work on Swift 2.0, scroll to the top.
         
         overviewTextView.scrollRangeToVisible(NSMakeRange(0, 1))
     }
