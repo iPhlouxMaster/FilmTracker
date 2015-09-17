@@ -9,13 +9,13 @@ Firstly, it searches the movie with movie title or actors / directors. Once pick
 ##### Edit Title:
 <img src="./Screenshots/EditTitle.gif" width="320" height="568"/>
 
-##### Add customised title:
+##### Add Customised Title:
 <img src="./Screenshots/AddCustomisedTitle.gif" width="320" height="568"/>
 
 ##### Browse Title
 <img src="./Screenshots/BrowseTitle.gif" width="320" height="568"/>
 
-#### Mechanism of the controllers:
+##### Mechanism of the controllers:
 - MovieListViewController: NSFetchedResultsController and UISearchController work with NSPredicate and Transient Properties;
 - SearchViewController: KVO to monitor NSManagedObjectContext, works with Search class which used to parse JSON;
 - DetailViewController and SearchResultCell: FloatRatingView to set the ratings;
