@@ -107,10 +107,6 @@ class EditTitleViewController: UITableViewController {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("hideKeyboard:"))
         gestureRecognizer.cancelsTouchesInView = false
         tableView.addGestureRecognizer(gestureRecognizer)
-        
-        if isEditingMovie {
-            
-        }
     }
 
     override func didReceiveMemoryWarning() {

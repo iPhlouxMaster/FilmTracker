@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class HudView: UIView {
     
     var text = ""
