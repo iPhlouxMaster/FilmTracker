@@ -18,6 +18,7 @@
 		374294311BA7ABCF00DE9FCB /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374294301BA7ABCF00DE9FCB /* AboutViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		374294361BA7CA0300DE9FCB /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 374294351BA7CA0300DE9FCB /* Launch Screen.storyboard */; settings = {ASSET_TAGS = (); }; };
 		3750EC771B96B5EF00CACE69 /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3750EC761B96B5EF00CACE69 /* UIImageView+DownloadImage.swift */; };
+		376A42D01BACAB8200E1F34D /* SearchableExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376A42CF1BACAB8200E1F34D /* SearchableExtensions.swift */; settings = {ASSET_TAGS = (); }; };
 		37AD2BBC1BA646C30068F80C /* HudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD2BBB1BA646C30068F80C /* HudView.swift */; settings = {ASSET_TAGS = (); }; };
 		37BABF4A1B92C11D00E6E6EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BABF491B92C11D00E6E6EE /* AppDelegate.swift */; };
 		37BABF4C1B92C11D00E6E6EE /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BABF4B1B92C11D00E6E6EE /* SearchViewController.swift */; };
@@ -63,6 +64,7 @@
 		374294301BA7ABCF00DE9FCB /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		374294351BA7CA0300DE9FCB /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		3750EC761B96B5EF00CACE69 /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
+		376A42CF1BACAB8200E1F34D /* SearchableExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchableExtensions.swift; sourceTree = "<group>"; };
 		37AD2BBB1BA646C30068F80C /* HudView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudView.swift; sourceTree = "<group>"; };
 		37BABF441B92C11D00E6E6EE /* FilmTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FilmTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37BABF481B92C11D00E6E6EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				3750EC761B96B5EF00CACE69 /* UIImageView+DownloadImage.swift */,
 				37D277EA1B979C700023ADEF /* UILabel+DownloadDetails.swift */,
 				37CC47D41B9BC9D900262292 /* UIImage+Resize.swift */,
+				376A42CF1BACAB8200E1F34D /* SearchableExtensions.swift */,
 			);
 			name = "Extension Methods";
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				376A42D01BACAB8200E1F34D /* SearchableExtensions.swift in Sources */,
 				37D277ED1B97B05D0023ADEF /* DetailViewController.swift in Sources */,
 				374235AC1BA540CD00DBD5DC /* SWRevealViewController.m in Sources */,
 				374294311BA7ABCF00DE9FCB /* AboutViewController.swift in Sources */,

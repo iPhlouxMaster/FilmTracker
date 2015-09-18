@@ -419,6 +419,9 @@ class DetailViewController: UIViewController {
         }
         
         movieToSave.convertToFilmObject(film)
+        if #available(iOS 9.0, *) {
+            film.indexFilmObject()
+        }
         
         do {
             try managedObjectContext.save()

@@ -10,6 +10,8 @@ import UIKit
 import CoreData
 import CoreSpotlight
 
+let movieListDomainID = "me.yunhan.FilmTracker.movieList"
+
 class MovieListViewController: UIViewController {
     
     var managedObjectContext: NSManagedObjectContext!
@@ -53,7 +55,6 @@ class MovieListViewController: UIViewController {
         super.viewWillLayoutSubviews()
         searchBarView.addSubview(searchController.searchBar)
         searchController.searchBar.frame = CGRectMake(0, 0, searchBarView.bounds.size.width, 44)
-        // searchController.searchBar.barTintColor = UIColor(red: 178.0 / 255.0, green: 178.0 / 255.0, blue: 178.0 / 255.0, alpha: 1.0)
         searchController.searchBar.placeholder = "Search film title..."
     }
     
@@ -245,7 +246,7 @@ extension MovieListViewController: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let editMovieAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: " Edit ") { _ in
+        let editMovieAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Edit") { _ in
             self.performSegueWithIdentifier("EditMovie", sender: indexPath)
             self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
@@ -253,13 +254,13 @@ extension MovieListViewController: UITableViewDelegate {
         editMovieAction.backgroundColor = UIColor(red: 141.0 / 255.0, green: 141.0 / 255.0, blue: 141.0 / 255.0, alpha: 1.0)
         
         let deleteMovieAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete") { _ in
-            if self.searchPredicate == nil {
-                self.managedObjectContext.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! Film)
-            } else {
-                self.managedObjectContext.deleteObject(self.filteredObjects![indexPath.row])
-                self.filteredObjects!.removeAtIndex(indexPath.row)
+            
+            // Remove index here
+            if #available(iOS 9.0, *) {
+                (self.fetchedResultsController.objectAtIndexPath(indexPath) as! Film).removeFilmObjectFromIndex()
             }
-            // self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            
+            self.managedObjectContext.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! Film)
         }
         deleteMovieAction.backgroundColor = UIColor(red: 126.0 / 255.0, green: 126.0 / 255.0, blue: 126.0 / 255.0, alpha: 1.0)
         
@@ -445,6 +446,10 @@ extension MovieListViewController: EditTitleViewControllerDelegate {
         
         movieTitle.convertToFilmObject(film)
         
+        if #available(iOS 9.0, *) {
+            film.indexFilmObject()
+        }
+        
         hudView.afterDelay(0.8, closure: {
             self.dismissViewControllerAnimated(true, completion: nil)
         })
@@ -477,7 +482,7 @@ extension MovieListViewController: UISearchControllerDelegate {
 // MARK: - SWRevealViewControllerDelegate
 
 extension MovieListViewController: SWRevealViewControllerDelegate {
-    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
+    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition) {
         if position == FrontViewPosition.Left {
             searchController.searchBar.userInteractionEnabled = true
             tableView.userInteractionEnabled = true
@@ -492,7 +497,7 @@ extension MovieListViewController: SWRevealViewControllerDelegate {
         }
     }
     
-    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition) {
         if position == FrontViewPosition.Left {
             searchController.searchBar.userInteractionEnabled = true
             tableView.userInteractionEnabled = true
@@ -507,4 +512,3 @@ extension MovieListViewController: SWRevealViewControllerDelegate {
         }
     }
 }
-
