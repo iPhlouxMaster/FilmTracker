@@ -6,7 +6,7 @@ Firstly, it searches the movie with movie title or actors / directors. Once pick
 ##### Search Title:
 <img src="./Screenshots/SearchTitle.gif" width="320" height="568"/>
 
-##### Search Saved Title on Spotlight with Title, Genre or Director (iOS 9 only):
+##### Search Saved Title on Spotlight with Title, Genre or Director (iOS 9 new feature):
 <img src="./Screenshots/CoreSpotlight.gif" width="320" height="568"/>
 
 ##### Edit Title:
@@ -23,9 +23,9 @@ Firstly, it searches the movie with movie title or actors / directors. Once pick
 - SearchViewController: KVO to monitor NSManagedObjectContext, works with Search class which used to parse JSON;
 - DetailViewController and SearchResultCell: FloatRatingView to set the ratings;
 - EditTitleViewController: several pickers, NSUserDefaults to store genres and countries settings data
-- Core Spotlight: index searchableItem when add / edit film, deindex searchableItem when delete film object; call `continueUserActivity` in AppDelegate, `Core Spotlight` will generate userActivity automatically when selecting the search result on Spotlight.
+- Core Spotlight: index searchableItem when adding / editing film, deindex searchableItem when deleting film object; call `continueUserActivity` in AppDelegate, Core Spotlight will generate userActivity automatically when selecting the search result on Spotlight.
 
 ##### Credits
 - [SWRevealViewController](https://github.com/John-Lluch/SWRevealViewController): Slide-out navigation controller.
 - [FloatRatingView](https://github.com/strekfus/FloatRatingView): FloatRatingView
-- [Ico-Moon](https://github.com/Keyamoon/IcoMoon-Free): Images and icons
+- [IcoMoon](https://github.com/Keyamoon/IcoMoon-Free): Images and icons
