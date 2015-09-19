@@ -31,6 +31,10 @@ extension Film {
             attributeSet.keywords! += genres as! [String]
         }
         
+        if directors != nil {
+            attributeSet.keywords! += directors as! [String]
+        }
+        
         if w92Poster != nil {
             attributeSet.thumbnailData = w92Poster
         } else {
