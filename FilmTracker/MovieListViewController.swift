@@ -53,6 +53,7 @@ class MovieListViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
+        
         searchBarView.addSubview(searchController.searchBar)
         searchController.searchBar.frame = CGRectMake(0, 0, searchBarView.bounds.size.width, 44)
         searchController.searchBar.placeholder = "Search film title..."
@@ -61,6 +62,12 @@ class MovieListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Film List"
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        managedObjectContext = appDelegate.managedObjectContext
+        fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("titleSection", withSortDescriptorKey: "title")
+        performFetch()
+        
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
@@ -72,9 +79,6 @@ class MovieListViewController: UIViewController {
         }
         
         revealViewController().delegate = self
-        
-        fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("titleSection", withSortDescriptorKey: "title")
-        performFetch()
         
         tableView.sectionIndexBackgroundColor = UIColor.clearColor()
 
@@ -91,13 +95,15 @@ class MovieListViewController: UIViewController {
     }
     
     deinit {
+        fetchedResultsController.delegate = nil
+        searchController.searchResultsUpdater = nil
+        searchController.delegate = nil
+        searchController = nil
         NSFetchedResultsController.deleteCacheWithName("Film")
         print("*** MovieListViewController deinited")
     }
     
     func createFetchedResultsControllerWithSectionNameKeyPath(sectionNameKeyPath: String, withSortDescriptorKey: String) -> NSFetchedResultsController {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        managedObjectContext = appDelegate.managedObjectContext
         
         let fetchRequest = NSFetchRequest()
         let entity = NSEntityDescription.entityForName("Film", inManagedObjectContext: self.managedObjectContext)
@@ -509,6 +515,41 @@ extension MovieListViewController: SWRevealViewControllerDelegate {
             tableView.userInteractionEnabled = false
             sectionNameKeyPathSegmentedControl.userInteractionEnabled = false
             sidebarMenuOpen = true
+        }
+    }
+}
+
+// MARK: - RestoreUserActivityState
+
+extension MovieListViewController {
+    override func restoreUserActivityState(activity: NSUserActivity) {
+        if #available(iOS 9.0, *) {
+            if let id = activity.userInfo![CSSearchableItemActivityIdentifier] as? String {
+                searchPredicate == nil
+                
+                // Indicate "Presenting view controllers on detached view controllers is discouraged", debugging needed.
+                
+                let fetchRequest = NSFetchRequest(entityName: "Film")
+                fetchRequest.predicate = NSPredicate(format: "id == %@", id)
+                
+                do {
+                    let searchResult = try managedObjectContext.executeFetchRequest(fetchRequest)
+                    let film = searchResult[0] as! Film
+                    
+                    if fetchedResultsController == nil {
+                        fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("titleSection", withSortDescriptorKey: "title")
+                        performFetch()
+                    }
+                    
+                    if let indexPath = fetchedResultsController.indexPathForObject(film) {
+                        performSegueWithIdentifier("ShowFilmDetail", sender: indexPath)
+                    }
+                } catch let error as NSError {
+                    print("*** restoreUserActivity fetch film object errro: \(error)")
+                }
+            }
+        } else {
+            // Fallback on earlier versions
         }
     }
 }

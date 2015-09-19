@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CoreSpotlight
 
 let MyManagedObjectContextSaveDidFailNotification = "MyManagedObjectContextSaveDidFailNotification"
 
@@ -102,7 +103,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return rootViewController
         }
     }
+}
 
-
+extension AppDelegate {
+    func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+        if #available(iOS 9.0, *) {
+            if userActivity.activityType == CSSearchableItemActionType {
+                
+                // Pass the userActivity to movieListViewController and call restoreUserActivityState()
+                
+                let revealViewController = self.window?.rootViewController as! SWRevealViewController
+                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let movieListNavigationController = storyboard.instantiateViewControllerWithIdentifier("movieListNavigationController") as! UINavigationController
+                
+                let movieListViewController = movieListNavigationController.topViewController as! MovieListViewController
+                
+                revealViewController.setFrontViewController(movieListNavigationController, animated: false)
+                movieListViewController.managedObjectContext = managedObjectContext
+                movieListViewController.restoreUserActivityState(userActivity)
+                
+                return true
+            }
+            return false
+        }
+        return false
+    }
 }
 

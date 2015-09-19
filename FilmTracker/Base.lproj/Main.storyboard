@@ -1336,7 +1336,7 @@
         <!--Movie List-->
         <scene sceneID="WNB-hX-j48">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="TH0-NB-ycj" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="movieListNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="TH0-NB-ycj" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Movie List" id="BYl-YO-4f9"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="vJB-jg-cAe">
@@ -1555,10 +1555,10 @@
         <image name="TMDB" width="520" height="150"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Pxc-QF-77e"/>
-        <segue reference="6gE-0h-1q8"/>
+        <segue reference="dwd-ap-R53"/>
+        <segue reference="2YT-Vd-H49"/>
+        <segue reference="eFB-PN-Rdk"/>
         <segue reference="UPL-8y-Z5K"/>
-        <segue reference="zC4-bW-EFA"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
 </document>
