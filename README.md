@@ -6,7 +6,7 @@ Firstly, it searches the movie with movie title or actors / directors. Once pick
 ##### Search Title:
 <img src="./Screenshots/SearchTitle.gif" width="320" height="568"/>
 
-##### Search Saved Title on Spotlight (iOS 9 only):
+##### Search Saved Title on Spotlight with Title, Genre or Director (iOS 9 only):
 <img src="./Screenshots/CoreSpotlight.gif" width="320" height="568"/>
 
 ##### Edit Title:
