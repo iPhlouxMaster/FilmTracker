@@ -37,16 +37,10 @@ class SearchResultCell: UITableViewCell {
         floatRatingView.editable = false
         floatRatingView.halfRatings = true
         floatRatingView.floatRatings = true
-        
-//        let selectedView = UIView(frame: CGRect.zeroRect)
-//        selectedView.backgroundColor = UIColor(red: 20 / 255, green: 160 / 255, blue: 160 / 255, alpha: 0.5)
-//        selectedBackgroundView = selectedView
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
     func configureForSearchResult(movie: Movie) {
@@ -134,6 +128,7 @@ class SearchResultCell: UITableViewCell {
         imageDownloadTask?.cancel()
         directorDownloadTask?.cancel()
         productionCountriesDownloadTask?.cancel()
+        
         movieTitleLabel.text = nil
         productionCountriesLabel.text = nil
         directorLabel.text = nil

@@ -40,7 +40,6 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var overviewTextView: UITextView!
     @IBOutlet weak var overviewTitleLabel: UILabel!
     
-    
     //MARK: - IBActions
     
     @IBAction func showTMDBButtonPressed(sender: UIButton) {
@@ -51,7 +50,6 @@ class DetailViewController: UIViewController {
             let url = NSURL(string: String(format: "https://www.themoviedb.org/movie/%d", movie.id))
             UIApplication.sharedApplication().openURL(url!)
         }
-        
     }
     
     @IBAction func showIMDBButtonPressed(sender: UIButton) {
@@ -87,7 +85,7 @@ class DetailViewController: UIViewController {
                     strongSelf.dismissViewControllerAnimated(false, completion: nil)
                 }
             }
-        })
+            })
     }
     
     // MARK: - Funcs
@@ -146,7 +144,7 @@ class DetailViewController: UIViewController {
             if countries.isEmpty {
                 productionCountriesLabel.text = "Not Available"
             } else {
-               productionCountriesLabel.text = countries.joinWithSeparator(", ")
+                productionCountriesLabel.text = countries.joinWithSeparator(", ")
             }
         } else {
             productionCountriesLabel.text = "Not Available"
@@ -215,7 +213,6 @@ class DetailViewController: UIViewController {
     func configureFloatRatingView() {
         
         let starEmptyImage = UIImage(named: "StarEmpty")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-
         let starFullImage = UIImage(named: "StarFull")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         
         if movie.id > 0 {
@@ -240,6 +237,7 @@ class DetailViewController: UIViewController {
             tmdbRatingLabel.hidden = true
             tmdbRatingView.hidden = true
             tmdbRatingTitleLabel.hidden = true
+            
             yourRatingLabel.hidden = true
             yourRatingView.hidden = true
             yourRatingTitleLabel.hidden = true
@@ -317,12 +315,11 @@ class DetailViewController: UIViewController {
             showIMDBPageButton.layer.borderWidth = 0.7
             showIMDBPageButton.layer.cornerRadius = 5
         }
-
+        
     }
     
     func showWatchStatusMenu() {
         let alertController = UIAlertController(title: "Please Select Your Watch Status:", message: nil, preferredStyle: .ActionSheet)
-        
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
         alertController.addAction(cancelAction)
@@ -370,6 +367,8 @@ class DetailViewController: UIViewController {
         alertController.view.tintColor = view.tintColor
         self.presentViewController(alertController, animated: true, completion: nil)
     }
+    
+    // Using NSUserDefaults to save all genres and countries info
     
     func handleCountrieAndGenreList() {
         
@@ -419,6 +418,7 @@ class DetailViewController: UIViewController {
         }
         
         movieToSave.convertToFilmObject(film)
+        
         if #available(iOS 9.0, *) {
             film.indexFilmObject()
         }
@@ -429,7 +429,7 @@ class DetailViewController: UIViewController {
             fatalCoreDataError(error)
             return
         }
-
+        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

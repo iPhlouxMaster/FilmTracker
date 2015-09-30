@@ -63,11 +63,7 @@ class MovieListViewController: UIViewController {
         super.viewDidLoad()
         title = "Film List"
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        managedObjectContext = appDelegate.managedObjectContext
-        fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("titleSection", withSortDescriptorKey: "title")
-        performFetch()
-        
+        revealViewController().delegate = self
         
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
@@ -77,10 +73,6 @@ class MovieListViewController: UIViewController {
             // Uncomment to change the width of menu
             //self.revealViewController().rearViewRevealWidth = 62
         }
-        
-        revealViewController().delegate = self
-        
-        tableView.sectionIndexBackgroundColor = UIColor.clearColor()
 
         searchController = UISearchController(searchResultsController: nil)
         searchController.dimsBackgroundDuringPresentation = false
@@ -92,6 +84,13 @@ class MovieListViewController: UIViewController {
         let cellNib = UINib(nibName: "SearchResultCell", bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: "SearchResultCell")
         tableView.rowHeight = 140
+        
+        tableView.sectionIndexBackgroundColor = UIColor.clearColor()
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        managedObjectContext = appDelegate.managedObjectContext
+        fetchedResultsController = createFetchedResultsControllerWithSectionNameKeyPath("titleSection", withSortDescriptorKey: "title")
+        performFetch()
     }
     
     deinit {
@@ -268,6 +267,7 @@ extension MovieListViewController: UITableViewDelegate {
             
             self.managedObjectContext.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! Film)
         }
+        
         deleteMovieAction.backgroundColor = UIColor(red: 126.0 / 255.0, green: 126.0 / 255.0, blue: 126.0 / 255.0, alpha: 1.0)
         
         let changeMovieStatusAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Status") { _ in
@@ -549,7 +549,8 @@ extension MovieListViewController {
                 }
             }
         } else {
-            // Fallback on earlier versions
+            // Earlier versions
+            return
         }
     }
 }

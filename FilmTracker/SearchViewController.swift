@@ -11,8 +11,6 @@ import CoreData
 
 class SearchViewController: UIViewController {
     
-    // Set KVO to monitor if any managedObject changed, fetch the objects for the performSearch() and reload tableView.
-    
     var managedObjectContext: NSManagedObjectContext!
     
     let search = Search()
@@ -29,8 +27,8 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
-    
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    
     @IBAction func segmentValueChanged(sender: AnyObject) {
         performSearch()
     }
@@ -45,7 +43,6 @@ class SearchViewController: UIViewController {
         
         title = "Search Title"
         tableView.rowHeight = 140
-        // searchBar.barTintColor = UIColor(red: 178.0 / 255.0, green: 178.0 / 255.0, blue: 178.0 / 255.0, alpha: 1.0)
         searchBar.becomeFirstResponder()
         
         revealViewController().delegate = self
@@ -54,6 +51,7 @@ class SearchViewController: UIViewController {
             menuButton.target = self.revealViewController()
             menuButton.action = "revealToggle:"
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
             // Uncomment to change the width of menu
             //self.revealViewController().rearViewRevealWidth = 62
         }
@@ -98,8 +96,10 @@ class SearchViewController: UIViewController {
         films = foundObjects as! [Film]
     }
     
+    // Set KVO to monitor if any managedObject changed, fetch the objects for the performSearch() and reload tableView.
+    
     func listenForMOCObjectsDidChangeNotification() {
-        observer = NSNotificationCenter.defaultCenter().addObserverForName(NSManagedObjectContextObjectsDidChangeNotification, object: nil, queue: NSOperationQueue.mainQueue()) { [weak self]_ in
+        observer = NSNotificationCenter.defaultCenter().addObserverForName(NSManagedObjectContextObjectsDidChangeNotification, object: nil, queue: NSOperationQueue.mainQueue()) { [weak self] _ in
             if let strongSelf = self {
                 strongSelf.performFetch()
                 strongSelf.tableView.reloadData()
