@@ -13,10 +13,10 @@
 		371F5C751B99403A009153AC /* DimmingPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371F5C741B99403A009153AC /* DimmingPresentationController.swift */; };
 		371F5C781B994FC1009153AC /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 371F5C761B994FC1009153AC /* DataModel.xcdatamodeld */; };
 		37406C421B9973370051CBBA /* EditTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37406C411B9973370051CBBA /* EditTitleViewController.swift */; };
-		374235AC1BA540CD00DBD5DC /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 374235AB1BA540CD00DBD5DC /* SWRevealViewController.m */; settings = {ASSET_TAGS = (); }; };
-		374235AE1BA543D300DBD5DC /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374235AD1BA543D300DBD5DC /* MenuViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		374235AE1BA543D300DBD5DC /* MenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374235AD1BA543D300DBD5DC /* MenuTableViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		374294311BA7ABCF00DE9FCB /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374294301BA7ABCF00DE9FCB /* AboutViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		374294361BA7CA0300DE9FCB /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 374294351BA7CA0300DE9FCB /* Launch Screen.storyboard */; settings = {ASSET_TAGS = (); }; };
+		3746D0131BBF741700F2AA0D /* SidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3746D0121BBF741700F2AA0D /* SidebarViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		3750EC771B96B5EF00CACE69 /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3750EC761B96B5EF00CACE69 /* UIImageView+DownloadImage.swift */; };
 		376A42D01BACAB8200E1F34D /* SearchableExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376A42CF1BACAB8200E1F34D /* SearchableExtensions.swift */; settings = {ASSET_TAGS = (); }; };
 		37AD2BBC1BA646C30068F80C /* HudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AD2BBB1BA646C30068F80C /* HudView.swift */; settings = {ASSET_TAGS = (); }; };
@@ -57,12 +57,10 @@
 		371F5C741B99403A009153AC /* DimmingPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DimmingPresentationController.swift; sourceTree = "<group>"; };
 		371F5C771B994FC1009153AC /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		37406C411B9973370051CBBA /* EditTitleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTitleViewController.swift; sourceTree = "<group>"; };
-		374235A91BA540CD00DBD5DC /* FilmTracker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FilmTracker-Bridging-Header.h"; sourceTree = "<group>"; };
-		374235AA1BA540CD00DBD5DC /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
-		374235AB1BA540CD00DBD5DC /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
-		374235AD1BA543D300DBD5DC /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		374235AD1BA543D300DBD5DC /* MenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewController.swift; sourceTree = "<group>"; };
 		374294301BA7ABCF00DE9FCB /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		374294351BA7CA0300DE9FCB /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		3746D0121BBF741700F2AA0D /* SidebarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidebarViewController.swift; sourceTree = "<group>"; };
 		3750EC761B96B5EF00CACE69 /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
 		376A42CF1BACAB8200E1F34D /* SearchableExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchableExtensions.swift; sourceTree = "<group>"; };
 		37AD2BBB1BA646C30068F80C /* HudView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudView.swift; sourceTree = "<group>"; };
@@ -123,7 +121,8 @@
 			isa = PBXGroup;
 			children = (
 				37BABF491B92C11D00E6E6EE /* AppDelegate.swift */,
-				374235AD1BA543D300DBD5DC /* MenuViewController.swift */,
+				3746D0121BBF741700F2AA0D /* SidebarViewController.swift */,
+				374235AD1BA543D300DBD5DC /* MenuTableViewController.swift */,
 				37BE2A5A1B96701900BA6C2B /* MovieListViewController.swift */,
 				37BABF4B1B92C11D00E6E6EE /* SearchViewController.swift */,
 				37BE2A651B967AE300BA6C2B /* SearchResultCell.swift */,
@@ -183,9 +182,6 @@
 		37BABF471B92C11D00E6E6EE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				374235AA1BA540CD00DBD5DC /* SWRevealViewController.h */,
-				374235AB1BA540CD00DBD5DC /* SWRevealViewController.m */,
-				374235A91BA540CD00DBD5DC /* FilmTracker-Bridging-Header.h */,
 				371F5C721B992F92009153AC /* no-poster.jpeg */,
 				37BABF481B92C11D00E6E6EE /* Info.plist */,
 				37CFC0AE1B965092000FC228 /* Constants.swift */,
@@ -331,7 +327,6 @@
 			files = (
 				376A42D01BACAB8200E1F34D /* SearchableExtensions.swift in Sources */,
 				37D277ED1B97B05D0023ADEF /* DetailViewController.swift in Sources */,
-				374235AC1BA540CD00DBD5DC /* SWRevealViewController.m in Sources */,
 				374294311BA7ABCF00DE9FCB /* AboutViewController.swift in Sources */,
 				37CFC0AF1B965092000FC228 /* Constants.swift in Sources */,
 				3716AB951B9427AD000F6D60 /* Search.swift in Sources */,
@@ -343,12 +338,13 @@
 				37EB4BB21B9E9181002B565D /* Film.swift in Sources */,
 				37BE2A5B1B96701900BA6C2B /* MovieListViewController.swift in Sources */,
 				3750EC771B96B5EF00CACE69 /* UIImageView+DownloadImage.swift in Sources */,
-				374235AE1BA543D300DBD5DC /* MenuViewController.swift in Sources */,
+				374235AE1BA543D300DBD5DC /* MenuTableViewController.swift in Sources */,
 				37CC47D51B9BC9D900262292 /* UIImage+Resize.swift in Sources */,
 				3716AB971B9435D7000F6D60 /* Movie.swift in Sources */,
 				37406C421B9973370051CBBA /* EditTitleViewController.swift in Sources */,
 				37BE2A661B967AE300BA6C2B /* SearchResultCell.swift in Sources */,
 				371F5C781B994FC1009153AC /* DataModel.xcdatamodeld in Sources */,
+				3746D0131BBF741700F2AA0D /* SidebarViewController.swift in Sources */,
 				37BABF4A1B92C11D00E6E6EE /* AppDelegate.swift in Sources */,
 				371F5C751B99403A009153AC /* DimmingPresentationController.swift in Sources */,
 				37CC47D71B9BE8B300262292 /* PickerViewController.swift in Sources */,
@@ -478,7 +474,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "FilmTracker/FilmTracker-Bridging-Header.h";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -496,7 +492,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "FilmTracker/FilmTracker-Bridging-Header.h";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

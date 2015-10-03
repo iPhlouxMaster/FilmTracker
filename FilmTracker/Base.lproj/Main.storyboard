@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="zrM-uW-Osk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -11,7 +11,7 @@
         <!--Search-->
         <scene sceneID="yti-Sy-Txc">
             <objects>
-                <viewController id="JKc-lz-mDC" userLabel="Search" customClass="SearchViewController" customModule="FilmTracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchVC" id="JKc-lz-mDC" userLabel="Search" customClass="SearchViewController" customModule="FilmTracker" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3cL-gH-Km9"/>
                         <viewControllerLayoutGuide type="bottom" id="Wd1-4o-ILt"/>
@@ -90,7 +90,11 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="Dsy-Xa-CCN">
-                        <barButtonItem key="leftBarButtonItem" image="Menu" id="VaJ-8q-i0E"/>
+                        <barButtonItem key="leftBarButtonItem" image="Menu" id="VaJ-8q-i0E">
+                            <connections>
+                                <action selector="menuButtonPressed:" destination="JKc-lz-mDC" id="F0B-Rn-E2x"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
@@ -103,12 +107,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sgN-X4-tMz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1319" y="251"/>
+            <point key="canvasLocation" x="1325" y="251"/>
         </scene>
         <!--About-->
         <scene sceneID="F2r-gT-Tdi">
             <objects>
-                <viewController id="VZk-pC-oGm" customClass="AboutViewController" customModule="FilmTracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AboutVC" id="VZk-pC-oGm" customClass="AboutViewController" customModule="FilmTracker" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pdg-jD-5Nm"/>
                         <viewControllerLayoutGuide type="bottom" id="xxc-18-HvA"/>
@@ -137,7 +141,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="About" id="9bJ-A1-lCi">
-                        <barButtonItem key="leftBarButtonItem" image="Menu" id="gGm-mv-tkW"/>
+                        <barButtonItem key="leftBarButtonItem" image="Menu" id="gGm-mv-tkW">
+                            <connections>
+                                <action selector="menuButtonPressed:" destination="VZk-pC-oGm" id="VQ9-m1-oDz"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="menuButton" destination="gGm-mv-tkW" id="zbv-bg-fTd"/>
@@ -152,7 +160,7 @@
         <!--Movie List-->
         <scene sceneID="Ej3-es-GqS">
             <objects>
-                <viewController id="XRA-KT-n8h" userLabel="Movie List" customClass="MovieListViewController" customModule="FilmTracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MovieListVC" id="XRA-KT-n8h" userLabel="Movie List" customClass="MovieListViewController" customModule="FilmTracker" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8y4-W7-H6O"/>
                         <viewControllerLayoutGuide type="bottom" id="rYK-gs-Qx0"/>
@@ -222,7 +230,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="xAc-aK-eIY">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" image="Menu" id="vv4-rg-RFb"/>
+                        <barButtonItem key="leftBarButtonItem" image="Menu" id="vv4-rg-RFb">
+                            <connections>
+                                <action selector="menuButtonPressed:" destination="XRA-KT-n8h" id="HGw-5U-i3Q"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="GJo-Cu-ljO">
                             <connections>
                                 <action selector="addButtenPressed:" destination="XRA-KT-n8h" id="euU-Jp-yFZ"/>
@@ -676,7 +688,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Wd-59-iI0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2085" y="251"/>
+            <point key="canvasLocation" x="2073" y="251"/>
         </scene>
         <!--Edit Title-->
         <scene sceneID="mKb-WC-TJL">
@@ -1282,7 +1294,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7R0-Uh-JGX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2827" y="251"/>
+            <point key="canvasLocation" x="2815" y="251"/>
         </scene>
         <!--Picker View Controller-->
         <scene sceneID="ezB-Mq-gyA">
@@ -1313,7 +1325,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W7Q-C7-b8l" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3607" y="251"/>
+            <point key="canvasLocation" x="3547" y="251"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="EV6-YX-y8g">
@@ -1336,7 +1348,7 @@
         <!--Movie List-->
         <scene sceneID="WNB-hX-j48">
             <objects>
-                <navigationController storyboardIdentifier="movieListNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="TH0-NB-ycj" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="TH0-NB-ycj" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Movie List" id="BYl-YO-4f9"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="vJB-jg-cAe">
@@ -1371,35 +1383,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZRG-b2-Owq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="605" y="251"/>
+            <point key="canvasLocation" x="611" y="251"/>
         </scene>
-        <!--Reveal View Controller-->
-        <scene sceneID="osY-Pp-PXO">
-            <objects>
-                <viewController id="zrM-uW-Osk" customClass="SWRevealViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="kGG-7d-1zi"/>
-                        <viewControllerLayoutGuide type="bottom" id="TsD-iv-og1"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="hGs-cp-EHt">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <connections>
-                        <segue destination="KaB-ed-pAe" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegueSetController" id="z83-Ej-6dV"/>
-                        <segue destination="TH0-NB-ycj" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegueSetController" id="2YT-Vd-H49"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3nG-8w-grl" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-102" y="-519"/>
-        </scene>
-        <!--Menu View Controller-->
+        <!--Menu Table View Controller-->
         <scene sceneID="qTk-Uk-Sg6">
             <objects>
-                <tableViewController id="KaB-ed-pAe" customClass="MenuViewController" customModule="FilmTracker" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="MenuVC" id="KaB-ed-pAe" customClass="MenuTableViewController" customModule="FilmTracker" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="6GL-TK-phq">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1452,9 +1441,6 @@
                                         </tableViewCellContentView>
                                         <animations/>
                                         <color key="backgroundColor" red="0.94085192679999996" green="0.94903725390000004" blue="0.95307987930000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <connections>
-                                            <segue destination="TH0-NB-ycj" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="zC4-bW-EFA"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="uya-kK-2a1">
                                         <rect key="frame" x="0.0" y="88" width="600" height="44"/>
@@ -1483,9 +1469,6 @@
                                         </tableViewCellContentView>
                                         <animations/>
                                         <color key="backgroundColor" red="0.94085192679999996" green="0.94903725390000004" blue="0.95307987930000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <connections>
-                                            <segue destination="LHB-Se-G7N" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="8zo-e4-Fjy"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="dZE-Jk-dbB">
                                         <rect key="frame" x="0.0" y="132" width="600" height="44"/>
@@ -1510,9 +1493,6 @@
                                         </tableViewCellContentView>
                                         <animations/>
                                         <color key="backgroundColor" red="0.94085192679999996" green="0.94903725390000004" blue="0.95307987930000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <connections>
-                                            <segue destination="uGK-jj-cW6" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="9Te-dt-L4C"/>
-                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -1522,10 +1502,11 @@
                             <outlet property="delegate" destination="KaB-ed-pAe" id="cFL-pM-dYB"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="gx4-gk-xFk"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8bw-Ze-Q5v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-102" y="251"/>
+            <point key="canvasLocation" x="-148" y="251"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="gp8-We-POg">
@@ -1556,9 +1537,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="dwd-ap-R53"/>
-        <segue reference="2YT-Vd-H49"/>
-        <segue reference="eFB-PN-Rdk"/>
         <segue reference="UPL-8y-Z5K"/>
+        <segue reference="Pxc-QF-77e"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
 </document>

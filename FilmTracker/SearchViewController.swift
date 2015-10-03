@@ -9,6 +9,10 @@
 import UIKit
 import CoreData
 
+protocol SearchViewControllerDelegate: class {
+    func searchViewControllerDidTapMenuButton(controller: SearchViewController)
+}
+
 class SearchViewController: UIViewController {
     
     var managedObjectContext: NSManagedObjectContext!
@@ -16,7 +20,17 @@ class SearchViewController: UIViewController {
     let search = Search()
     var films = [Film]()
     var observer: AnyObject!
-    var sidebarMenuOpen = false
+    var menuBarIsOpening: Bool = false {
+        didSet(menuBarIsOpening) {
+            if menuBarIsOpening {
+                searchBar.resignFirstResponder()
+            } else {
+                // searchController.searchBar.becomeFirstResponder()
+            }
+        }
+    }
+    
+    weak var delegate: SearchViewControllerDelegate?
     
     struct TableViewCellIdentifiers {
         static let searchResultCell = "SearchResultCell"
@@ -28,6 +42,10 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    
+    @IBAction func menuButtonPressed(sender: AnyObject) {
+        delegate?.searchViewControllerDidTapMenuButton(self)
+    }
     
     @IBAction func segmentValueChanged(sender: AnyObject) {
         performSearch()
@@ -44,17 +62,6 @@ class SearchViewController: UIViewController {
         title = "Search Title"
         tableView.rowHeight = 140
         searchBar.becomeFirstResponder()
-        
-        revealViewController().delegate = self
-        
-        if self.revealViewController() != nil {
-            menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
-            // Uncomment to change the width of menu
-            //self.revealViewController().rearViewRevealWidth = 62
-        }
         
         var cellNib = UINib(nibName: TableViewCellIdentifiers.searchResultCell, bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.searchResultCell)
@@ -203,39 +210,6 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             searchBar.performSelector(Selector("resignFirstResponder"), withObject: nil, afterDelay: 0)
-        }
-    }
-}
-
-// MARK: - SWRevealViewControllerDelegate
-
-extension SearchViewController: SWRevealViewControllerDelegate {
-    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
-        if position == FrontViewPosition.Left {
-            searchBar.userInteractionEnabled = true
-            segmentedControl.userInteractionEnabled = true
-            tableView.userInteractionEnabled = true
-            sidebarMenuOpen = false
-        } else {
-            searchBar.resignFirstResponder()
-            searchBar.userInteractionEnabled = false
-            segmentedControl.userInteractionEnabled = false
-            tableView.userInteractionEnabled = false
-            sidebarMenuOpen = true
-        }
-    }
-    
-    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
-        if position == FrontViewPosition.Left {
-            searchBar.userInteractionEnabled = true
-            segmentedControl.userInteractionEnabled = true
-            tableView.userInteractionEnabled = true
-            sidebarMenuOpen = false
-        } else {
-            searchBar.userInteractionEnabled = false
-            segmentedControl.userInteractionEnabled = false
-            tableView.userInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
 }

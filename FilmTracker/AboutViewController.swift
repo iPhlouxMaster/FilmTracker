@@ -8,27 +8,25 @@
 
 import UIKit
 
+protocol AboutViewControllerDelegate: class {
+    func aboutViewControllerDidTapMenuButton(controller: AboutViewController)
+}
+
 class AboutViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
     let movie = Movie()
-    var sidebarMenuOpen = false
+    
+    weak var delegate: AboutViewControllerDelegate?
+    
+    @IBAction func menuButtonPressed(sender: AnyObject) {
+        delegate?.aboutViewControllerDidTapMenuButton(self)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        revealViewController().delegate = self
-        
-        if self.revealViewController() != nil {
-            menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
-            // Uncomment to change the width of menu
-            //self.revealViewController().rearViewRevealWidth = 62
-        }
         
         let cellNib = UINib(nibName: "SearchResultCell", bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: "AboutCell")
@@ -75,28 +73,4 @@ class AboutViewController: UIViewController, UITableViewDataSource, UITableViewD
         performSegueWithIdentifier("AboutSegue", sender: nil)
     }
     
-}
-
-// MARK: - SWRevealViewControllerDelegate
-
-extension AboutViewController: SWRevealViewControllerDelegate {
-    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
-        if position == FrontViewPosition.Left {
-            tableView.userInteractionEnabled = true
-            sidebarMenuOpen = false
-        } else {
-            tableView.userInteractionEnabled = false
-            sidebarMenuOpen = true
-        }
-    }
-    
-    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
-        if position == FrontViewPosition.Left {
-            tableView.userInteractionEnabled = true
-            sidebarMenuOpen = false
-        } else {
-            tableView.userInteractionEnabled = false
-            sidebarMenuOpen = true
-        }
-    }
 }

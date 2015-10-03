@@ -24,6 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
+    var menuNav: UINavigationController!
+    var tableViewsNav: UINavigationController!
+    var tableViewControllers = [UIViewController]()
+    
+    var sidebarVC: SidebarViewController!
+    
     lazy var managedObjectContext: NSManagedObjectContext = {
         if let modelURL = NSBundle.mainBundle().URLForResource("DataModel", withExtension: "momd") {
             if let model = NSManagedObjectModel(contentsOfURL: modelURL) {
@@ -52,9 +58,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         window?.tintColor = UIColor.blackColor()
+        UINavigationBar.appearance().tintColor = UIColor.blackColor()
+        
         _ = CountriesAndGenres()
         
         listenForFatalCoreDataNotifications()
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        
+        let movieListVC = storyboard.instantiateViewControllerWithIdentifier("MovieListVC") as! MovieListViewController
+        movieListVC.delegate = self
+        let searchVC = storyboard.instantiateViewControllerWithIdentifier("SearchVC") as! SearchViewController
+        searchVC.delegate = self
+        let aboutVC = storyboard.instantiateViewControllerWithIdentifier("AboutVC") as! AboutViewController
+        aboutVC.delegate = self
+        tableViewControllers = [movieListVC, searchVC, aboutVC]
+    
+        tableViewsNav = UINavigationController(rootViewController: tableViewControllers[0])
+        
+        let menuVC = storyboard.instantiateViewControllerWithIdentifier("MenuVC") as! MenuTableViewController
+        menuVC.delegate = self
+        menuNav = UINavigationController(rootViewController: menuVC)
+        
+        sidebarVC = SidebarViewController(menuViewController: menuVC, mainViewController: tableViewsNav, overlappedWidth: 60)
+        
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        window?.backgroundColor = UIColor.whiteColor()
+        window?.rootViewController = sidebarVC
+        window?.makeKeyAndVisible()
+        
         return true
     }
 
@@ -112,15 +144,14 @@ extension AppDelegate {
                 
                 // Pass the userActivity to movieListViewController and call restoreUserActivityState()
                 
-                let revealViewController = self.window?.rootViewController as! SWRevealViewController
+                sidebarVC.closeMenuAnimated(false)
                 
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let movieListNavigationController = storyboard.instantiateViewControllerWithIdentifier("movieListNavigationController") as! UINavigationController
+                let movieListViewController = tableViewControllers[0] as! MovieListViewController
+                if tableViewsNav.topViewController != movieListViewController {
+                    tableViewsNav.setViewControllers([movieListViewController], animated: true)
+                    movieListViewController.managedObjectContext = managedObjectContext
+                }
                 
-                let movieListViewController = movieListNavigationController.topViewController as! MovieListViewController
-                
-                revealViewController.setFrontViewController(movieListNavigationController, animated: false)
-                movieListViewController.managedObjectContext = managedObjectContext
                 movieListViewController.restoreUserActivityState(userActivity)
                 
                 return true
@@ -128,6 +159,36 @@ extension AppDelegate {
             return false
         }
         return false
+    }
+}
+
+extension AppDelegate: MovieListViewControllerDelegate {
+    func movieListViewControllerDidTapMenuButton(controller: MovieListViewController) {
+        sidebarVC.toggleMenuAnimated(true)
+    }
+}
+
+extension AppDelegate: SearchViewControllerDelegate {
+    func searchViewControllerDidTapMenuButton(controller: SearchViewController) {
+        sidebarVC.toggleMenuAnimated(true)
+    }
+}
+
+extension AppDelegate: AboutViewControllerDelegate {
+    func aboutViewControllerDidTapMenuButton(controller: AboutViewController) {
+        sidebarVC.toggleMenuAnimated(true)
+    }
+}
+
+extension AppDelegate: MenuTableViewControllerDelegate {
+    func menuTableViewController(controller: MenuTableViewController, didSelectRow row: Int) {
+        
+        sidebarVC.closeMenuAnimated(true)
+        
+        let destinationViewController = tableViewControllers[row - 1]
+        if tableViewsNav.topViewController != destinationViewController {
+            tableViewsNav.setViewControllers([destinationViewController], animated: true)
+        }
     }
 }
 

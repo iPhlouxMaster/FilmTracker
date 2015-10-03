@@ -12,6 +12,10 @@ import CoreSpotlight
 
 let movieListDomainID = "me.yunhan.FilmTracker.movieList"
 
+protocol MovieListViewControllerDelegate: class {
+    func movieListViewControllerDidTapMenuButton(controller: MovieListViewController)
+}
+
 class MovieListViewController: UIViewController {
     
     var managedObjectContext: NSManagedObjectContext!
@@ -19,12 +23,17 @@ class MovieListViewController: UIViewController {
     var searchController: UISearchController!
     var searchPredicate: NSPredicate?
     var filteredObjects : [Film]? = nil
-    var sidebarMenuOpen = false
+    
+    weak var delegate: MovieListViewControllerDelegate?
     
     @IBOutlet weak var searchBarView: UIView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var sectionNameKeyPathSegmentedControl: UISegmentedControl!
+    
+    @IBAction func menuButtonPressed(sender: AnyObject) {
+        delegate?.movieListViewControllerDidTapMenuButton(self)
+    }
     
     @IBAction func addButtenPressed(sender: UIBarButtonItem) {
         performSegueWithIdentifier("AddMovie", sender: nil)
@@ -57,23 +66,13 @@ class MovieListViewController: UIViewController {
         searchBarView.addSubview(searchController.searchBar)
         searchController.searchBar.frame = CGRectMake(0, 0, searchBarView.bounds.size.width, 44)
         searchController.searchBar.placeholder = "Search film title..."
+        searchController.searchBar.tintColor = UIColor.blackColor()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Film List"
         
-        revealViewController().delegate = self
-        
-        if self.revealViewController() != nil {
-            menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
-            // Uncomment to change the width of menu
-            //self.revealViewController().rearViewRevealWidth = 62
-        }
-
         searchController = UISearchController(searchResultsController: nil)
         searchController.dimsBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
@@ -237,14 +236,10 @@ class MovieListViewController: UIViewController {
 // MARK: - UITableView Delegate / Data Source
 
 extension MovieListViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if sidebarMenuOpen == true {
-            return nil
-        } else {
-            return indexPath
-        }
-    }
-    
+//    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+//        return indexPath
+//    }
+//    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         searchController.searchBar.resignFirstResponder()
@@ -280,7 +275,6 @@ extension MovieListViewController: UITableViewDelegate {
         changeMovieStatusAction.backgroundColor = UIColor(red: 178.0 / 255.0, green: 178.0 / 255.0, blue: 178.0 / 255.0, alpha: 1.0)
         
         return [deleteMovieAction, editMovieAction, changeMovieStatusAction]
-        
     }
     
 }
@@ -483,40 +477,6 @@ extension MovieListViewController: UISearchControllerDelegate {
         searchPredicate = nil
         filteredObjects = nil
         tableView.reloadData()
-    }
-}
-
-// MARK: - SWRevealViewControllerDelegate
-
-extension MovieListViewController: SWRevealViewControllerDelegate {
-    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition) {
-        if position == FrontViewPosition.Left {
-            searchController.searchBar.userInteractionEnabled = true
-            tableView.userInteractionEnabled = true
-            sectionNameKeyPathSegmentedControl.userInteractionEnabled = true
-            sidebarMenuOpen = false
-        } else {
-            searchController.searchBar.resignFirstResponder()
-            searchController.searchBar.userInteractionEnabled = false
-            sectionNameKeyPathSegmentedControl.userInteractionEnabled = false
-            tableView.userInteractionEnabled = false
-            sidebarMenuOpen = true
-        }
-    }
-    
-    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition) {
-        if position == FrontViewPosition.Left {
-            searchController.searchBar.userInteractionEnabled = true
-            tableView.userInteractionEnabled = true
-            sectionNameKeyPathSegmentedControl.userInteractionEnabled = true
-            sidebarMenuOpen = false
-        } else {
-            searchController.searchBar.resignFirstResponder()
-            searchController.searchBar.userInteractionEnabled = false
-            tableView.userInteractionEnabled = false
-            sectionNameKeyPathSegmentedControl.userInteractionEnabled = false
-            sidebarMenuOpen = true
-        }
     }
 }
 
