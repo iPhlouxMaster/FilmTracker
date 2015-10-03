@@ -94,11 +94,12 @@ class MovieListViewController: UIViewController {
     }
     
     deinit {
+        NSFetchedResultsController.deleteCacheWithName("Film")
         fetchedResultsController.delegate = nil
         searchController.searchResultsUpdater = nil
         searchController.delegate = nil
         searchController = nil
-        NSFetchedResultsController.deleteCacheWithName("Film")
+        NSNotificationCenter.defaultCenter().removeObserver(self)
         print("*** MovieListViewController deinited")
     }
     
