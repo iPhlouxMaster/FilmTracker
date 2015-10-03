@@ -79,7 +79,7 @@ class MovieListViewController: UIViewController {
         searchController.searchResultsUpdater = self
         searchController.delegate = self
         definesPresentationContext = true
-        
+
         let cellNib = UINib(nibName: "SearchResultCell", bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: "SearchResultCell")
         tableView.rowHeight = 140
@@ -236,10 +236,10 @@ class MovieListViewController: UIViewController {
 // MARK: - UITableView Delegate / Data Source
 
 extension MovieListViewController: UITableViewDelegate {
-//    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-//        return indexPath
-//    }
-//    
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        return indexPath
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         searchController.searchBar.resignFirstResponder()

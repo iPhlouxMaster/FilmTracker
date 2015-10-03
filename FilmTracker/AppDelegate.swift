@@ -25,8 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     var menuNav: UINavigationController!
-    var tableViewsNav: UINavigationController!
-    var tableViewControllers = [UIViewController]()
+    var viewControllersNav: UINavigationController!
+    var viewControllers: [UIViewController]!
     
     var sidebarVC: SidebarViewController!
     
@@ -57,6 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
         window?.tintColor = UIColor.blackColor()
         UINavigationBar.appearance().tintColor = UIColor.blackColor()
         
@@ -72,15 +73,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         searchVC.delegate = self
         let aboutVC = storyboard.instantiateViewControllerWithIdentifier("AboutVC") as! AboutViewController
         aboutVC.delegate = self
-        tableViewControllers = [movieListVC, searchVC, aboutVC]
+        viewControllers = [movieListVC, searchVC, aboutVC]
     
-        tableViewsNav = UINavigationController(rootViewController: tableViewControllers[0])
+        viewControllersNav = UINavigationController(rootViewController: viewControllers[0])
         
         let menuVC = storyboard.instantiateViewControllerWithIdentifier("MenuVC") as! MenuTableViewController
         menuVC.delegate = self
         menuNav = UINavigationController(rootViewController: menuVC)
         
-        sidebarVC = SidebarViewController(menuViewController: menuVC, mainViewController: tableViewsNav, overlappedWidth: 60)
+        sidebarVC = SidebarViewController(menuViewController: menuVC, mainViewController: viewControllersNav, overlappedWidth: 60)
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.backgroundColor = UIColor.whiteColor()
@@ -146,9 +147,9 @@ extension AppDelegate {
                 
                 sidebarVC.closeMenuAnimated(false)
                 
-                let movieListViewController = tableViewControllers[0] as! MovieListViewController
-                if tableViewsNav.topViewController != movieListViewController {
-                    tableViewsNav.setViewControllers([movieListViewController], animated: true)
+                let movieListViewController = viewControllers[0] as! MovieListViewController
+                if viewControllersNav.topViewController != movieListViewController {
+                    viewControllersNav.setViewControllers([movieListViewController], animated: true)
                     movieListViewController.managedObjectContext = managedObjectContext
                 }
                 
@@ -184,10 +185,10 @@ extension AppDelegate: MenuTableViewControllerDelegate {
     func menuTableViewController(controller: MenuTableViewController, didSelectRow row: Int) {
         
         sidebarVC.closeMenuAnimated(true)
-        
-        let destinationViewController = tableViewControllers[row - 1]
-        if tableViewsNav.topViewController != destinationViewController {
-            tableViewsNav.setViewControllers([destinationViewController], animated: true)
+    
+        let destinationViewController = viewControllers[row - 1]
+        if viewControllersNav.topViewController != destinationViewController {
+            viewControllersNav.setViewControllers([destinationViewController], animated: true)
         }
     }
 }

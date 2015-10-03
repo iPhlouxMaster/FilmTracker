@@ -51,7 +51,7 @@ class SidebarViewController: UIViewController {
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scrollView)
-
+        
         let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[scrollView]|", options: [], metrics: nil, views: ["scrollView": scrollView])
         let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[scrollView]|", options: [], metrics: nil, views: ["scrollView": scrollView])
         NSLayoutConstraint.activateConstraints(horizontalConstraints + verticalConstraints)
@@ -85,7 +85,7 @@ class SidebarViewController: UIViewController {
     }
     
     func openMenuAnimated(animated: Bool) {
-
+        
         scrollView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: animated)
     }
     
@@ -132,8 +132,20 @@ extension SidebarViewController: UIGestureRecognizerDelegate {
         let tapLocation = touch.locationInView(view)
         let tapWasInArea = tapLocation.x >= view.bounds.width - overlappedWidth
         
-        return menuBarIsOpen() && tapWasInArea
+        return tapWasInArea && menuBarIsOpen()
     }
+    
+//    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        return true
+//    }
+//    
+//    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        if !menuBarIsOpen() && gestureRecognizer == scrollView.panGestureRecognizer {
+//            print("called")
+//            return true
+//        }
+//        return false
+//    }
 }
 
 extension SidebarViewController: UIScrollViewDelegate {
@@ -144,6 +156,5 @@ extension SidebarViewController: UIScrollViewDelegate {
         } else if scrollView.contentOffset.x == menuViewController.view.frame.width {
             mainViewController.view.userInteractionEnabled = true
         }
-        
     }
 }

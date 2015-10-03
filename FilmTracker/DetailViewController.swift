@@ -335,6 +335,7 @@ class DetailViewController: UIViewController {
                 self.dismissViewControllerAnimated(true, completion: nil)
             })
         })
+        
         alertController.addAction(selectWantToWatchAction)
         
         let selectWatchingAction = UIAlertAction(title: "I'm watching", style: .Default, handler: {
@@ -363,9 +364,12 @@ class DetailViewController: UIViewController {
                 self.dismissViewControllerAnimated(true, completion: nil)
             })
         })
+        
         alertController.addAction(selectWatchedAction)
-        alertController.view.tintColor = view.tintColor
-        self.presentViewController(alertController, animated: true, completion: nil)
+        alertController.view.tintColor = UIColor.blackColor()
+        self.presentViewController(alertController, animated: true, completion: {
+            alertController.view.tintColor = UIColor.blackColor()
+        })
     }
     
     // Using NSUserDefaults to save all genres and countries info
