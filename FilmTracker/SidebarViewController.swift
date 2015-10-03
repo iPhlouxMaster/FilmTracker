@@ -140,6 +140,10 @@ extension SidebarViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if scrollView.contentOffset.x == 0 {
             UIApplication.sharedApplication().sendAction("resignFirstResponder", to: nil, from: nil, forEvent: nil)
+            mainViewController.view.userInteractionEnabled = false
+        } else if scrollView.contentOffset.x == menuViewController.view.frame.width {
+            mainViewController.view.userInteractionEnabled = true
         }
+        
     }
 }
